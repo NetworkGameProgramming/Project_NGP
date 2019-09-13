@@ -5,6 +5,7 @@
 #include "Project_NGP.h"
 
 #include "Timer.h"
+#include "Maingame.h"
 
 #define MAX_LOADSTRING 100
 
@@ -72,6 +73,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	const TCHAR* strFrame = L"Frame_60";
 
+	// KeyManager 선언
+	KeyManager *pKeyManager = GET_SINGLETON(KeyManager);
+
+	// MainGame
+	Maingame mainGame;
+	if (false == mainGame.Initialize())
+	{
+		exit(-1);
+		return -1;
+	}
+
 	// 기본 메시지 루프입니다:
 	while (msg.message != WM_QUIT)
 	{
@@ -112,11 +124,28 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 					frameCount = 0;
 				}
 
+				// Key Update
+				if (-1 == pKeyManager->UpdateKey())
+				{
+					exit(-1);
+					return -1;
+				}
+
 				// Update
+				if (-1 == mainGame.Update(FrameTimeDelta))
+				{
+					exit(-1);
+					return -1;
+				}
 				// Render
+				mainGame.Render();
 			}
 		}
 	}
+
+	pFrameManager->DestroyInstance();
+	pTimerManager->DestroyInstance();
+	pKeyManager->DestroyInstance();
 
 	return (int)msg.wParam;
 }

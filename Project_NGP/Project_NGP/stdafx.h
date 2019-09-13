@@ -35,3 +35,4 @@ using namespace std;
 
 #include "FrameManager.h"
 #include "TimerManager.h"
+#include "KeyManager.h"

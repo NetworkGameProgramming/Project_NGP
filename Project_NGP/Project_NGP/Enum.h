@@ -1,1 +1,18 @@
 #pragma once
+
+enum DIRECTION
+{
+	DIR_LEFT,
+	DIR_RIGHT,
+	DIR_TOP,
+	DIR_BOTTOM,
+	DIR_END
+};
+
+enum KEYSTATE
+{
+	STATE_DOWN,
+	STATE_PUSH,
+	STATE_UP,
+	STATE_END
+};

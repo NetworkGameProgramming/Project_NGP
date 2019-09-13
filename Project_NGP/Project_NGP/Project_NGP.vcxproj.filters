@@ -34,6 +34,15 @@
     <Filter Include="97.Manager\Frame">
       <UniqueIdentifier>{9f9447a9-724f-4796-a31e-c7a677a39320}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.Manager\Key">
+      <UniqueIdentifier>{7e253e1c-32ce-4f83-b64c-5519d0a5918b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\Object">
+      <UniqueIdentifier>{7aa9bb5c-15fd-4fd5-bf07-244946204886}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Player">
+      <UniqueIdentifier>{4b29afad-4b59-4e2c-a87e-313659ea2cdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -75,6 +84,21 @@
     <ClInclude Include="TimerManager.h">
       <Filter>97.Manager\Timer</Filter>
     </ClInclude>
+    <ClInclude Include="Maingame.h">
+      <Filter>00.Maingame</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>01.GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>01.GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern.h">
+      <Filter>98.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>97.Manager\Key</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -94,6 +118,18 @@
     </ClCompile>
     <ClCompile Include="TimerManager.cpp">
       <Filter>97.Manager\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Maingame.cpp">
+      <Filter>00.Maingame</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>01.GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>01.GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>97.Manager\Key</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
