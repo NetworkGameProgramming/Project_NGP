@@ -1,12 +1,2 @@
-﻿  stdafx.cpp
-  Frame.cpp
-  FrameManager.cpp
-  GameObject.cpp
-  KeyManager.cpp
-  Maingame.cpp
-  Player.cpp
-  Project_NGP.cpp
-  Timer.cpp
-  TimerManager.cpp
-  코드를 생성하고 있습니다...
+﻿  Project_NGP.cpp
   Project_NGP.vcxproj -> C:\Users\MS\Desktop\github\Project_NGP\Project_NGP\Debug\Project_NGP.exe

@@ -41,13 +41,14 @@ void KeyManager::ComputeKeyState(const int & VirtualKey)
 
 	if (0 != GetAsyncKeyState(VirtualKey))
 	{
-		if (true == KeyStateUp)
+		if (false == KeyStateDown &&
+			false == KeyStatePush)
 		{
 			KeyStateDown = true;
 			KeyStatePush = false;
 			KeyStateUp = false;
 		}
-		else if(true == KeyStateDown)
+		else
 		{
 			KeyStateDown = false;
 			KeyStatePush = true;
@@ -56,8 +57,17 @@ void KeyManager::ComputeKeyState(const int & VirtualKey)
 	}
 	else
 	{
-		KeyStateDown = false;
-		KeyStatePush = false;
-		KeyStateUp = true;
+		if (true == KeyStateUp)
+		{
+			KeyStateDown = false;
+			KeyStatePush = false;
+			KeyStateUp = false;
+		}
+		else
+		{
+			KeyStateDown = false;
+			KeyStatePush = false;
+			KeyStateUp = true;
+		}
 	}
 }

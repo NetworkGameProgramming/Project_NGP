@@ -45,25 +45,25 @@ int Player::Update_Position(const float& TimeDelta, const DIRECTION & Direction)
 	// L
 	if (0x00000001 == (m_Dir & 0x00000001))
 	{
-		m_Info.Pos_X -= int(1000.f * TimeDelta);
+		m_Info.Pos_X -= int(500.f * TimeDelta);
 	}
 
 	// R
 	if (0x00000002 == (m_Dir & 0x00000002))
 	{
-		m_Info.Pos_X += int(1000.f * TimeDelta);
+		m_Info.Pos_X += int(500.f * TimeDelta);
 	}
 
 	// U
 	if (0x00000004 == (m_Dir & 0x00000004))
 	{
-		m_Info.Pos_Y -= int(1000.f * TimeDelta);
+		m_Info.Pos_Y -= int(500.f * TimeDelta);
 	}
 
 	// D
 	if (0x00000008 == (m_Dir & 0x00000008))
 	{
-		m_Info.Pos_Y += int(1000.f * TimeDelta);
+		m_Info.Pos_Y += int(500.f * TimeDelta);
 	}
 
 	return 0;

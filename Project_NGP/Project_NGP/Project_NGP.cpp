@@ -62,6 +62,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// Frame 선언
 	FrameManager *pFrameManager = GET_SINGLETON(FrameManager);
+	if (false == pFrameManager->Add_Frame(L"Frame_30", 30.f))
+		return FALSE;
+
 	if (false == pFrameManager->Add_Frame(L"Frame_60", 60.f))
 		return FALSE;
 
