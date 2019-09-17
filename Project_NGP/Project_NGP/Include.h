@@ -5,3 +5,4 @@
 #include "Enum.h"
 #include "Struct.h"
 #include "Extern.h"
+#include "Macro.h"

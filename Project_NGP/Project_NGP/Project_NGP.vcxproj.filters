@@ -19,9 +19,6 @@
     <Filter Include="00.Maingame">
       <UniqueIdentifier>{84a1e9c5-f358-4b51-9f25-076a2904c08b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="98.Headers">
-      <UniqueIdentifier>{77cb5907-ea71-4c52-a11d-6accf86ef5c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97.Manager">
       <UniqueIdentifier>{5568a5f4-624b-47fd-9536-af0a28c00e49}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,9 @@
     </Filter>
     <Filter Include="01.GameObject\Player">
       <UniqueIdentifier>{4b29afad-4b59-4e2c-a87e-313659ea2cdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Headers">
+      <UniqueIdentifier>{77cb5907-ea71-4c52-a11d-6accf86ef5c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +98,9 @@
     </ClInclude>
     <ClInclude Include="KeyManager.h">
       <Filter>97.Manager\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="Macro.h">
+      <Filter>98.Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

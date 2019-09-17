@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "KeyManager.h"
 
-IMPLEMENT_SINGLETON(KeyManager)
-
 KeyManager::KeyManager()
 {
 	ZeroMemory(&m_KeyArr, sizeof(KEY_MAX) * STATE_END);

@@ -3,11 +3,10 @@
 #include "Include.h"
 
 class Timer;
-class TimerManager
+class TimerManager : public Singleton<TimerManager>
 {
-	DECLARE_SINGLETON(TimerManager)
-private:
-	explicit TimerManager();
+public:
+	TimerManager();
 	virtual ~TimerManager();
 public:
 	const float Get_TimeDelta(const TCHAR* TimerTag);

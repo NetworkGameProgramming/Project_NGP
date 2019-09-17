@@ -15,7 +15,7 @@ Player::~Player()
 int Player::Update_Input(const float& TimeDelta)
 {
 	m_Dir = 0;
-	KeyManager *keyManager = GET_SINGLETON(KeyManager);
+	KeyManager *keyManager = GET_MANAGER<KeyManager>();
 
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
 	{

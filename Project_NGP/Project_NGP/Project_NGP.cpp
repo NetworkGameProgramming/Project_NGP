@@ -57,11 +57,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		delete pTimer;
 		pTimer = nullptr;
 	}
-	TimerManager *pTimerManager = GET_SINGLETON(TimerManager);
+	TimerManager *pTimerManager = GET_MANAGER<TimerManager>();
 	pTimerManager->Add_Timer(L"Timer_Default", pTimer);
 
 	// Frame 선언
-	FrameManager *pFrameManager = GET_SINGLETON(FrameManager);
+	FrameManager *pFrameManager = GET_MANAGER<FrameManager>();
 	if (false == pFrameManager->Add_Frame(L"Frame_30", 30.f))
 		return FALSE;
 
@@ -77,7 +77,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	const TCHAR* strFrame = L"Frame_60";
 
 	// KeyManager 선언
-	KeyManager *pKeyManager = GET_SINGLETON(KeyManager);
+	KeyManager *pKeyManager = GET_MANAGER<KeyManager>();
 
 	// MainGame
 	Maingame mainGame;

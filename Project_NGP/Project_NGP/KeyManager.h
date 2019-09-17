@@ -1,9 +1,8 @@
 #pragma once
-class KeyManager
+class KeyManager : public Singleton<KeyManager>
 {
-	DECLARE_SINGLETON(KeyManager);
-private:
-	explicit KeyManager();
+public:
+	KeyManager();
 	virtual ~KeyManager();
 
 public:

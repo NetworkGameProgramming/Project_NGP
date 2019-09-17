@@ -3,7 +3,6 @@
 
 #include "Frame.h"
 
-IMPLEMENT_SINGLETON(FrameManager)
 
 FrameManager::FrameManager()
 {

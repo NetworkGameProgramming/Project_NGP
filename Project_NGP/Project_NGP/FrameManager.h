@@ -3,11 +3,10 @@
 #include "Include.h"
 
 class Frame;
-class FrameManager
+class FrameManager : public Singleton<FrameManager>
 {
-	DECLARE_SINGLETON(FrameManager)
-private:
-	explicit FrameManager();
+public:
+	FrameManager();
 	virtual ~FrameManager();
 public:
 	const float Get_FrameTimeDelta(const TCHAR* FrameTag);

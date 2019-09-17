@@ -3,8 +3,6 @@
 
 #include "Timer.h"
 
-IMPLEMENT_SINGLETON(TimerManager)
-
 TimerManager::TimerManager()
 {
 }

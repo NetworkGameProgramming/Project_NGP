@@ -156,6 +156,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Include.h" />
     <ClInclude Include="KeyManager.h" />
+    <ClInclude Include="Macro.h" />
     <ClInclude Include="Maingame.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Project_NGP.h" />
