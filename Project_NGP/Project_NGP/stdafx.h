@@ -28,6 +28,7 @@
 #include <list>
 #include <vector>
 #include <map>
+#include <unordered_map>
 using namespace std;
 
 // 사용자 헤더
@@ -36,3 +37,9 @@ using namespace std;
 #include "FrameManager.h"
 #include "TimerManager.h"
 #include "KeyManager.h"
+#include "BmpManager.h"
+#include "AbstractFactory.h"
+#include "SceneManager.h"
+
+// TransparentBlt 라이브러리
+#pragma comment(lib, "msimg32.lib")

@@ -43,7 +43,7 @@ bool FrameManager::Add_Frame(const TCHAR * FrameTag, const float & CallCount)
 		return false;
 	}
 
-	m_mapFrame.insert(MAPFRAME::value_type(FrameTag, pFrame));
+	m_mapFrame.emplace(MAPFRAME::value_type(FrameTag, pFrame));
 
 	return true;
 }

@@ -43,6 +43,21 @@
     <Filter Include="98.Headers">
       <UniqueIdentifier>{77cb5907-ea71-4c52-a11d-6accf86ef5c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.Manager\AbstractFactory">
+      <UniqueIdentifier>{4c8de28f-b15a-4cfe-b0ee-92af3c4df17d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\Scene">
+      <UniqueIdentifier>{cddfacd7-8f94-44df-839b-85f0899c5fdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\Bitmap">
+      <UniqueIdentifier>{10cfef51-ab91-4dc2-847b-9b53b1f5de9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\Scene\TestScene">
+      <UniqueIdentifier>{82ad4db3-a0bb-4321-9d10-43b98aae69e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Mouse">
+      <UniqueIdentifier>{7945a40b-24d8-4ab3-9284-101775e4d335}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -102,6 +117,27 @@
     <ClInclude Include="Macro.h">
       <Filter>98.Headers</Filter>
     </ClInclude>
+    <ClInclude Include="AbstractFactory.h">
+      <Filter>97.Manager\AbstractFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitmap.h">
+      <Filter>97.Manager\Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="BmpManager.h">
+      <Filter>97.Manager\Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>97.Manager\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>97.Manager\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>97.Manager\Scene\TestScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>01.GameObject\Mouse</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -133,6 +169,24 @@
     </ClCompile>
     <ClCompile Include="KeyManager.cpp">
       <Filter>97.Manager\Key</Filter>
+    </ClCompile>
+    <ClCompile Include="Bitmap.cpp">
+      <Filter>97.Manager\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="BmpManager.cpp">
+      <Filter>97.Manager\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>97.Manager\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>97.Manager\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>97.Manager\Scene\TestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>01.GameObject\Mouse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

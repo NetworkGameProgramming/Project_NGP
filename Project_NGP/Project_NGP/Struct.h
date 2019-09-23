@@ -7,3 +7,12 @@ typedef struct GameObjectInformation
 	int Size_Width;
 	int Size_Height;
 }GAMEOBJINFO;
+
+typedef struct ChessBoardInfo
+{
+	bool IsExist;
+	int Pos_X;
+	int Pos_Y;
+	int TileSize_Width;
+	int TileSize_Height;
+}BOARDINFO;

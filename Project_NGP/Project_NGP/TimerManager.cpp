@@ -35,7 +35,7 @@ bool TimerManager::Add_Timer(const TCHAR * TimerTag, Timer * Timer)
 	if (nullptr != Find_Timer(TimerTag))
 		return false;
 
-	m_mapTimer.insert(MAPTIMER::value_type(TimerTag, Timer));
+	m_mapTimer.emplace(MAPTIMER::value_type(TimerTag, Timer));
 
 	return true;
 }

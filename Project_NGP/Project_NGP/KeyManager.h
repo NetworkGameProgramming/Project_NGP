@@ -6,7 +6,7 @@ public:
 	virtual ~KeyManager();
 
 public:
-	bool GetKeyState(const KEYSTATE& KeyState, const int& VirtualKey);
+	const bool GetKeyState(const KEYSTATE& KeyState, const int& VirtualKey);
 
 public:
 	int UpdateKey();

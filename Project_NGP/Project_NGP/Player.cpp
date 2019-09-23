@@ -98,7 +98,12 @@ int Player::Update(const float & TimeDelta)
 
 void Player::Render(HDC hdc)
 {
-	Rectangle(hdc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
+	HDC hMemDC = GET_MANAGER<BmpManager>()->FindBmp(L"horse")->GetMemDC();
+
+	TransparentBlt(hdc, m_Rect.left, m_Rect.top, m_Info.Size_Width, m_Info.Size_Height
+		, hMemDC, 0, 0, m_Info.Size_Width, m_Info.Size_Height, RGB(255, 255, 255));
+
+	//Rectangle(hdc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
 }
 
 void Player::Release()
