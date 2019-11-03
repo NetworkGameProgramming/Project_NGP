@@ -58,6 +58,9 @@
     <Filter Include="01.GameObject\Mouse">
       <UniqueIdentifier>{7945a40b-24d8-4ab3-9284-101775e4d335}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.Manager\GdiPlus">
+      <UniqueIdentifier>{7d37d55f-e231-430a-a81c-947d8a5a5f57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -138,6 +141,12 @@
     <ClInclude Include="Mouse.h">
       <Filter>01.GameObject\Mouse</Filter>
     </ClInclude>
+    <ClInclude Include="GdiPlusImage.h">
+      <Filter>97.Manager\GdiPlus</Filter>
+    </ClInclude>
+    <ClInclude Include="GdiPlusManager.h">
+      <Filter>97.Manager\GdiPlus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -187,6 +196,12 @@
     </ClCompile>
     <ClCompile Include="Mouse.cpp">
       <Filter>01.GameObject\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="GdiPlusImage.cpp">
+      <Filter>97.Manager\GdiPlus</Filter>
+    </ClCompile>
+    <ClCompile Include="GdiPlusManager.cpp">
+      <Filter>97.Manager\GdiPlus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

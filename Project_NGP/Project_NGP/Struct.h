@@ -16,3 +16,4 @@ typedef struct ChessBoardInfo
 	int TileSize_Width;
 	int TileSize_Height;
 }BOARDINFO;
+

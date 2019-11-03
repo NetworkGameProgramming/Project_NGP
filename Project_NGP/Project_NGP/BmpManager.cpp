@@ -12,7 +12,7 @@ BmpManager::~BmpManager()
 	ResetContainer();
 }
 
-Bitmap * BmpManager::FindBmp(const TCHAR * pKey)
+CBitmap * BmpManager::FindBmp(const TCHAR * pKey)
 {
 	MAPBITMAP::const_iterator iter = m_mapBmp.find(pKey);
 
@@ -35,7 +35,7 @@ void BmpManager::LoadBmpBySceneState(SCENESTATE SceneState)
 
 void BmpManager::LoadBmp(const TCHAR * pKey, const TCHAR * pFilePath)
 {
-	m_mapBmp.emplace(MAPBITMAP::value_type(pKey, (new Bitmap)->LoadBmp(pFilePath)));
+	m_mapBmp.emplace(MAPBITMAP::value_type(pKey, (new CBitmap)->LoadBmp(pFilePath)));
 }
 
 void BmpManager::ResetContainer()

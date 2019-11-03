@@ -65,7 +65,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	if (false == pFrameManager->Add_Frame(L"Frame_30", 30.f))
 		return FALSE;
 
-	if (false == pFrameManager->Add_Frame(L"Frame_60", 60.f))
+	if (false == pFrameManager->Add_Frame(L"Frame_75", 75.f))
 		return FALSE;
 
 	if (false == pFrameManager->Add_Frame(L"Frame_200", 200.f))
@@ -74,7 +74,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	int frameCount = 0;
 	float timeCount = 0.f;
 
-	const TCHAR* strFrame = L"Frame_60";
+	const TCHAR* strFrame = L"Frame_75";
 
 	// KeyManager 선언
 	KeyManager *pKeyManager = GET_MANAGER<KeyManager>();
@@ -113,8 +113,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 			if (pFrameManager->Permit_Call(strFrame, TimeDelta))
 			{
-				++frameCount;
-
 				float FrameTimeDelta = pFrameManager->Get_FrameTimeDelta(strFrame);
 
 				if (timeCount >= 1.f)
@@ -125,6 +123,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 					timeCount = 0.f;
 					frameCount = 0;
+				}
+				else
+				{
+					++frameCount;
 				}
 
 				// Key Update
@@ -149,6 +151,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	pFrameManager->DestroyInstance();
 	pTimerManager->DestroyInstance();
 	pKeyManager->DestroyInstance();
+	GET_MANAGER<GdiPlusManager>()->DestroyInstance();
 
 	return (int)msg.wParam;
 }

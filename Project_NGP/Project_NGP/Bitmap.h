@@ -1,15 +1,15 @@
 #pragma once
-class Bitmap
+class CBitmap
 {
 public:
-	Bitmap();
-	virtual ~Bitmap();
+	CBitmap();
+	virtual ~CBitmap();
 
 public:
 	HDC GetMemDC() { return m_hMemDC; }
 
 public:
-	Bitmap* LoadBmp(const TCHAR* pFilePath);
+	CBitmap* LoadBmp(const TCHAR* pFilePath);
 
 private:
 	HDC		m_hDC;
