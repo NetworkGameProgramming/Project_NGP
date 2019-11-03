@@ -20,8 +20,8 @@ public:
 	GdiPlusImage* FindImage(const TCHAR* tag);
 
 public:
-
 	void LoadGdiPlusImage(const TCHAR* tag, const TCHAR* filePath);
+	void LoadGdiPlusImageFromFolder(const TCHAR* tag, bstr_t folderPath);
 	void ResetContainer();
 
 private:

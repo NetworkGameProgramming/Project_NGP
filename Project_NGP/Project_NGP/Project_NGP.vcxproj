@@ -152,12 +152,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AbstractFactory.h" />
-    <ClInclude Include="Bitmap.h" />
-    <ClInclude Include="BmpManager.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Extern.h" />
+    <ClInclude Include="FileManager.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="FrameManager.h" />
     <ClInclude Include="GameObject.h" />
@@ -181,8 +180,7 @@
     <ClInclude Include="TimerManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Bitmap.cpp" />
-    <ClCompile Include="BmpManager.cpp" />
+    <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="FrameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />

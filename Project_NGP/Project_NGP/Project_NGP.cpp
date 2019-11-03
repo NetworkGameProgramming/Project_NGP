@@ -151,7 +151,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	pFrameManager->DestroyInstance();
 	pTimerManager->DestroyInstance();
 	pKeyManager->DestroyInstance();
-	GET_MANAGER<GdiPlusManager>()->DestroyInstance();
+	GET_MANAGER<FileManager>()->DestroyInstance();
 
 	return (int)msg.wParam;
 }

@@ -9,12 +9,14 @@ public:
 	virtual ~GdiPlusImage();
 
 public:
-	Gdiplus::Image* GetGdiPlusImage();
+	Gdiplus::Image* GetGdiPlusImageDefault();
+	Gdiplus::Image* GetGdiPlusImageFromIndex(int index);
 
 public:
 	GdiPlusImage* LoadGdiPlusImage(const TCHAR* filePath);
+	GdiPlusImage* LoadGdiPlusImageFromFolder(bstr_t folderPath);
 
 private:
-	const TCHAR* m_filePath;
+	vector<const TCHAR*> m_vecFilePath;
 };
 

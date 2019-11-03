@@ -16,7 +16,7 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
-
+#include <comutil.h>
 
 // 여기서 프로그램에 필요한 추가 헤더를 참조합니다.
 #include <time.h>
@@ -37,16 +37,16 @@ using namespace std;
 #include "FrameManager.h"
 #include "TimerManager.h"
 #include "KeyManager.h"
-#include "BmpManager.h"
 #include "AbstractFactory.h"
 #include "SceneManager.h"
 #include "GdiPlusManager.h"
-
-// TransparentBlt 라이브러리
-#pragma comment(lib, "msimg32.lib")
+#include "FileManager.h"
 
 // GDI+ 라이브러리
 #include <Gdiplus.h>
 using namespace Gdiplus;
 
 #pragma comment(lib, "Gdiplus.lib")
+
+// BSTR 지원
+#pragma comment(lib, "comsuppw.lib")

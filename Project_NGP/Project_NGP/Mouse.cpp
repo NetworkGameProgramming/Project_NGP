@@ -1,11 +1,9 @@
 #include "stdafx.h"
 #include "Mouse.h"
 
-
 Mouse::Mouse()
 {
 }
-
 
 Mouse::~Mouse()
 {
@@ -14,8 +12,10 @@ Mouse::~Mouse()
 
 bool Mouse::Initialize()
 {
-	m_Info.Size_Width = 20;
-	m_Info.Size_Height = 20;
+	m_Info.Size_Width = 30;
+	m_Info.Size_Height = 30;
+
+	ShowCursor(false);
 
 	return true;
 }
@@ -37,9 +37,15 @@ int Mouse::Update(const float & TimeDelta)
 
 void Mouse::Render(HDC hdc)
 {
-	Ellipse(hdc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
+	Image* image = GET_MANAGER<GdiPlusManager>()->FindImage(L"cursor")->GetGdiPlusImageDefault();
+
+	Graphics g(hdc);
+	g.DrawImage(image, m_Info.Pos_X, m_Info.Pos_Y, m_Info.Size_Width, m_Info.Size_Height);
+
+	//Ellipse(hdc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
 }
 
 void Mouse::Release()
 {
+	ShowCursor(true);
 }

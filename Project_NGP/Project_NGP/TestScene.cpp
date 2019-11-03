@@ -15,7 +15,6 @@ TestScene::~TestScene()
 
 bool TestScene::Initialize()
 {
-	GET_MANAGER<BmpManager>()->LoadBmpBySceneState(SCENE_TEST);
 	GET_MANAGER<GdiPlusManager>()->LoadImageBySceneState(SCENE_TEST);
 	m_Player = AbstractFactory<Player>::CreateObj();
 	m_Mouse = AbstractFactory<Mouse>::CreateObj();

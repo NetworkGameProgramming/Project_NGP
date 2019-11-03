@@ -25,6 +25,7 @@ public:
 protected:
 	GAMEOBJINFO		m_Info;
 	RECT			m_Rect;
+	SPRITEINFO		m_SpriteInfo;
 
 	bool			m_isDead = false;
 	float			m_Angle = 0.f;

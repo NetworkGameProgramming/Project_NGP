@@ -20,8 +20,10 @@ void GdiPlusManager::LoadImageBySceneState(SCENESTATE SceneState)
 	{
 	case SCENESTATE::SCENE_TEST:
 		// Load Image
+		LoadGdiPlusImage(L"cursor", L"../Resources/Cursor.png");
 		LoadGdiPlusImage(L"balrok", L"../Resources/0.png");
-		LoadGdiPlusImage(L"horse", L"../Resources/chess-knight.bmp");
+
+		LoadGdiPlusImageFromFolder(L"balrok_sprite", "../Resources/Balrok");
 		break;
 	}
 }
@@ -39,6 +41,11 @@ GdiPlusImage* GdiPlusManager::FindImage(const TCHAR* tag)
 void GdiPlusManager::LoadGdiPlusImage(const TCHAR* tag, const TCHAR* filePath)
 {
 	m_mapImages.emplace(MAPIMAGES::value_type(tag, (new GdiPlusImage)->LoadGdiPlusImage(filePath)));
+}
+
+void GdiPlusManager::LoadGdiPlusImageFromFolder(const TCHAR* tag, bstr_t folderPath)
+{
+	m_mapImages.emplace(MAPIMAGES::value_type(tag, (new GdiPlusImage)->LoadGdiPlusImageFromFolder(folderPath)));
 }
 
 void GdiPlusManager::ResetContainer()

@@ -6,6 +6,7 @@ GameObject::GameObject()
 {
 	ZeroMemory(&m_Info, sizeof(GAMEOBJINFO));
 	ZeroMemory(&m_Rect, sizeof(RECT));
+	ZeroMemory(&m_SpriteInfo, sizeof(SPRITEINFO));
 }
 
 

@@ -17,3 +17,9 @@ typedef struct ChessBoardInfo
 	int TileSize_Height;
 }BOARDINFO;
 
+typedef struct SpriteInfo
+{
+	SPRITETYPE Type;
+	int   MaxFrame;
+	float Speed;
+}SPRITEINFO;

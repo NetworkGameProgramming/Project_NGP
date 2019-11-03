@@ -49,9 +49,6 @@
     <Filter Include="97.Manager\Scene">
       <UniqueIdentifier>{cddfacd7-8f94-44df-839b-85f0899c5fdf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="97.Manager\Bitmap">
-      <UniqueIdentifier>{10cfef51-ab91-4dc2-847b-9b53b1f5de9d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97.Manager\Scene\TestScene">
       <UniqueIdentifier>{82ad4db3-a0bb-4321-9d10-43b98aae69e4}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,9 @@
     </Filter>
     <Filter Include="97.Manager\GdiPlus">
       <UniqueIdentifier>{7d37d55f-e231-430a-a81c-947d8a5a5f57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\File">
+      <UniqueIdentifier>{fc2e1924-d4a2-4132-b216-23623eb77ec5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -123,12 +123,6 @@
     <ClInclude Include="AbstractFactory.h">
       <Filter>97.Manager\AbstractFactory</Filter>
     </ClInclude>
-    <ClInclude Include="Bitmap.h">
-      <Filter>97.Manager\Bitmap</Filter>
-    </ClInclude>
-    <ClInclude Include="BmpManager.h">
-      <Filter>97.Manager\Bitmap</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>97.Manager\Scene</Filter>
     </ClInclude>
@@ -146,6 +140,9 @@
     </ClInclude>
     <ClInclude Include="GdiPlusManager.h">
       <Filter>97.Manager\GdiPlus</Filter>
+    </ClInclude>
+    <ClInclude Include="FileManager.h">
+      <Filter>97.Manager\File</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -179,12 +176,6 @@
     <ClCompile Include="KeyManager.cpp">
       <Filter>97.Manager\Key</Filter>
     </ClCompile>
-    <ClCompile Include="Bitmap.cpp">
-      <Filter>97.Manager\Bitmap</Filter>
-    </ClCompile>
-    <ClCompile Include="BmpManager.cpp">
-      <Filter>97.Manager\Bitmap</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>97.Manager\Scene</Filter>
     </ClCompile>
@@ -202,6 +193,9 @@
     </ClCompile>
     <ClCompile Include="GdiPlusManager.cpp">
       <Filter>97.Manager\GdiPlus</Filter>
+    </ClCompile>
+    <ClCompile Include="FileManager.cpp">
+      <Filter>97.Manager\File</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
