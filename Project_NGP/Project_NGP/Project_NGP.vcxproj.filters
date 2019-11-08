@@ -61,6 +61,15 @@
     <Filter Include="97.Manager\File">
       <UniqueIdentifier>{fc2e1924-d4a2-4132-b216-23623eb77ec5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.Manager\Camera">
+      <UniqueIdentifier>{39b4f8df-4a77-4245-978c-9b8852b27dec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Background">
+      <UniqueIdentifier>{74db1053-5ac3-4640-9d6e-61624cd4379a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\Bitmap">
+      <UniqueIdentifier>{984a77cb-827f-4d78-b415-aaceccacdf46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -144,6 +153,18 @@
     <ClInclude Include="FileManager.h">
       <Filter>97.Manager\File</Filter>
     </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>97.Manager\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>01.GameObject\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="BmpManager.h">
+      <Filter>97.Manager\Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitmap.h">
+      <Filter>97.Manager\Bitmap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -196,6 +217,18 @@
     </ClCompile>
     <ClCompile Include="FileManager.cpp">
       <Filter>97.Manager\File</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>97.Manager\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>01.GameObject\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="BmpManager.cpp">
+      <Filter>97.Manager\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="Bitmap.cpp">
+      <Filter>97.Manager\Bitmap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,21 +1,18 @@
 #pragma once
 
-typedef struct GameObjectInformation
+typedef struct BaseInfo
+{
+	int X;
+	int Y;
+}POSITION, RESOLUTION;
+
+typedef struct GameObjectInfo
 {
 	int Pos_X;
 	int Pos_Y;
 	int Size_Width;
 	int Size_Height;
 }GAMEOBJINFO;
-
-typedef struct ChessBoardInfo
-{
-	bool IsExist;
-	int Pos_X;
-	int Pos_Y;
-	int TileSize_Width;
-	int TileSize_Height;
-}BOARDINFO;
 
 typedef struct SpriteInfo
 {

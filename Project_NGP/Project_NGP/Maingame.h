@@ -17,7 +17,6 @@ public:
 private:
 	HDC		m_hDC;
 
-	GameObject		*m_Player = nullptr;
 	SceneManager	*m_SceneMgr = nullptr;
 	GdiPlusManager	*m_GdiPlusMgr = nullptr;
 };

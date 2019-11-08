@@ -17,11 +17,18 @@ bool Mouse::Initialize()
 
 	ShowCursor(false);
 
+	m_isNoScroll = true;
+
 	return true;
 }
 
 int Mouse::Update(const float & TimeDelta)
 {
+	if (-1 == GameObject::Update(TimeDelta))
+	{
+		return -1;
+	}
+
 	// GetCursorPos: 현재 마우스 커서 위치의 좌표를 얻어오는 함수.
 	GetCursorPos(&m_MousePos);
 
@@ -31,7 +38,6 @@ int Mouse::Update(const float & TimeDelta)
 	m_Info.Pos_X = m_MousePos.x;
 	m_Info.Pos_Y = m_MousePos.y;
 
-	GameObject::Update(TimeDelta);
 	return 0;
 }
 
@@ -40,9 +46,11 @@ void Mouse::Render(HDC hdc)
 	Image* image = GET_MANAGER<GdiPlusManager>()->FindImage(L"cursor")->GetGdiPlusImageDefault();
 
 	Graphics g(hdc);
-	g.DrawImage(image, m_Info.Pos_X, m_Info.Pos_Y, m_Info.Size_Width, m_Info.Size_Height);
-
+	
 	//Ellipse(hdc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
+	g.DrawImage(image, m_Rect.left + (m_Info.Size_Width / 2),
+					   m_Rect.top + (m_Info.Size_Height / 2));
+	//g.DrawImage(image, m_Info.Pos_X, m_Info.Pos_Y, m_Info.Size_Width, m_Info.Size_Height);
 }
 
 void Mouse::Release()

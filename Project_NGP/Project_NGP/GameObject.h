@@ -10,11 +10,13 @@ public:
 	const RECT& GetRect()		 { return m_Rect; }
 	const bool& GetState()		 { return m_isDead; }
 	const float& GetAngle()		 { return m_Angle; }
+	const float& GetSpeed()		 { return m_Speed; }
 
 public:
 	void SetPosition(int posX, int posY);
 	void SetSize(int sizeWidth, int sizeHeight);
 	void SetAngle(float angle);
+	void SetSpeed(float speed);
 
 public:
 	virtual bool Initialize() PURE;
@@ -27,7 +29,10 @@ protected:
 	RECT			m_Rect;
 	SPRITEINFO		m_SpriteInfo;
 
+	bool			m_isNoScroll = false;
 	bool			m_isDead = false;
 	float			m_Angle = 0.f;
+
+	float			m_Speed = 0.f;
 };
 

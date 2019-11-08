@@ -17,12 +17,8 @@ bool Maingame::Initialize()
 {
 	// BackBuffer
 	m_GdiPlusMgr = GET_MANAGER<GdiPlusManager>();
-
-	m_GdiPlusMgr->LoadGdiPlusImage(L"backbuffer", L"../Resources/backbuffer.bmp");
-	m_GdiPlusMgr->LoadGdiPlusImage(L"back", L"../Resources/back.bmp");
-
 	m_SceneMgr = GET_MANAGER<SceneManager>();
-	
+
 	if (false == m_SceneMgr->ChangeSceneState(SCENE_TEST))
 	{
 		return false;

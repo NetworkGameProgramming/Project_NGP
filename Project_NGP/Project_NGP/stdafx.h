@@ -41,6 +41,8 @@ using namespace std;
 #include "SceneManager.h"
 #include "GdiPlusManager.h"
 #include "FileManager.h"
+#include "CameraManager.h"
+#include "BmpManager.h"
 
 // GDI+ 라이브러리
 #include <Gdiplus.h>
@@ -50,3 +52,6 @@ using namespace Gdiplus;
 
 // BSTR 지원
 #pragma comment(lib, "comsuppw.lib")
+
+// TransparentBlt 라이브러리
+#pragma comment(lib, "msimg32.lib")

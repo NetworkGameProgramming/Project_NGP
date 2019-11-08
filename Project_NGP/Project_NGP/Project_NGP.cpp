@@ -65,16 +65,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	if (false == pFrameManager->Add_Frame(L"Frame_30", 30.f))
 		return FALSE;
 
-	if (false == pFrameManager->Add_Frame(L"Frame_75", 75.f))
+	if (false == pFrameManager->Add_Frame(L"Frame_60", 60.f))
 		return FALSE;
 
-	if (false == pFrameManager->Add_Frame(L"Frame_200", 200.f))
+	if (false == pFrameManager->Add_Frame(L"Frame_200", 500.f))
 		return FALSE;
 
 	int frameCount = 0;
 	float timeCount = 0.f;
 
-	const TCHAR* strFrame = L"Frame_75";
+	const TCHAR* strFrame = L"Frame_60";
 
 	// KeyManager 선언
 	KeyManager *pKeyManager = GET_MANAGER<KeyManager>();

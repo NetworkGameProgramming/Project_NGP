@@ -6,6 +6,9 @@ GdiPlusManager::GdiPlusManager()
 	// Gdi+ 라이브러리 초기화
 	GdiplusStartupInput m_gdiPlusStartupInput;
 	GdiplusStartup(&m_gdiPlusToken, &m_gdiPlusStartupInput, NULL);
+
+	// Graphics 초기화
+	//g_pGraphic = new Graphics()
 }
 
 GdiPlusManager::~GdiPlusManager()
@@ -20,9 +23,9 @@ void GdiPlusManager::LoadImageBySceneState(SCENESTATE SceneState)
 	{
 	case SCENESTATE::SCENE_TEST:
 		// Load Image
+		LoadGdiPlusImage(L"background", L"../Resources/back.bmp");
 		LoadGdiPlusImage(L"cursor", L"../Resources/Cursor.png");
-		LoadGdiPlusImage(L"balrok", L"../Resources/0.png");
-
+		LoadGdiPlusImage(L"balrok", L"../Resources/0.bmp");
 		LoadGdiPlusImageFromFolder(L"balrok_sprite", "../Resources/Balrok");
 		break;
 	}

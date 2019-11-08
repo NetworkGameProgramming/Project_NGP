@@ -47,28 +47,30 @@ int Player::Update_Input(const float& TimeDelta)
 
 int Player::Update_Position(const float& TimeDelta, const DIRECTION & Direction)
 {
+	int speed = int(m_Speed * TimeDelta);
+
 	// L
 	if (0x00000001 == (m_Dir & 0x00000001))
 	{
-		m_Info.Pos_X -= int(500.f * TimeDelta);
+		m_Info.Pos_X -= speed;
 	}
 
 	// R
 	if (0x00000002 == (m_Dir & 0x00000002))
 	{
-		m_Info.Pos_X += int(500.f * TimeDelta);
+		m_Info.Pos_X += speed;
 	}
 
 	// U
 	if (0x00000004 == (m_Dir & 0x00000004))
 	{
-		m_Info.Pos_Y -= int(500.f * TimeDelta);
+		m_Info.Pos_Y -= speed;
 	}
 
 	// D
 	if (0x00000008 == (m_Dir & 0x00000008))
 	{
-		m_Info.Pos_Y += int(500.f * TimeDelta);
+		m_Info.Pos_Y += speed;
 	}
 
 	return 0;
@@ -99,13 +101,19 @@ int Player::Update_Sprite(const float& TimeDelta)
 
 bool Player::Initialize()
 {
-	m_Info = GAMEOBJINFO{ 400, 300, 312, 311};
+	m_Info = GAMEOBJINFO{ 0, 0, 64, 64};
+	m_Speed = 500.f;
 
 	return true;
 }
 
 int Player::Update(const float & TimeDelta)
 {
+	if (-1 == GameObject::Update(TimeDelta))
+	{
+		return -1;
+	}
+
 	if (-1 == Update_Input(TimeDelta))
 	{
 		return -1;
@@ -121,11 +129,6 @@ int Player::Update(const float & TimeDelta)
 		return -1;
 	}
 
-	if (-1 == GameObject::Update(TimeDelta))
-	{
-		return -1;
-	}
-
 	StateChange();
 
 	return 0;
@@ -133,17 +136,28 @@ int Player::Update(const float & TimeDelta)
 
 void Player::Render(HDC hdc)
 {
-	Image* image = GET_MANAGER<GdiPlusManager>()->FindImage(m_SpriteKey)->GetGdiPlusImageFromIndex((int)m_SpriteIndex);
+	HDC hMemDC = GET_MANAGER<BmpManager>()->FindBmp(L"balrock")->GetMemDC();
 
-	if (nullptr == image)
-	{
-		return;
-	}
+	TransparentBlt(hdc, m_Rect.left, m_Rect.top, m_Info.Size_Width, m_Info.Size_Height
+		, hMemDC, 0, 0, m_Info.Size_Width, m_Info.Size_Height, RGB(255, 255, 255));
 
-	Graphics g(hdc);
-	g.DrawImage(image, m_Info.Pos_X, m_Info.Pos_Y, m_Info.Size_Width, m_Info.Size_Height);
+	//Image* image = GET_MANAGER<GdiPlusManager>()->FindImage(m_SpriteKey)->GetGdiPlusImageFromIndex((int)m_SpriteIndex);
 
-	//Rectangle(hdc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
+	//if (nullptr == image)
+	//{
+	//	return;
+	//}
+
+	//Graphics g(hdc);
+
+
+	////Rectangle(hdc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
+	//g.DrawImage(image, m_Rect.left, m_Rect.top);
+	///*g.DrawImage(image, m_Info.Pos_X - (m_Info.Size_Width / 2),
+	//				   m_Info.Pos_Y - (m_Info.Size_Height / 2),
+	//				   m_Info.Size_Width, m_Info.Size_Height);*/
+
+	
 }
 
 void Player::Release()
