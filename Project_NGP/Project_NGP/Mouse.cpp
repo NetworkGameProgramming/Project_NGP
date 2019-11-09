@@ -19,6 +19,8 @@ bool Mouse::Initialize()
 
 	m_isNoScroll = true;
 
+	m_RenderType = RENDER_UI;
+
 	return true;
 }
 

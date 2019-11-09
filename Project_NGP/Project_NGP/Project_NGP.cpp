@@ -65,16 +65,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	if (false == pFrameManager->Add_Frame(L"Frame_30", 30.f))
 		return FALSE;
 
-	if (false == pFrameManager->Add_Frame(L"Frame_60", 60.f))
+	if (false == pFrameManager->Add_Frame(L"Frame_75", 75.f))
 		return FALSE;
 
-	if (false == pFrameManager->Add_Frame(L"Frame_200", 500.f))
+	if (false == pFrameManager->Add_Frame(L"Frame_200", 200.f))
 		return FALSE;
 
 	int frameCount = 0;
 	float timeCount = 0.f;
 
-	const TCHAR* strFrame = L"Frame_60";
+	const TCHAR* strFrame = L"Frame_75";
 
 	// KeyManager 선언
 	KeyManager *pKeyManager = GET_MANAGER<KeyManager>();
@@ -198,8 +198,17 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, 0, WINSIZE_X, WINSIZE_Y, nullptr, nullptr, hInstance, nullptr);
+	RECT rc = { 0, 0, WINSIZE_X, WINSIZE_Y };
+
+	DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU |
+		WS_BORDER | WS_SYSMENU;
+
+	// Style에 맞는 윈도우 영역의 크기를 제공해준다.
+	AdjustWindowRect(&rc, dwStyle, FALSE);
+
+	HWND hWnd = CreateWindowW(szWindowClass, szTitle, dwStyle,
+		CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, 
+		nullptr, nullptr, hInstance, nullptr);
 
 	if (!hWnd)
 	{

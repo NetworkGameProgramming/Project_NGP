@@ -42,7 +42,9 @@ using namespace std;
 #include "GdiPlusManager.h"
 #include "FileManager.h"
 #include "CameraManager.h"
-#include "BmpManager.h"
+#include "GdiManager.h"
+#include "ObjectManager.h"
+#include "CollisionManager.h"
 
 // GDI+ 라이브러리
 #include <Gdiplus.h>

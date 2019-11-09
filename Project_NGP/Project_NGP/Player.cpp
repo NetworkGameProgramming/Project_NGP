@@ -101,8 +101,9 @@ int Player::Update_Sprite(const float& TimeDelta)
 
 bool Player::Initialize()
 {
-	m_Info = GAMEOBJINFO{ 0, 0, 64, 64};
+	m_Info = GAMEOBJINFO{ 800, 600, 64, 64};
 	m_Speed = 500.f;
+	m_RenderType = RENDER_OBJ;
 
 	return true;
 }
@@ -136,28 +137,13 @@ int Player::Update(const float & TimeDelta)
 
 void Player::Render(HDC hdc)
 {
-	HDC hMemDC = GET_MANAGER<BmpManager>()->FindBmp(L"balrock")->GetMemDC();
+	if(true == GET_MANAGER<CollisionManager>()->GetRenderCheck())
+		Rectangle(hdc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
+
+	HDC hMemDC = GET_MANAGER<GdiManager>()->FindImage(L"balrock")->GetGdiImageDefault();
 
 	TransparentBlt(hdc, m_Rect.left, m_Rect.top, m_Info.Size_Width, m_Info.Size_Height
 		, hMemDC, 0, 0, m_Info.Size_Width, m_Info.Size_Height, RGB(255, 255, 255));
-
-	//Image* image = GET_MANAGER<GdiPlusManager>()->FindImage(m_SpriteKey)->GetGdiPlusImageFromIndex((int)m_SpriteIndex);
-
-	//if (nullptr == image)
-	//{
-	//	return;
-	//}
-
-	//Graphics g(hdc);
-
-
-	////Rectangle(hdc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
-	//g.DrawImage(image, m_Rect.left, m_Rect.top);
-	///*g.DrawImage(image, m_Info.Pos_X - (m_Info.Size_Width / 2),
-	//				   m_Info.Pos_Y - (m_Info.Size_Height / 2),
-	//				   m_Info.Size_Width, m_Info.Size_Height);*/
-
-	
 }
 
 void Player::Release()

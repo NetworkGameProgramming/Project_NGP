@@ -28,7 +28,7 @@ Gdiplus::Image* GdiPlusImage::GetGdiPlusImageDefault()
 
 Gdiplus::Image* GdiPlusImage::GetGdiPlusImageFromIndex(int index)
 {
-	if (index >= m_vecFilePath.size())
+	if (index >= (int)m_vecFilePath.size() || m_vecFilePath.empty())
 		return nullptr;
 
 	return Gdiplus::Image::FromFile(m_vecFilePath[index]);

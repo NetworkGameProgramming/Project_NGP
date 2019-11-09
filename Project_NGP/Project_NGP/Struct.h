@@ -2,9 +2,50 @@
 
 typedef struct BaseInfo
 {
-	int X;
-	int Y;
-}POSITION, RESOLUTION;
+	float X;
+	float Y;
+
+	void operator=(const BaseInfo& other)
+	{
+		this->X = other.X;
+		this->Y = other.Y;
+	}
+
+	bool operator==(const BaseInfo& other)
+	{
+		if (this->X == other.X &&
+			this->Y == other.Y)
+			return true;
+		else
+			return false;
+	}
+
+	BaseInfo operator+(const BaseInfo& other)
+	{
+		return BaseInfo{ this->X + other.X, this->Y + other.Y };
+	}
+
+	void operator+=(const BaseInfo& other)
+	{
+		this->X += other.X; this->Y += other.Y;
+	}
+
+	BaseInfo operator-(const BaseInfo& other)
+	{
+		return BaseInfo{ this->X - other.X, this->Y - other.Y };
+	}
+
+	BaseInfo operator*(const float& other)
+	{
+		return BaseInfo{ this->X * other, this->Y * other };
+	}
+
+	BaseInfo operator/(const float &other)
+	{
+		return BaseInfo{ this->X / other, this->Y / other };
+	}
+
+}POSITION, RESOLUTION, OFFSET;
 
 typedef struct GameObjectInfo
 {
@@ -20,3 +61,12 @@ typedef struct SpriteInfo
 	int   MaxFrame;
 	float Speed;
 }SPRITEINFO;
+
+typedef struct GdiImageInfo
+{
+	HDC		hDC;
+	HDC		hMemDC;
+
+	HBITMAP Bitmap;
+	HBITMAP OldBmp;
+}GDIINFO;

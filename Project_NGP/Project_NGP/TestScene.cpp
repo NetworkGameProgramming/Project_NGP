@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Mouse.h"
 #include "Background.h"
+#include "Monster.h"
 
 TestScene::TestScene()
 {
@@ -17,21 +18,21 @@ TestScene::~TestScene()
 bool TestScene::Initialize()
 {
 	m_CamMgr = GET_MANAGER<CameraManager>();
+	m_pObjManager = GET_MANAGER<ObjectManager>();
 
 	GET_MANAGER<GdiPlusManager>()->LoadImageBySceneState(SCENE_TEST);
-	GET_MANAGER<BmpManager>()->LoadBmpBySceneState(SCENE_TEST);
-	m_Background = AbstractFactory<Background>::CreateObj();
-	//m_Player = AbstractFactory<Player>::CreateObj();
+	GET_MANAGER<GdiManager>()->LoadImageBySceneState(SCENE_TEST);
 	
-	for (int i = 0; i < 100; ++i)
-	{
-		GameObject *player = AbstractFactory<Player>::CreateObj(rand() % WINSIZE_X, rand() % WINSIZE_Y);
-		m_vecPlayers.push_back(player);
-	}
-	
-	m_Mouse = AbstractFactory<Mouse>::CreateObj();
+	m_pObjManager->AddObject(L"background", AbstractFactory<Background>::CreateObj(), OBJ_BACK);
+	m_pObjManager->AddObject(L"player", AbstractFactory<Player>::CreateObj(), OBJ_PLAYER);
+	m_pObjManager->AddObject(L"monster", AbstractFactory<Monster>::CreateObj(), OBJ_MONSTER);
+	m_pObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_MOUSE);
 
-	//m_CamMgr->SetTarget(m_Player);
+	GameObject* pPlayer = m_pObjManager->GetObjFromTag(L"player", OBJ_PLAYER);
+	m_CamMgr->SetTarget(pPlayer);
+
+	GameObject* pBackGround = m_pObjManager->GetObjFromTag(L"background", OBJ_BACK);
+	m_CamMgr->SetResolution(pBackGround->GetInfo().Size_Width, pBackGround->GetInfo().Size_Height);
 
 	return true;
 }
@@ -39,48 +40,31 @@ bool TestScene::Initialize()
 int TestScene::Update(const float & TimeDelta)
 {
 	KeyManager *keyManager = GET_MANAGER<KeyManager>();
-	m_Background->Update(TimeDelta);
-	//m_Player->Update(TimeDelta);
-	for (const auto& player : m_vecPlayers)
+
+	if (true == keyManager->GetKeyState(STATE_DOWN, VK_F1))
 	{
-		player->Update(TimeDelta);
+		bool recentCheck = GET_MANAGER<CollisionManager>()->GetRenderCheck();
+
+		if (true == recentCheck)
+			GET_MANAGER<CollisionManager>()->SetRenderCheck(false);
+		else
+			GET_MANAGER<CollisionManager>()->SetRenderCheck(true);
 	}
-	m_Mouse->Update(TimeDelta);
+
+	m_pObjManager->Update(TimeDelta);
 	m_CamMgr->Update(TimeDelta);
+	
 	return 0;
 }
 
 void TestScene::Render(HDC hDC)
 {
 	//Rectangle(hDC, 0, 0, WINSIZE_X, WINSIZE_Y);
-	m_Background->Render(hDC);
-	//m_Player->Render(hDC);
-	for (const auto& player : m_vecPlayers)
-	{
-		player->Render(hDC);
-	}
-	m_Mouse->Render(hDC);
+	m_pObjManager->Render(hDC);
 }
 
 void TestScene::Release()
 {
-	if (m_Background)
-	{
-		delete m_Background;
-		m_Background = nullptr;
-	}
-
-	/*if (m_Player)
-	{
-		delete m_Player;
-		m_Player = nullptr;
-	}
-*/
-	if (m_Mouse)
-	{
-		delete m_Mouse;
-		m_Mouse = nullptr;
-	}
-
 	m_CamMgr->DestroyInstance();
+	m_pObjManager->DestroyInstance();
 }

@@ -67,8 +67,14 @@
     <Filter Include="01.GameObject\Background">
       <UniqueIdentifier>{74db1053-5ac3-4640-9d6e-61624cd4379a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="97.Manager\Bitmap">
+    <Filter Include="97.Manager\Gdi">
       <UniqueIdentifier>{984a77cb-827f-4d78-b415-aaceccacdf46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\Collision">
+      <UniqueIdentifier>{29e8785a-05d2-40ff-a271-dcb08f87e21b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Monster">
+      <UniqueIdentifier>{b73bc46d-ff85-4ae1-a163-485e6e1cf271}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -159,11 +165,23 @@
     <ClInclude Include="Background.h">
       <Filter>01.GameObject\Background</Filter>
     </ClInclude>
-    <ClInclude Include="BmpManager.h">
-      <Filter>97.Manager\Bitmap</Filter>
+    <ClInclude Include="GdiImage.h">
+      <Filter>97.Manager\Gdi</Filter>
     </ClInclude>
-    <ClInclude Include="Bitmap.h">
-      <Filter>97.Manager\Bitmap</Filter>
+    <ClInclude Include="GdiManager.h">
+      <Filter>97.Manager\Gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>97.Manager\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>97.Manager\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>01.GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>98.Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -224,11 +242,20 @@
     <ClCompile Include="Background.cpp">
       <Filter>01.GameObject\Background</Filter>
     </ClCompile>
-    <ClCompile Include="BmpManager.cpp">
-      <Filter>97.Manager\Bitmap</Filter>
+    <ClCompile Include="GdiImage.cpp">
+      <Filter>97.Manager\Gdi</Filter>
     </ClCompile>
-    <ClCompile Include="Bitmap.cpp">
-      <Filter>97.Manager\Bitmap</Filter>
+    <ClCompile Include="GdiManager.cpp">
+      <Filter>97.Manager\Gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>97.Manager\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>97.Manager\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>01.GameObject\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -16,18 +16,6 @@ public:
 
 private:
 	CameraManager   *m_CamMgr = nullptr;
-	GameObject *m_Background = nullptr;
-	//GameObject *m_Player = nullptr;
-	GameObject *m_Mouse = nullptr;
-	
-	vector<GameObject*> m_vecPlayers ;
-
-	bool m_IsProcess = false;
-	float m_Process = 0.f;
-	float m_Acc = 1.f;
-	int  m_SrcX = 0;
-	int  m_SrcY = 0;
-	int	 m_DestX = 0;
-	int  m_DestY = 0;
+	ObjectManager   *m_pObjManager = nullptr;
 };
 

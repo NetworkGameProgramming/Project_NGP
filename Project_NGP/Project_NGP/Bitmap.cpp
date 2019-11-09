@@ -2,12 +2,12 @@
 #include "Bitmap.h"
 
 
-CBitmap::CBitmap()
+GdiImage::GdiImage()
 {
 }
 
 
-CBitmap::~CBitmap()
+GdiImage::~GdiImage()
 {
 	// 해제 순서 유의
 	// DC에 선택된 GDI 오브젝트는 바로 해제가 불가능하다.
@@ -17,7 +17,7 @@ CBitmap::~CBitmap()
 	DeleteDC(m_hMemDC);
 }
 
-CBitmap * CBitmap::LoadBmp(const TCHAR * pFilePath)
+GdiImage * GdiImage::LoadBmp(const TCHAR * pFilePath)
 {
 	m_hDC = GetDC(g_hWnd);
 

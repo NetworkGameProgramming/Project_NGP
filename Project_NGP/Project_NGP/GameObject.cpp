@@ -48,10 +48,14 @@ int GameObject::Update(const float & TimeDelta)
 	POSITION TotalPos = POSITION{ m_Info.Pos_X + CamPos.X , m_Info.Pos_Y + CamPos.Y };
 
 	// 오브젝트 정보를 바탕으로 Rect 정보를 갱신한다.
-	m_Rect.left = TotalPos.X - m_Info.Size_Width / 2;
-	m_Rect.top = TotalPos.Y - m_Info.Size_Height / 2;
-	m_Rect.right = TotalPos.X + m_Info.Size_Width / 2;
-	m_Rect.bottom = TotalPos.Y + m_Info.Size_Height / 2;
+	m_Rect.left = (int)TotalPos.X - m_Info.Size_Width / 2;
+	m_Rect.top = (int)TotalPos.Y - m_Info.Size_Height / 2;
+	m_Rect.right = (int)TotalPos.X + m_Info.Size_Width / 2;
+	m_Rect.bottom = (int)TotalPos.Y + m_Info.Size_Height / 2;
 
 	return 0;
+}
+
+void GameObject::CollisionActivate(GameObject* collideTarget)
+{
 }

@@ -9,12 +9,16 @@ public:
 	virtual ~CameraManager();
 
 public:
+	void SetPos(int x, int y);
+
+public:
 	const POSITION& GetPos() { return m_Pos; }
 	const RESOLUTION& GetResolution() { return m_Resolution; }
 
 public:
 	void SetTarget(GameObject * target);
 	void SetResolution(int x, int y);
+	void SetPivot(int x, int y);
 
 public:
 	int  Update(const float& TimeDelta);
@@ -23,6 +27,15 @@ public:
 private:
 	GameObject* m_Target = nullptr;
 	POSITION	m_Pos;
+	POSITION	m_OldDestPos;
+	POSITION	m_DestPos;
+
 	RESOLUTION	m_Resolution;
+	OFFSET		m_Offset;
+	OFFSET		m_Pivot;
+	
+	float		m_Time = 0.f;
+
+	bool		m_Refresh = false;
 };
 

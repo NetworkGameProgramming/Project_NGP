@@ -8,8 +8,7 @@ public:
 	GdiPlusManager();
 	virtual ~GdiPlusManager();
 
-private:
-	unordered_map<const TCHAR*, GdiPlusImage*>			m_mapImages;
+public:
 	typedef unordered_map<const TCHAR*, GdiPlusImage*>  MAPIMAGES;
 
 public:
@@ -25,5 +24,6 @@ public:
 	void ResetContainer();
 
 private:
+	unordered_map<const TCHAR*, GdiPlusImage*>			m_mapImages;
 	ULONG_PTR		    m_gdiPlusToken;
 };

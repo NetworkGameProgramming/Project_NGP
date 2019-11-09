@@ -1,15 +1,15 @@
 #pragma once
-class CBitmap
+class GdiImage
 {
 public:
-	CBitmap();
-	virtual ~CBitmap();
+	GdiImage();
+	virtual ~GdiImage();
 
 public:
 	HDC GetMemDC() { return m_hMemDC; }
 
 public:
-	CBitmap* LoadBmp(const TCHAR* pFilePath);
+	GdiImage* LoadBmp(const TCHAR* pFilePath);
 
 private:
 	HDC		m_hDC;
