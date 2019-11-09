@@ -18,6 +18,7 @@ public:
 public:
 	void SetTarget(GameObject * target);
 	void SetResolution(int x, int y);
+	void SetOffset(int x, int y);
 	void SetPivot(int x, int y);
 
 public:

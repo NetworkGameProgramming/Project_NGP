@@ -14,7 +14,7 @@ typedef struct BaseInfo
 	bool operator==(const BaseInfo& other)
 	{
 		if (this->X == other.X &&
-			this->Y == other.Y)
+			this->Y == other.Y )
 			return true;
 		else
 			return false;
