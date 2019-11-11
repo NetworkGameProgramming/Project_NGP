@@ -19,7 +19,6 @@ public:
 	void SetTarget(GameObject * target);
 	void SetResolution(int x, int y);
 	void SetOffset(int x, int y);
-	void SetPivot(int x, int y);
 
 public:
 	int  Update(const float& TimeDelta);
@@ -33,7 +32,6 @@ private:
 
 	RESOLUTION	m_Resolution;
 	OFFSET		m_Offset;
-	OFFSET		m_Pivot;
 	
 	float		m_Time = 0.f;
 

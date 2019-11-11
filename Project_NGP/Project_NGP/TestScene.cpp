@@ -25,7 +25,7 @@ bool TestScene::Initialize()
 	
 	m_pObjManager->AddObject(L"background", AbstractFactory<Background>::CreateObj(), OBJ_BACK);
 	m_pObjManager->AddObject(L"player", AbstractFactory<Player>::CreateObj(), OBJ_PLAYER);
-	m_pObjManager->AddObject(L"monster", AbstractFactory<Monster>::CreateObj(), OBJ_MONSTER);
+	//m_pObjManager->AddObject(L"monster", AbstractFactory<Monster>::CreateObj(), OBJ_MONSTER);
 	m_pObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_MOUSE);
 
 	GameObject* pPlayer = m_pObjManager->GetObjFromTag(L"player", OBJ_PLAYER);
