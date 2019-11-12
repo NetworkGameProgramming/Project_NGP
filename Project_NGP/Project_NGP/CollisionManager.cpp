@@ -12,6 +12,7 @@ CollisionManager::~CollisionManager()
 
 void CollisionManager::CollisionRect(ObjectManager::MAPOBJ* DstList, ObjectManager::MAPOBJ* SrcList)
 {
+	// 렉트 충돌 검사
 	RECT rc = {};
 
 	for (auto& Dst : *DstList)
@@ -26,6 +27,7 @@ void CollisionManager::CollisionRect(ObjectManager::MAPOBJ* DstList, ObjectManag
 
 			if (IntersectRect(&rc, &Dst.second->GetRect(), &Src.second->GetRect()))
 			{
+				// 충돌 하였다면 서로 충돌 처리를 한다. 
 				Src.second->CollisionActivate(Dst.second);
 				Dst.second->CollisionActivate(Src.second);
 			}
@@ -35,6 +37,7 @@ void CollisionManager::CollisionRect(ObjectManager::MAPOBJ* DstList, ObjectManag
 
 void CollisionManager::CollisionRectEx(ObjectManager::MAPOBJ* DstList, ObjectManager::MAPOBJ* SrcList)
 {
+	// 충돌한 경우 서로 밀려나게 한다.
 	int moveX = 0;
 	int moveY = 0;
 
@@ -81,6 +84,7 @@ void CollisionManager::CollisionRectEx(ObjectManager::MAPOBJ* DstList, ObjectMan
 bool CollisionManager::CheckCollisionRectDist(int* moveX, int* moveY, GameObject* Dst, GameObject* Src)
 {
 	// 각 축의 합이 두 객체간의 축의 거리보다 큰 경우 => 충돌
+	// 충돌된 거리를 구한다.
 
 	// 축의 합을 구한다.
 	int width = (Dst->GetInfo().Size_Width / 2) + (Src->GetInfo().Size_Width / 2);

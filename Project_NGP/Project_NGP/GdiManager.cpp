@@ -24,6 +24,7 @@ GdiImage * GdiManager::FindImage(const TCHAR * pKey)
 
 void GdiManager::LoadImageBySceneState(SCENESTATE SceneState)
 {
+	// 씬에 필요한 이미지를 여기서 미리 로드해 놓는다.
 	switch (SceneState)
 	{
 	case SCENESTATE::SCENE_TEST:

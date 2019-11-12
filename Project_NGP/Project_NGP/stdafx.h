@@ -59,8 +59,12 @@ using namespace Gdiplus;
 #pragma comment(lib, "msimg32.lib")
 
 
-#ifdef UNICODE
+#ifdef UNICODE 
+#ifdef _DEBUG
 	#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#endif
 #else
+#ifdef _DEBUG
 	#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#endif
 #endif

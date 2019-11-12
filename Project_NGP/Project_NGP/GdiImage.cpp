@@ -31,6 +31,7 @@ HDC GdiImage::GetGdiImageDefault()
 
 HDC GdiImage::GetGdiImageFromIndex(int index)
 {
+	// 인덱스 범위를 넘거나 컨테이너가 비어 있으면 이미지가 없으므리 이미지를 리턴하지 않는다.
 	if (index >= (int)m_vecImages.size() || m_vecImages.empty())
 		return NULL;
 
@@ -39,6 +40,7 @@ HDC GdiImage::GetGdiImageFromIndex(int index)
 
 GdiImage * GdiImage::LoadGdiImage(const TCHAR * pFilePath)
 {
+	// 이미지를 로드하여 컨테이너에 저장한다.
 	GDIINFO info;
 	ZeroMemory(&info, sizeof(GDIINFO));
 
@@ -61,6 +63,7 @@ GdiImage * GdiImage::LoadGdiImage(const TCHAR * pFilePath)
 
 GdiImage* GdiImage::LoadGdiImageFromFolder(bstr_t folderPath)
 {
+	// 이미지가 담긴 폴더의 전체 이미지들을 로드하여 컨테이어너에 넣는다.
 	vector<bstr_t> fileNames;
 	GET_MANAGER<FileManager>()->GetFileListFromFolder(folderPath + "/*.*", fileNames);
 

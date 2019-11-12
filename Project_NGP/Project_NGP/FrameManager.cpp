@@ -31,6 +31,7 @@ const float FrameManager::Get_FrameTimeDelta(const TCHAR * FrameTag)
 
 bool FrameManager::Add_Frame(const TCHAR * FrameTag, const float & CallCount)
 {
+	// 기존에 Frame정보가 있는 경우 넣지 않는다.
 	if(nullptr != Find_Frame(FrameTag))
 		return false;
 
