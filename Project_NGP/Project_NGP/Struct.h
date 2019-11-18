@@ -1,5 +1,6 @@
 #pragma once
 
+// 그냥 기본으로 사용할 정보
 typedef struct BaseInfo
 {
 	float X;
@@ -47,6 +48,7 @@ typedef struct BaseInfo
 
 }POSITION, RESOLUTION, OFFSET;
 
+// 게임 오브젝트 정보
 typedef struct GameObjectInfo
 {
 	int Pos_X;
@@ -55,6 +57,7 @@ typedef struct GameObjectInfo
 	int Size_Height;
 }GAMEOBJINFO;
 
+// 스프라이트 정보
 typedef struct SpriteInfo
 {
 	SPRITETYPE Type;
@@ -62,6 +65,7 @@ typedef struct SpriteInfo
 	float Speed;
 }SPRITEINFO;
 
+// GDI 이미지 정보 (GDI+는 해당하지 않음)
 typedef struct GdiImageInfo
 {
 	HDC		hDC;

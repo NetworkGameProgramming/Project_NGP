@@ -15,15 +15,17 @@ Maingame::~Maingame()
 
 bool Maingame::Initialize()
 {
-	// BackBuffer
+	// 사용할 매니져 초기화
 	m_GdiPlusMgr = GET_MANAGER<GdiPlusManager>();
 	m_SceneMgr = GET_MANAGER<SceneManager>();
-
+	
+	// 씬에 필요한 것들을 미리 준비해 놓는다.
 	if (false == m_SceneMgr->ChangeSceneState(SCENE_TEST))
 	{
 		return false;
 	}
 
+	// 그릴 DC핸들을 주윈도우 핸들로 부터 가져온다.
 	m_hDC = GetDC(g_hWnd);
 
 	return true;
@@ -31,6 +33,7 @@ bool Maingame::Initialize()
 
 int Maingame::Update(const float & TimeDelta)
 {
+	// 씬을 업데이트
 	if (m_SceneMgr)
 	{
 		m_SceneMgr->Update(TimeDelta);
@@ -41,6 +44,8 @@ int Maingame::Update(const float & TimeDelta)
 
 void Maingame::Render()
 {
+	// 더블 버퍼링을 하는 작업이다.
+
 	HDC Memhdc;
 	HBITMAP Membitmap;
 
@@ -52,11 +57,13 @@ void Maingame::Render()
 	// Memhdc에게 GDI Object를 설정한다.
 	SelectObject(Memhdc, Membitmap);
 
-	// drawing code goes in here
+	// 그릴 코드는 이쪽에 온다.
+	///////////////////////////////////////////////////
 	if (m_SceneMgr)
 	{
 		m_SceneMgr->Render(Memhdc);
 	}
+	///////////////////////////////////////////////////
 
 	// 장면을 그린 DC를 m_hDC에 복사한다.
 	BitBlt(m_hDC, 0, 0, WINSIZE_X, WINSIZE_Y,

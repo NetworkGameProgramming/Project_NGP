@@ -62,6 +62,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// Frame 선언
 	FrameManager *pFrameManager = GET_MANAGER<FrameManager>();
+
+	// 각각 30, 75, 200 프레임으로 제한을 거는 프레임을 만들어 추가한다.
 	if (false == pFrameManager->Add_Frame(L"Frame_30", 30.f))
 		return FALSE;
 
@@ -74,6 +76,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	int frameCount = 0;
 	float timeCount = 0.f;
 
+	// 현재 사용할 제한 프레임
 	const TCHAR* strFrame = L"Frame_75";
 
 	// KeyManager 선언
@@ -106,11 +109,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		}
 		else
 		{
+			// 현재 타이머를 계산한다.
 			pTimerManager->Compute_Timer(L"Timer_Default");
+			// 현재 타이머의 TimeDelta를 가져온다.
+			// (두 프레임 사이의 시간을 뜻함)
 			float TimeDelta = pTimerManager->Get_TimeDelta(L"Timer_Default");
 
 			timeCount += TimeDelta;
-
+			
+			// 누적 타이머가 제한한 프레임의 TimeDelta를 넘는 경우 조건을 만족하므로 게임로직을 돌린다.
 			if (pFrameManager->Permit_Call(strFrame, TimeDelta))
 			{
 				float FrameTimeDelta = pFrameManager->Get_FrameTimeDelta(strFrame);
@@ -136,18 +143,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 					return -1;
 				}
 
-				// Update
+				// 게임 Update
 				if (-1 == mainGame.Update(FrameTimeDelta))
 				{
 					exit(-1);
 					return -1;
 				}
-				// Render
+				// 게임 Render
 				mainGame.Render();
 			}
 		}
 	}
 
+	// 매니저 해제
 	pFrameManager->DestroyInstance();
 	pTimerManager->DestroyInstance();
 	pKeyManager->DestroyInstance();
