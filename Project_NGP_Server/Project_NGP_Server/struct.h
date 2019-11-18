@@ -1,0 +1,32 @@
+#pragma once
+#include <WS2tcpip.h>
+#include "define.h"
+#include "constant.h"
+
+
+// 소켓 구조체
+struct OVERLAPPED_INFO
+{
+	WSAOVERLAPPED over;			// OVERLAPPED I/O를 사용하기 위해 필요한 윈도우 구조체
+	WSABUF	wsaBuffer;			// 통신을 위해 필요한 버퍼 (length, buffer 구조의 구조체로 되어 있음)
+	char	buffer[MAX_BUFFER];	// wsaBuffer에서 buffer는 이 변수의 포인터를 참조 하도록 할것이다.
+	bool	is_recv;			// 보내거나 받는다는 것을 알 수 있도록 해주기 위함
+};
+
+struct SOCKET_INFO
+{
+	OVERLAPPED_INFO over_info;
+	SOCKET socket;				// 소켓
+	int id;						// 클라이언트마다 id를 놓는다.
+	
+	// 게임 정보가 들어간다.
+	int posX, posY;
+};
+
+
+// 패킷 구조체
+#pragma pack(push, 1)
+
+
+
+#pragma pack(pop)
