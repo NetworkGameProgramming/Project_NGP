@@ -2,9 +2,16 @@
 //
 
 #include "pch.h"
-#include <iostream>
+#include "MainServer.h"
 
+std::map<int, SOCKET_INFO>  g_mapClient;
+HANDLE						g_iocp = NULL;
+int							g_id = 0;
 int main()
 {
-    std::cout << "Hello World!\n";
+	MainServer server;
+	if (false == server.Initialize())
+		return -1;
+	if (false == server.Running())
+		return -1;
 }
