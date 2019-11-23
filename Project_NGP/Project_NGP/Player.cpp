@@ -80,7 +80,6 @@ int Player::Update_Position(const float& TimeDelta, const DIRECTION & Direction)
 	}
 
 	// ม฿ทย
-	//printf("%f\n", m_GravitySpeed);
 	m_Info.Pos_Y += int(m_GravitySpeed * TimeDelta);
 	m_GravitySpeed += m_GravityAcc * TimeDelta;
 	
@@ -184,10 +183,10 @@ void Player::CollisionPixelPart(DIRECTION dir)
 	switch (dir)
 	{
 	case DIR_LEFT:
-		//m_Info.Pos_X += speed;
+		m_Info.Pos_X += speed;
 		break;
 	case DIR_RIGHT:
-		//m_Info.Pos_X -= speed;
+		m_Info.Pos_X -= speed;
 		break;
 	case DIR_BOTTOM:
 		m_GravitySpeed = 0.f;

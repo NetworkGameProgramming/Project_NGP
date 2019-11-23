@@ -108,6 +108,7 @@ void CollisionManager::CollisionPixelToRect(ObjectManager::MAPOBJ* pixel, Object
 			int addr;
 			// 위 
 			addr = rc.top * pixelCollide->Width + info.Pos_X;
+			if (addr < 0 || addr >= (int)pixelCollide->vecPixel.size()) return;
 			if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
 				pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
 				pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
@@ -116,6 +117,7 @@ void CollisionManager::CollisionPixelToRect(ObjectManager::MAPOBJ* pixel, Object
 			}
 			// 아래 
 			addr = rc.bottom * pixelCollide->Width + info.Pos_X;
+			if (addr < 0 || addr >= (int)pixelCollide->vecPixel.size()) return;
 			if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
 				pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
 				pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
@@ -142,6 +144,7 @@ void CollisionManager::CollisionPixelToRect(ObjectManager::MAPOBJ* pixel, Object
 			}
 			// 왼쪽 
 			addr = info.Pos_Y * pixelCollide->Width + rc.left;
+			if (addr < 0 || addr >= (int)pixelCollide->vecPixel.size()) return;
 			if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
 				pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
 				pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
@@ -150,6 +153,7 @@ void CollisionManager::CollisionPixelToRect(ObjectManager::MAPOBJ* pixel, Object
 			}
 			// 오른쪽 
 			addr = info.Pos_Y * pixelCollide->Width + rc.right;
+			if (addr < 0 || addr >= (int)pixelCollide->vecPixel.size()) return;
 			if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
 				pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
 				pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
