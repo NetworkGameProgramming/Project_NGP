@@ -1,3 +1,3 @@
 #pragma once
 
-const int MAX_BUFFER = 1024;
+constexpr int MAX_BUFFER = 1024;

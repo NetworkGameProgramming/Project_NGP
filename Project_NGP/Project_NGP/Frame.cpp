@@ -22,7 +22,7 @@ bool Frame::Initialize(const float & CallCount)
 bool Frame::Permit_Call(const float & TimeDelta)
 {
 	m_TimeAcc += TimeDelta;
-	ㅡ
+	
 	// 누적 시간이 프레임 제한 TimeDelta보다 크거나 같으면 
 	// 프레임 제한을 만족하는 TimeDelta이므로 true를 리턴한다.
 	if (m_TimePerSec <= m_TimeAcc)

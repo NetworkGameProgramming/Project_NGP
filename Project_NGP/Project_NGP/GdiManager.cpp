@@ -25,13 +25,20 @@ GdiImage * GdiManager::FindImage(const TCHAR * pKey)
 void GdiManager::LoadImageBySceneState(SCENESTATE SceneState)
 {
 	// 씬에 필요한 이미지를 여기서 미리 로드해 놓는다.
+	GdiManager* GdiMgr = GET_MANAGER<GdiManager>();
 	switch (SceneState)
 	{
 	case SCENESTATE::SCENE_TEST:
 		// Load Image
-		GET_MANAGER<GdiManager>()->LoadGdiImage(L"balrock", L"../Resources/0.bmp");
-		GET_MANAGER<GdiManager>()->LoadGdiImage(L"balrock_other", L"../Resources/510.bmp");
-		GET_MANAGER<GdiManager>()->LoadGdiImage(L"back", L"../Resources/back.bmp");
+
+		// Test
+		GdiMgr->LoadGdiImage(L"balrock", L"../Resources/0.bmp");
+		GdiMgr->LoadGdiImage(L"balrock_other", L"../Resources/510.bmp");
+		// Background
+		GdiMgr->LoadGdiImage(L"back", L"../Resources/back_col.bmp");
+		// Player
+		GdiMgr->LoadGdiImage(L"player_left", L"../Resources/Player/player_L.bmp");
+		GdiMgr->LoadGdiImage(L"player_right", L"../Resources/Player/player_R.bmp");
 		break;
 	}
 }

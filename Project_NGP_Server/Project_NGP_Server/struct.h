@@ -23,10 +23,30 @@ struct SOCKET_INFO
 	int posX, posY;
 };
 
-
 // 패킷 구조체
 #pragma pack(push, 1)
 
+// Network Packet
+typedef struct ServerPacketTypeLogin
+{
+	char size;
+	char type;
+	int id;
+}SPLOGIN;
 
+typedef struct ClientPacketTypePos
+{
+	char size;
+	char type;
+	int id;
+	short x, y;
+}SPPOS;
+
+typedef struct ServerPacketEnd
+{
+	char size;
+	char type;
+	int id;
+}SPEND;
 
 #pragma pack(pop)

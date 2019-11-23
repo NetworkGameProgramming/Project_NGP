@@ -19,6 +19,8 @@ bool Background::Initialize()
 	m_Info = GAMEOBJINFO{ (int)(1600 * 1) / 2,(int)(1200 * 1) /2, (int)(1600 * 1), (int)(1200 * 1)};
 	m_RenderType = RENDER_BACKGROUND;
 
+	LoadPixelCollider("../Resources/back_col.bmp", 255, 0, 255);
+
 	return true;
 }
 

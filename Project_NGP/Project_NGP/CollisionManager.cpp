@@ -25,7 +25,7 @@ void CollisionManager::CollisionRect(ObjectManager::MAPOBJ* DstList, ObjectManag
 			if (true == Src.second->GetState())
 				continue;
 
-			if (IntersectRect(&rc, &Dst.second->GetRect(), &Src.second->GetRect()))
+			if (IntersectRect(&rc, &Dst.second->GetCollideRect(), &Src.second->GetCollideRect()))
 			{
 				// 충돌 하였다면 서로 충돌 처리를 한다. 
 				Src.second->CollisionActivate(Dst.second);
@@ -77,6 +77,114 @@ void CollisionManager::CollisionRectEx(ObjectManager::MAPOBJ* DstList, ObjectMan
 					Dst.second->SetPosition(PosX + moveX, PosY);
 				}
 			}
+		}
+	}
+}
+
+void CollisionManager::CollisionPixelToRect(ObjectManager::MAPOBJ* pixel, ObjectManager::MAPOBJ* rect)
+{
+	for (auto& Dst : *pixel)
+	{
+		if (true == Dst.second->GetState())
+			continue;
+
+		const PIXELCOLLIDERINFO* pixelCollide = Dst.second->GetPixelCollider();
+
+		if (nullptr == pixelCollide)
+			continue;
+
+
+		for (auto& Src : *rect)
+		{
+			GAMEOBJINFO info = Src.second->GetInfo();
+			GAMEOBJINFO collideInfo = Src.second->GetCollideInfo();
+			RECT rc = Src.second->GetCollideRect();
+			POSITION CamPos = GET_MANAGER<CameraManager>()->GetPos();
+			rc.left -= (int)CamPos.X;
+			rc.right -= (int)CamPos.X;
+			rc.top -= (int)CamPos.Y;
+			rc.bottom -= (int)CamPos.Y;
+			
+			int addr;
+			// 위 
+			addr = rc.top * pixelCollide->Width + info.Pos_X;
+			if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
+				pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
+				pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
+			{
+				Src.second->CollisionPixelPart(DIR_TOP);
+			}
+			// 아래 
+			addr = rc.bottom * pixelCollide->Width + info.Pos_X;
+			if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
+				pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
+				pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
+			{
+				int Y = rc.bottom;
+				while (Y > 0)
+				{
+					--Y;
+					addr = Y * pixelCollide->Width + info.Pos_X;
+
+					if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
+						pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
+						pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
+					{
+						continue;
+					}
+					else
+					{
+						Src.second->SetPosition(info.Pos_X, Y - collideInfo.Size_Height / 2);
+						Src.second->CollisionPixelPart(DIR_BOTTOM);
+						break;
+					}
+				}
+			}
+			// 왼쪽 
+			addr = info.Pos_Y * pixelCollide->Width + rc.left;
+			if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
+				pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
+				pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
+			{
+				Src.second->CollisionPixelPart(DIR_LEFT);			
+			}
+			// 오른쪽 
+			addr = info.Pos_Y * pixelCollide->Width + rc.right;
+			if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
+				pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
+				pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
+			{
+				Src.second->CollisionPixelPart(DIR_RIGHT);			
+			}
+		}
+	}
+}
+
+void CollisionManager::CollisionPixelToPoint(ObjectManager::MAPOBJ* pixel, ObjectManager::MAPOBJ* rect)
+{
+	for (auto& Dst : *pixel)
+	{
+		if (true == Dst.second->GetState())
+			continue;
+
+		const PIXELCOLLIDERINFO* pixelCollide = Dst.second->GetPixelCollider();
+
+		if (nullptr == pixelCollide)
+			continue;
+
+
+		for (auto& Src : *rect)
+		{
+			GAMEOBJINFO rc = Src.second->GetInfo();
+			int addr = rc.Pos_Y * pixelCollide->Width + rc.Pos_X;
+
+			if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
+				pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
+				pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
+			{
+				printf("Collide!\n");
+			}
+
 		}
 	}
 }

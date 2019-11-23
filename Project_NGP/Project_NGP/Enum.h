@@ -30,6 +30,13 @@ enum FILETYPE
 	FILE_END_
 };
 
+enum SPRITEPLAY
+{
+	PLAY_EACH,
+	PLAY_ALL,
+	PLAY_END
+};
+
 enum SPRITETYPE
 {
 	SPRITE_ONCE,

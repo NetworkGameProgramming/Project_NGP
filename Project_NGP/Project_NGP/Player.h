@@ -5,7 +5,9 @@ class Player
 	: public GameObject
 {
 public:
-	enum State { Idle, Attack, End };
+	enum State { Idle, Idle_Att, Walk, Jump, 
+		Att_1, Att_2, Att_3,
+		Hanging, End };
 
 public:
 	Player();
@@ -21,18 +23,19 @@ public:
 	virtual int  Update(const float& TimeDelta);
 	virtual void Render(HDC hdc);
 	virtual void Release();
+	virtual void CollisionPixelPart(DIRECTION dir);
 
 public:
 	void StateChange();
 
 private:
-	float m_SpeedAcc = 0.f;
-	DWORD m_Dir = 0;
+	float m_TimeDelta = 0.f;
+	
 	DIRECTION m_Direction = DIR_END;
+	DWORD m_Dir = 0;
 
-	float  m_SpriteIndex = 0.f;
-	State  m_CurState = Idle;
-	State  m_PreState = End;
-	const TCHAR* m_SpriteKey = L"balrok";
+	float m_GravitySpeed = 0.f;
+	float m_GravityAcc = 9.8f;
+	bool m_fallCheck = true;
 };
 

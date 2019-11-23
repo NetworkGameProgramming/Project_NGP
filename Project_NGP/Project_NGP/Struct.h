@@ -60,9 +60,21 @@ typedef struct GameObjectInfo
 // 스프라이트 정보
 typedef struct SpriteInfo
 {
+	// 스프라이트 이미지 이름
+	const TCHAR* key;
+	// 스프라이트 y축의 시작점
+	int StateIndex;
+	// 상태
+	int CurState;
+	int PreState;
+	// 재생타입
 	SPRITETYPE Type;
+	// Max
 	int   MaxFrame;
+	// 스피드
 	float Speed;
+	// 현재 인덱스 위치
+	float SpriteIndex;
 }SPRITEINFO;
 
 // GDI 이미지 정보 (GDI+는 해당하지 않음)
@@ -74,3 +86,48 @@ typedef struct GdiImageInfo
 	HBITMAP Bitmap;
 	HBITMAP OldBmp;
 }GDIINFO;
+
+// 픽셀 정보
+typedef struct _tagPixel24
+{
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+}PIXEL24;
+
+typedef struct _tagPixelColliderInfo
+{
+	vector<PIXEL24>		vecPixel;
+	UINT				Width;
+	UINT				Height;
+	PIXEL24				CollPixel;
+	POSITION			IntersectPos;
+}PIXELCOLLIDERINFO;
+
+
+#pragma pack(push, 1)
+
+// Network Packet
+typedef struct ServerPacketTypeLogin
+{
+	char size;
+	char type;
+	int id;
+}SPLOGIN;
+
+typedef struct ClientPacketTypePos
+{
+	char size;
+	char type;
+	int id;
+	short x, y;
+}SPPOS;
+
+typedef struct ServerPacketEnd
+{
+	char size;
+	char type;
+	int id;
+}SPEND;
+
+#pragma pack(pop)

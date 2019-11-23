@@ -2,27 +2,9 @@
 
 #define PURE = 0
 
-/* Singleton Pattern */
-//#define DECLARE_SINGLETON(ClassName)	\
-//public:									\
-//	static ClassName* GetInstance()		\
-//	{									\
-//		if(NULL == m_pInstance)			\
-//			m_pInstance = new ClassName;\
-//		return m_pInstance;				\
-//	}									\
-//	void DestroyInstance()				\
-//	{									\
-//		if(m_pInstance)					\
-//		{								\
-//			delete m_pInstance;			\
-//			m_pInstance = NULL;			\
-//		}								\
-//	}									\
-//private:								\
-//	static ClassName* m_pInstance;
-//
-//#define IMPLEMENT_SINGLETON(ClassName)	\
-//ClassName* ClassName::m_pInstance = NULL;
-//
-//#define GET_SINGLETON(ClassName) ClassName::GetInstance()
+#define SERVER_PORT 9000
+
+// 클라이언트 패킷 처리
+#define SP_LOGIN_OK			1		// 로그인
+#define SP_POS_PLAYER		2		// 플레이어 위치
+#define SP_END				3		// 접속 종료
