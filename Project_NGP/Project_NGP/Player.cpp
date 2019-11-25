@@ -20,11 +20,19 @@ int Player::Update_Input(const float& TimeDelta)
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
 	{
 		m_Dir |= 0x00000001;
+		m_Direction = DIR_LEFT;
+		
+		if(false == m_fallCheck)
+			m_SpriteInfo.CurState = Walk;
 	}
 
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_RIGHT))
 	{
 		m_Dir |= 0x00000002;
+		m_Direction = DIR_RIGHT;
+		
+		if (false == m_fallCheck)
+			m_SpriteInfo.CurState = Walk;
 	}
 
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_UP))
@@ -35,15 +43,33 @@ int Player::Update_Input(const float& TimeDelta)
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_DOWN))
 	{
 		m_Dir |= 0x00000008;
+		m_SpriteInfo.CurState = Crouch;
 	}
 
 	if (true == keyManager->GetKeyState(STATE_DOWN, VK_SPACE))
 	{
 		// มกวม
-		m_SpriteInfo.CurState = Att_1;
-		m_GravitySpeed = -400.f;
+		m_SpriteInfo.CurState = Jump;
+		m_GravitySpeed = -300.f;
 		m_GravityAcc = 0.f;
 		m_fallCheck = true;
+	}
+
+	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
+	{
+		int r = rand() % 2;
+		if (0 == r)
+			m_SpriteInfo.CurState = Att_1;
+		else
+			m_SpriteInfo.CurState = Att_2;
+	}
+
+	if (false == m_fallCheck &&
+		false == keyManager->GetKeyState(STATE_PUSH, VK_LEFT) &&
+		false == keyManager->GetKeyState(STATE_PUSH, VK_RIGHT) && 
+		false == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
+	{
+		m_SpriteInfo.CurState = Idle;
 	}
 
 	return 0;
@@ -57,14 +83,12 @@ int Player::Update_Position(const float& TimeDelta, const DIRECTION & Direction)
 	if (0x00000001 == (m_Dir & 0x00000001))
 	{
 		m_Info.Pos_X -= speed;
-		m_fallCheck = true;
 	}
 
 	// R
 	if (0x00000002 == (m_Dir & 0x00000002))
 	{
 		m_Info.Pos_X += speed;
-		m_fallCheck = true;
 	}
 
 	// U
@@ -85,7 +109,7 @@ int Player::Update_Position(const float& TimeDelta, const DIRECTION & Direction)
 	
 	if (true == m_fallCheck)
 	{
-		if (2000.f > m_GravityAcc)
+		if (1000.f > m_GravityAcc)
 			m_GravityAcc += 9.8f * 10.f;
 	}
 
@@ -104,12 +128,28 @@ int Player::Update_Sprite(const float& TimeDelta)
 			m_SpriteInfo.CurState = 0;
 		}
 		break;
+	case SPRITE_ONCE_END:
+		if ((float)m_SpriteInfo.MaxFrame > m_SpriteInfo.SpriteIndex)
+		{
+			m_SpriteInfo.CurState = m_SpriteInfo.PreState;
+		}
+		else
+		{
+			m_SpriteInfo.CurState = 0;
+		}
+		break;
 	case SPRITE_REPEAT:
 		if ((float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)
 		{
 			m_SpriteInfo.SpriteIndex = 0.f;
 		}
 		break;
+	}
+
+	switch (m_Direction)
+	{
+	case DIR_LEFT : m_SpriteInfo.key = L"player_left"; break;
+	case DIR_RIGHT : m_SpriteInfo.key = L"player_right"; break;
 	}
 
 	return 0;
@@ -121,8 +161,9 @@ bool Player::Initialize()
 	m_CollideInfo = GAMEOBJINFO{ 0, 0, 40, 70 };
 	m_Speed = 200.f;
 	m_RenderType = RENDER_OBJ;
-
-	m_SpriteInfo.key = L"player_left";
+	
+	m_Direction = DIR_RIGHT;
+	m_SpriteInfo.key = L"player_right";
 	m_SpriteInfo.CurState = Idle;
 	m_SpriteInfo.PreState = End;
 	m_SpriteInfo.SpriteIndex = 0.f;
@@ -182,16 +223,11 @@ void Player::CollisionPixelPart(DIRECTION dir)
 	int speed = int(m_Speed * m_TimeDelta);
 	switch (dir)
 	{
-	case DIR_LEFT:
-		m_Info.Pos_X += speed;
-		break;
-	case DIR_RIGHT:
-		m_Info.Pos_X -= speed;
-		break;
 	case DIR_BOTTOM:
 		m_GravitySpeed = 0.f;
 		m_GravityAcc = 0.f;
 		m_fallCheck = false;
+		m_SpriteInfo.CurState = Idle;
 		break;
 	}
 }
@@ -209,11 +245,35 @@ void Player::StateChange()
 			m_SpriteInfo.MaxFrame = 5;
 			m_SpriteInfo.Speed = 2.f;
 			break;
-		case Att_1:
-			m_SpriteInfo.Type = SPRITE_ONCE;
+		case Walk:
+			m_SpriteInfo.Type = SPRITE_REPEAT;
+			m_SpriteInfo.StateIndex = 2;
+			m_SpriteInfo.MaxFrame = 4;
+			m_SpriteInfo.Speed = 6.f;
+			break;
+		case Jump:
+			m_SpriteInfo.Type = SPRITE_REPEAT;
 			m_SpriteInfo.StateIndex = 5;
 			m_SpriteInfo.MaxFrame = 1;
-			m_SpriteInfo.Speed = 1.5f;
+			m_SpriteInfo.Speed = 1.f;
+			break;
+		case Crouch:
+			m_SpriteInfo.Type = SPRITE_REPEAT;
+			m_SpriteInfo.StateIndex = 11;
+			m_SpriteInfo.MaxFrame = 1;
+			m_SpriteInfo.Speed = 1.f;
+			break;
+		case Att_1:
+			m_SpriteInfo.Type = SPRITE_ONCE_END;
+			m_SpriteInfo.StateIndex = 14;
+			m_SpriteInfo.MaxFrame = 3;
+			m_SpriteInfo.Speed = 4.f;
+			break;
+		case Att_2:
+			m_SpriteInfo.Type = SPRITE_ONCE_END;
+			m_SpriteInfo.StateIndex = 15;
+			m_SpriteInfo.MaxFrame = 3;
+			m_SpriteInfo.Speed = 4.f;
 			break;
 		}
 	}

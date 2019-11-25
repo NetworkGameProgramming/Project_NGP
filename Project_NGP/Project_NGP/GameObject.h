@@ -13,13 +13,17 @@ public:
 	const bool& GetState()						{ return m_isDead; }
 	const float& GetAngle()						{ return m_Angle; }
 	const float& GetSpeed()						{ return m_Speed; }
+	const float& GetGravity()					{ return m_GravitySpeed; }
 	const PIXELCOLLIDERINFO* GetPixelCollider() { return m_PixelInfo; }
+	
+
 public:
 	void SetPosition(int posX, int posY);
 	void SetSize(int sizeWidth, int sizeHeight);
 	void SetAngle(float angle);
 	void SetSpeed(float speed);
 	void SetCollideOn(bool on);
+	void SetFall(bool fall);
 
 public:
 	bool LoadPixelCollider(const char* pFilePath,
@@ -41,8 +45,11 @@ protected:
 	bool			m_isNoScroll = false;
 	bool			m_isDead = false;
 	bool			m_isCollideOn = true;
+	bool			m_fallCheck = true;
 	float			m_Angle = 0.f;
 	float			m_Speed = 0.f;
+	float			m_GravitySpeed = 0.f;
+	float			m_GravityAcc = 9.8f;
 
 	// Collider
 	PIXELCOLLIDERINFO	*m_PixelInfo = nullptr;

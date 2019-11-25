@@ -16,10 +16,10 @@ Background::~Background()
 bool Background::Initialize()
 {
 	// 1280 720
-	m_Info = GAMEOBJINFO{ (int)(1600 * 1) / 2,(int)(1200 * 1) /2, (int)(1600 * 1), (int)(1200 * 1)};
+	m_Info = GAMEOBJINFO{ 1800 / 2, 1500 / 2, 1800, 1500 };
 	m_RenderType = RENDER_BACKGROUND;
 
-	LoadPixelCollider("../Resources/back_col.bmp", 255, 0, 255);
+	LoadPixelCollider("../Resources/Map/Back_Collider_Real.bmp", 255, 0, 255);
 
 	return true;
 }
@@ -36,7 +36,12 @@ int Background::Update(const float & TimeDelta)
 
 void Background::Render(HDC hdc)
 {
-	HDC hMemDC = GET_MANAGER<GdiManager>()->FindImage(L"back")->GetGdiImageDefault();
+	HDC hMemDC;
+	
+	if(true == GET_MANAGER<CollisionManager>()->GetRenderCheck())
+		hMemDC = GET_MANAGER<GdiManager>()->FindImage(L"background_collider")->GetGdiImageDefault();
+	else
+		hMemDC = GET_MANAGER<GdiManager>()->FindImage(L"background")->GetGdiImageDefault();
 
 	BitBlt(hdc, m_Rect.left, m_Rect.top, m_Info.Size_Width, m_Info.Size_Height
 		, hMemDC, 0, 0, SRCCOPY);

@@ -5,7 +5,7 @@ class Player
 	: public GameObject
 {
 public:
-	enum State { Idle, Idle_Att, Walk, Jump, 
+	enum State { Idle, Idle_Att, Walk, Jump, Crouch,
 		Att_1, Att_2, Att_3,
 		Hanging, End };
 
@@ -34,8 +34,8 @@ private:
 	DIRECTION m_Direction = DIR_END;
 	DWORD m_Dir = 0;
 
-	float m_GravitySpeed = 0.f;
-	float m_GravityAcc = 9.8f;
-	bool m_fallCheck = true;
+	//float m_GravitySpeed = 0.f;
+	//float m_GravityAcc = 9.8f;
+
 };
 

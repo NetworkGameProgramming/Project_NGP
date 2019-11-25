@@ -29,6 +29,7 @@ int KeyManager::UpdateKey()
 	ComputeKeyState(VK_UP);
 	ComputeKeyState(VK_DOWN);
 	ComputeKeyState(VK_SPACE);
+	ComputeKeyState(VK_LCONTROL);
 	ComputeKeyState(VK_F1);
 
 	// Mouse

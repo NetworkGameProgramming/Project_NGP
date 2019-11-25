@@ -92,7 +92,7 @@ int CameraManager::Update(const float & TimeDelta)
 		}
 
 		// 카메라의 움직임 속도는 보간을 해준다.
-		float m_speed = Lerp<float, float>(100.f, m_Target->GetSpeed(), m_Time);
+		float m_speed = Lerp<float, float>(10.f, m_Target->GetSpeed(), m_Time);
 
 		// 가야하는 Direction 벡터를 구하여 그 방향으로 가도록 계산한다.
 		POSITION Dir = m_DestPos - m_Pos;

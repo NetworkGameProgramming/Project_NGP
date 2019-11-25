@@ -100,21 +100,10 @@ void CollisionManager::CollisionPixelToRect(ObjectManager::MAPOBJ* pixel, Object
 			GAMEOBJINFO collideInfo = Src.second->GetCollideInfo();
 			RECT rc = Src.second->GetCollideRect();
 			POSITION CamPos = GET_MANAGER<CameraManager>()->GetPos();
-			rc.left -= (int)CamPos.X;
-			rc.right -= (int)CamPos.X;
-			rc.top -= (int)CamPos.Y;
 			rc.bottom -= (int)CamPos.Y;
 			
 			int addr;
-			// À§ 
-			addr = rc.top * pixelCollide->Width + info.Pos_X;
-			if (addr < 0 || addr >= (int)pixelCollide->vecPixel.size()) return;
-			if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
-				pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
-				pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
-			{
-				Src.second->CollisionPixelPart(DIR_TOP);
-			}
+
 			// ¾Æ·¡ 
 			addr = rc.bottom * pixelCollide->Width + info.Pos_X;
 			if (addr < 0 || addr >= (int)pixelCollide->vecPixel.size()) return;
@@ -136,29 +125,26 @@ void CollisionManager::CollisionPixelToRect(ObjectManager::MAPOBJ* pixel, Object
 					}
 					else
 					{
-						Src.second->SetPosition(info.Pos_X, Y - collideInfo.Size_Height / 2);
-						Src.second->CollisionPixelPart(DIR_BOTTOM);
+						if (0 < Src.second->GetGravity())
+						{
+							Src.second->SetPosition(info.Pos_X, Y - collideInfo.Size_Height / 2);
+							Src.second->CollisionPixelPart(DIR_BOTTOM);
+						}
 						break;
 					}
 				}
 			}
-			// ¿ÞÂÊ 
-			addr = info.Pos_Y * pixelCollide->Width + rc.left;
-			if (addr < 0 || addr >= (int)pixelCollide->vecPixel.size()) return;
-			if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
-				pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
-				pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
+			else
 			{
-				Src.second->CollisionPixelPart(DIR_LEFT);			
-			}
-			// ¿À¸¥ÂÊ 
-			addr = info.Pos_Y * pixelCollide->Width + rc.right;
-			if (addr < 0 || addr >= (int)pixelCollide->vecPixel.size()) return;
-			if (pixelCollide->vecPixel[addr].r == pixelCollide->CollPixel.r &&
-				pixelCollide->vecPixel[addr].g == pixelCollide->CollPixel.g &&
-				pixelCollide->vecPixel[addr].b == pixelCollide->CollPixel.b)
-			{
-				Src.second->CollisionPixelPart(DIR_RIGHT);			
+				// ¹Ø¿¡ ÇÑ ÇÈ¼¿ ´õ °Ë»ç
+				addr = (rc.bottom + 2) * pixelCollide->Width + info.Pos_X;
+				if (addr < 0 || addr >= (int)pixelCollide->vecPixel.size()) return;
+				if (pixelCollide->vecPixel[addr].r != pixelCollide->CollPixel.r &&
+					pixelCollide->vecPixel[addr].g != pixelCollide->CollPixel.g &&
+					pixelCollide->vecPixel[addr].b != pixelCollide->CollPixel.b)
+				{
+					Src.second->SetFall(true);
+				}
 			}
 		}
 	}

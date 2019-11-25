@@ -35,7 +35,8 @@ void GdiManager::LoadImageBySceneState(SCENESTATE SceneState)
 		GdiMgr->LoadGdiImage(L"balrock", L"../Resources/0.bmp");
 		GdiMgr->LoadGdiImage(L"balrock_other", L"../Resources/510.bmp");
 		// Background
-		GdiMgr->LoadGdiImage(L"back", L"../Resources/back_col.bmp");
+		GdiMgr->LoadGdiImage(L"background", L"../Resources/Map/Back.bmp");
+		GdiMgr->LoadGdiImage(L"background_collider", L"../Resources/Map/Back_Collider.bmp");
 		// Player
 		GdiMgr->LoadGdiImage(L"player_left", L"../Resources/Player/player_L.bmp");
 		GdiMgr->LoadGdiImage(L"player_right", L"../Resources/Player/player_R.bmp");

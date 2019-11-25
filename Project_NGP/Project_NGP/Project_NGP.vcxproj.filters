@@ -49,9 +49,6 @@
     <Filter Include="97.Manager\Scene">
       <UniqueIdentifier>{cddfacd7-8f94-44df-839b-85f0899c5fdf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="97.Manager\Scene\TestScene">
-      <UniqueIdentifier>{82ad4db3-a0bb-4321-9d10-43b98aae69e4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\Mouse">
       <UniqueIdentifier>{7945a40b-24d8-4ab3-9284-101775e4d335}</UniqueIdentifier>
     </Filter>
@@ -75,6 +72,12 @@
     </Filter>
     <Filter Include="01.GameObject\Monster">
       <UniqueIdentifier>{b73bc46d-ff85-4ae1-a163-485e6e1cf271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.SceneState">
+      <UniqueIdentifier>{9b88f140-2f2e-41e8-a790-c42c5fe042fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.SceneState\TestScene">
+      <UniqueIdentifier>{82ad4db3-a0bb-4321-9d10-43b98aae69e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -145,7 +148,7 @@
       <Filter>97.Manager\Scene</Filter>
     </ClInclude>
     <ClInclude Include="TestScene.h">
-      <Filter>97.Manager\Scene\TestScene</Filter>
+      <Filter>02.SceneState\TestScene</Filter>
     </ClInclude>
     <ClInclude Include="Mouse.h">
       <Filter>01.GameObject\Mouse</Filter>
@@ -222,7 +225,7 @@
       <Filter>97.Manager\Scene</Filter>
     </ClCompile>
     <ClCompile Include="TestScene.cpp">
-      <Filter>97.Manager\Scene\TestScene</Filter>
+      <Filter>02.SceneState\TestScene</Filter>
     </ClCompile>
     <ClCompile Include="Mouse.cpp">
       <Filter>01.GameObject\Mouse</Filter>

@@ -50,6 +50,23 @@ void GameObject::SetCollideOn(bool on)
 	m_isCollideOn = on;
 }
 
+void GameObject::SetFall(bool fall)
+{
+	if (true == fall && false == m_fallCheck)
+	{
+		m_GravitySpeed = 0;
+		m_GravityAcc = 0;
+		m_fallCheck = fall;
+	}
+
+	if (false == fall && true == m_fallCheck)
+	{
+		m_GravitySpeed = 0;
+		m_GravityAcc = 0;
+		m_fallCheck = fall;
+	}
+}
+
 bool GameObject::LoadPixelCollider(const char* pFilePath, unsigned char r, unsigned char g, unsigned char b)
 {
 	if (nullptr != m_PixelInfo)
@@ -91,23 +108,13 @@ bool GameObject::LoadPixelCollider(const char* pFilePath, unsigned char r, unsig
 
 		fread(&m_PixelInfo->vecPixel[0], sizeof(PIXEL24), m_PixelInfo->vecPixel.size(), pFile);
 
-		PIXEL24 *pLine = new PIXEL24[tIf.biWidth];
-
-		// 위아래를 반전시켜준다.
-		for (int i = 0; i < tIf.biHeight / 2; ++i)
-		{
-			int bottomIndex = tIf.biHeight - (i + 1);
-		
-			memcpy(pLine, &m_PixelInfo->vecPixel[i * tIf.biWidth], sizeof(PIXEL24) * tIf.biWidth);
-			memcpy(&m_PixelInfo->vecPixel[i * tIf.biWidth], &m_PixelInfo->vecPixel[bottomIndex * tIf.biWidth],
-				sizeof(PIXEL24) * tIf.biWidth);
-			memcpy(&m_PixelInfo->vecPixel[bottomIndex * tIf.biWidth], pLine, sizeof(PIXEL24) * tIf.biWidth);
-		}
-
-		delete[] pLine;
-		pLine = nullptr;
-
 		fclose(pFile);
+
+		fopen_s(&pFile, "test.bmp", "wb");
+
+		fwrite(&tBf, sizeof(tBf), 1, pFile);
+		fwrite(&tIf, sizeof(tIf), 1, pFile);
+		fwrite(&m_PixelInfo->vecPixel[0], sizeof(PIXEL24), m_PixelInfo->vecPixel.size(), pFile);
 	}
 	else
 	{
