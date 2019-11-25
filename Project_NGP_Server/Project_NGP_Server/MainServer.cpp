@@ -162,11 +162,56 @@ void MainServer::do_worker()
 
 		if (true == over_info->is_recv)
 		{
+			// 클라이언트에서 받은 패킷을 처리
+			ProcessPacket(key, over_info->buffer);
+
 			// 받았을때의 처리
+			DWORD flags = 0;
+			memset(&over_info->over, 0x00, sizeof(WSAOVERLAPPED));
+			WSARecv(clientsocket, &over_info->wsaBuffer, 1, 0, &flags, &over_info->over, NULL);
 		}
 		else
 		{
 			// 전송할때의 처리
+			// Send할때 
+			delete over_info;
 		}
 	}
+}
+
+void MainServer::ProcessPacket(int id, void* buf)
+{
+	char* packet = reinterpret_cast<char*> (buf);
+
+	switch (packet[1])
+	{
+	case SP_LOGIN_OK:
+	{
+		int a = 0;
+	}
+		break;
+	}
+
+	for (auto& cl : g_mapClient)
+	{
+		SPLOGIN packet;
+		packet.id = id;
+		packet.size = sizeof(packet);
+		packet.type = SP_LOGIN_OK;
+		SendPacket(id, &packet);
+	}
+}
+
+void MainServer::SendPacket(int id, void* buf)
+{
+	char* packet = reinterpret_cast<char*>(buf);
+	int packet_size = packet[0];
+
+	OVERLAPPED_INFO* send_over = new OVERLAPPED_INFO;
+	memset(send_over, 0x00, sizeof(OVERLAPPED_INFO));
+	send_over->is_recv = false; // recv 아니다~
+	memcpy(send_over->buffer, packet, packet_size);
+	send_over->wsaBuffer.buf = send_over->buffer;
+	send_over->wsaBuffer.len = packet_size;
+	WSASend(g_mapClient[id].socket, &send_over->wsaBuffer, 1, 0, 0, &send_over->over, NULL);
 }

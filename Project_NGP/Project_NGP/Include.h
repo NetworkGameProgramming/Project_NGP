@@ -7,3 +7,6 @@
 #include "Extern.h"
 #include "Macro.h"
 #include "Math.h"
+
+//For Server
+#include "Protocol.h"

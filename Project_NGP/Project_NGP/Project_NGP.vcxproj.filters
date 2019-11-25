@@ -79,6 +79,12 @@
     <Filter Include="02.SceneState\TestScene">
       <UniqueIdentifier>{82ad4db3-a0bb-4321-9d10-43b98aae69e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.Manager\Network">
+      <UniqueIdentifier>{cef29b17-e72b-47c0-9a7f-6dc537aac02a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.SceneState\MainMenu">
+      <UniqueIdentifier>{6917861c-a48a-48d3-8b21-eb05460e1e6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -186,6 +192,15 @@
     <ClInclude Include="Math.h">
       <Filter>98.Headers</Filter>
     </ClInclude>
+    <ClInclude Include="NetworkManager.h">
+      <Filter>97.Manager\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocol.h">
+      <Filter>98.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>02.SceneState\MainMenu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -259,6 +274,12 @@
     </ClCompile>
     <ClCompile Include="Monster.cpp">
       <Filter>01.GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkManager.cpp">
+      <Filter>97.Manager\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>02.SceneState\MainMenu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

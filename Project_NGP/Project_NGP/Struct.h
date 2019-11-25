@@ -104,30 +104,3 @@ typedef struct _tagPixelColliderInfo
 	POSITION			IntersectPos;
 }PIXELCOLLIDERINFO;
 
-
-#pragma pack(push, 1)
-
-// Network Packet
-typedef struct ServerPacketTypeLogin
-{
-	char size;
-	char type;
-	int id;
-}SPLOGIN;
-
-typedef struct ClientPacketTypePos
-{
-	char size;
-	char type;
-	int id;
-	short x, y;
-}SPPOS;
-
-typedef struct ServerPacketEnd
-{
-	char size;
-	char type;
-	int id;
-}SPEND;
-
-#pragma pack(pop)

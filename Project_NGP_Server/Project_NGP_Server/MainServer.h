@@ -12,6 +12,8 @@ public:
 private:
 	void error_display(const char *msg);
 	static void do_worker();
+	static void ProcessPacket(int id, void* buf);
+	static void SendPacket(int id, void* buf);
 private:
 	WSADATA			m_WSAData;
 	SOCKET			m_listenSocket;

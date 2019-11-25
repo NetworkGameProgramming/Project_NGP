@@ -20,7 +20,7 @@ bool Maingame::Initialize()
 	m_SceneMgr = GET_MANAGER<SceneManager>();
 	
 	// 씬에 필요한 것들을 미리 준비해 놓는다.
-	if (false == m_SceneMgr->ChangeSceneState(SCENE_TEST))
+	if (false == m_SceneMgr->ChangeSceneState(SCENE_MENU))
 	{
 		return false;
 	}

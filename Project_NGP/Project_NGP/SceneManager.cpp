@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SceneManager.h"
+#include "MainMenu.h"
 #include "TestScene.h"
 
 
@@ -22,6 +23,9 @@ bool SceneManager::ChangeSceneState(SCENESTATE SceneState)
 
 	switch (SceneState)
 	{
+	case SCENE_MENU :
+		m_Scene = new MainMenu;
+		break;
 	case SCENE_TEST:
 		m_Scene = new TestScene;
 		break;

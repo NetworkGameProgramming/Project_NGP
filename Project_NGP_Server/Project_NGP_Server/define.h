@@ -1,6 +1,6 @@
 #pragma once
 
-#define SERVER_PORT 9000
+#define SERVER_PORT 3500
 
 // 서버 패킷 처리
 #define SP_LOGIN_OK			1		// 로그인

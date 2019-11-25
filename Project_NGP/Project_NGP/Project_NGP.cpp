@@ -13,6 +13,10 @@
 // 윈도우 핸들 전역변수화
 HWND g_hWnd;
 
+// 새창 핸들 전역변수와
+HWND g_hWnd_New;
+HWND hEdit;
+
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
@@ -81,6 +85,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// KeyManager 선언
 	KeyManager *pKeyManager = GET_MANAGER<KeyManager>();
+
+	// Network Manager 선언 및 초기화
+	NetworkManager* pNetManager = GET_MANAGER<NetworkManager>();
+	if (false == pNetManager->Initialize())
+		return FALSE;
 
 	// MainGame
 	Maingame mainGame;
@@ -160,11 +169,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	pTimerManager->DestroyInstance();
 	pKeyManager->DestroyInstance();
 	GET_MANAGER<FileManager>()->DestroyInstance();
+	pNetManager->DestroyInstance();
 
 	return (int)msg.wParam;
 }
-
-
 
 //
 //  함수: MyRegisterClass()
@@ -228,6 +236,49 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
+
+	// 새창 (클라이언트 창 중앙에 놓기 위한 계산이 포함)
+	RECT NewRc = { 0, 0, NEWWINSIZE_X, NEWWINSIZE_Y };
+	AdjustWindowRect(&NewRc, dwStyle, FALSE);
+
+	// 새창 크기
+	int sizeNewRc_X = NewRc.right - NewRc.left;
+	int sizeNewRc_Y = NewRc.bottom - NewRc.top;
+
+	// 클라이언트 윈도우 창의 위치를 가지고 온다.
+	RECT clientPos = { 0, 0, 0, 0 };
+	GetWindowRect(g_hWnd, &clientPos);
+
+	// 클라이언트 창 크기
+	int sizeClientRc_X = rc.right - rc.left;
+	int sizeClientRc_Y = rc.bottom - rc.top;
+
+	hWnd = CreateWindowW(szWindowClass, L"IP 주소를 입력하세요.", WS_OVERLAPPEDWINDOW,
+		clientPos.left + (sizeClientRc_X / 2) - (sizeNewRc_X / 2),
+		clientPos.top + (sizeClientRc_Y / 2) - (sizeNewRc_Y / 2),
+		sizeNewRc_X, sizeNewRc_Y, nullptr, nullptr, hInstance, nullptr);
+
+	if (!hWnd)
+	{
+		return FALSE;
+	}
+
+	g_hWnd_New = hWnd;
+
+	// Edit 컨트롤 생성
+	int controlsizeX = 200;
+	int controlsizeY = 20;
+	hEdit = CreateWindowW(L"edit", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER,
+		NEWWINSIZE_X / 2 - controlsizeX / 2, 50 - controlsizeY / 2,
+		controlsizeX, controlsizeY, g_hWnd_New, (HMENU)1, hInst, NULL);
+
+	// 버튼 생성
+	int buttonsizeX = 60;
+	int buttonsizeY = 30;
+	CreateWindowW(L"button", L"Connect", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+		NEWWINSIZE_X / 2 - buttonsizeX / 2, 50 - buttonsizeY / 2 + 50,
+		buttonsizeX, buttonsizeY, g_hWnd_New, (HMENU)2, hInst, NULL);
+
 	return TRUE;
 }
 
@@ -251,6 +302,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// 메뉴 선택을 구문 분석합니다:
 		switch (wmId)
 		{
+		case 2:
+		{
+			// IP 입력 창에 버튼을 누른 경우
+			char szEdit[128] = { 0, };
+			GetWindowTextA(hEdit, szEdit, 128);
+
+			// 입력한 IP주소로 서버에 접속 시도
+			if (true == GET_MANAGER<NetworkManager>()->ConnectToServer(szEdit))
+			{
+				// 접속이 되면 메인 씬으로 전환
+				if (false == GET_MANAGER<SceneManager>()->ChangeSceneState(SCENE_TEST))
+				{
+					DestroyWindow(hWnd);
+					break;
+				}
+			}
+		}
+			break;
 		case IDM_ABOUT:
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
