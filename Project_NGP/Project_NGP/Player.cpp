@@ -14,6 +14,9 @@ Player::~Player()
 
 int Player::Update_Input(const float& TimeDelta)
 {
+	if (true == m_isOther)
+		return 0;
+
 	m_Dir = 0;
 	KeyManager *keyManager = GET_MANAGER<KeyManager>();
 
@@ -77,6 +80,9 @@ int Player::Update_Input(const float& TimeDelta)
 
 int Player::Update_Position(const float& TimeDelta, const DIRECTION & Direction)
 {
+	if (true == m_isOther)
+		return 0;
+
 	int speed = int(m_Speed * TimeDelta);
 
 	// L

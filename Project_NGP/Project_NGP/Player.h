@@ -14,6 +14,9 @@ public:
 	virtual ~Player();
 
 public:
+	void SetOtherCheck(bool check) { m_isOther = check; }
+
+public:
 	int Update_Input(const float& TimeDelta);
 	int Update_Position(const float& TimeDelta, const DIRECTION& Direction);
 	int Update_Sprite(const float& TimeDelta);
@@ -36,6 +39,6 @@ private:
 
 	//float m_GravitySpeed = 0.f;
 	//float m_GravityAcc = 9.8f;
-
+	bool m_isOther = false;
 };
 

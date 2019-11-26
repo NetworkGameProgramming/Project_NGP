@@ -15,7 +15,7 @@ public:
 	const float& GetSpeed()						{ return m_Speed; }
 	const float& GetGravity()					{ return m_GravitySpeed; }
 	const PIXELCOLLIDERINFO* GetPixelCollider() { return m_PixelInfo; }
-	
+	const SPRITEINFO& GetSpriteInfo()			{ return m_SpriteInfo; }
 
 public:
 	void SetPosition(int posX, int posY);
@@ -24,6 +24,7 @@ public:
 	void SetSpeed(float speed);
 	void SetCollideOn(bool on);
 	void SetFall(bool fall);
+	void SetSpriteInfo(SPRITEINFO spriteInfo);
 
 public:
 	bool LoadPixelCollider(const char* pFilePath,

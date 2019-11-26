@@ -16,6 +16,7 @@ struct OVERLAPPED_INFO
 struct SOCKET_INFO
 {
 	OVERLAPPED_INFO over_info;
+	SOCKADDR_IN		addr_info;
 	SOCKET socket;				// 소켓
 	int id;						// 클라이언트마다 id를 놓는다.
 	
@@ -34,13 +35,14 @@ typedef struct ServerPacketTypeLogin
 	int id;
 }SPLOGIN;
 
-typedef struct ClientPacketTypePos
+typedef struct ClientPacketTypePlayer
 {
 	char size;
 	char type;
 	int id;
-	short x, y;
-}SPPOS;
+	short pos_x, pos_y;
+	int player_state;
+}SPPLAYER;
 
 typedef struct ServerPacketEnd
 {

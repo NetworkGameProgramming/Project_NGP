@@ -12,14 +12,14 @@ public:
 
 public:
 	bool ConnectToServer(const char* ip);
+	bool SendPlayerInfo(short pos_x, short pos_y, int sprite_state);
+	bool RecvOtherInfo(SPPLAYER* OutInfo);
 
-public:
+private:
 	// 보내기
 	int Send(void* packet_struct, char type);
 	// 받기
 	int Recv(void* OutPacket_struct);
-
-public:
 	// 패킹
 	void Packing(char* OutBuf, void* packet_struct, char type);
 	// 풀기

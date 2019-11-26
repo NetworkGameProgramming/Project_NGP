@@ -70,13 +70,14 @@ bool MainServer::Running()
 	// cpu thread 갯수를 가지고 온다.
 	int thread_count = sys_info.dwNumberOfProcessors;
 
+	// cpu thread 갯수만큼 서버처리를 하겠다.
 	for (int i = 0; i < thread_count; ++i)
 	{
 		m_vecThread.emplace_back(do_worker);
 	}
 
 	int addrLen = sizeof(SOCKADDR_IN);
-	g_id = 0;
+	g_id = 1;
 	while (true)
 	{
 		m_clientSocket = accept(m_listenSocket, (sockaddr*)&m_clientAddr, &addrLen);
@@ -88,12 +89,13 @@ bool MainServer::Running()
 		g_mapClient[user_id].over_info.wsaBuffer.buf = g_mapClient[user_id].over_info.buffer;
 		g_mapClient[user_id].over_info.is_recv = true;
 
+		printf("[클라이언트 접속] ID : %d, IP : %s, PORT : %d, SOCKET : %d\n",  
+			user_id, inet_ntoa(m_clientAddr.sin_addr), ntohs(m_clientAddr.sin_port), m_clientSocket);
+
+		memcpy(&g_mapClient[user_id].addr_info, &m_clientAddr, sizeof(SOCKADDR_IN));
+
 		m_flags = 0;
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(m_clientSocket), g_iocp, user_id, 0);
-
-		// 접속 초기화
-
-		// 다른 클라이언트에게도 알림
 
 		int result = WSARecv(m_clientSocket, &g_mapClient[user_id].over_info.wsaBuffer, 
 			1, NULL, &m_flags, &(g_mapClient[user_id].over_info.over), NULL);
@@ -154,6 +156,9 @@ void MainServer::do_worker()
 		if (0 == byte)
 		{
 			closesocket(clientsocket);
+			printf("[클라이언트 종료] ID : %d, IP : %s, PORT : %d, SOCKET : %d\n",
+				key, inet_ntoa(g_mapClient[key].addr_info.sin_addr),
+					 ntohs(g_mapClient[key].addr_info.sin_port), clientsocket);
 			g_mapClient.erase(clientsocket);
 			continue;
 		}
@@ -189,20 +194,57 @@ void MainServer::ProcessPacket(int id, void* buf)
 	{
 		int a = 0;
 	}
-		break;
+	break;
+	case SP_PLAYER:
+	{
+		SPPLAYER* info = reinterpret_cast<SPPLAYER*> (buf);
+		int b = 0;
+	}
+	break;
 	}
 
 	for (auto& cl : g_mapClient)
 	{
+		SendProcess(cl.first, id, buf);
+	}
+}
+
+void MainServer::SendProcess(int send_id, int id, void* buf)
+{
+	char* packet = reinterpret_cast<char*> (buf);
+
+	switch (packet[1])
+	{
+	case SP_LOGIN_OK:
+	{
+		if (send_id != id)
+			return;
 		SPLOGIN packet;
 		packet.id = id;
 		packet.size = sizeof(packet);
 		packet.type = SP_LOGIN_OK;
-		SendPacket(id, &packet);
+		SendPacket(send_id, id, &packet);
+	}
+	break;
+	case SP_PLAYER:
+	{
+		if (send_id == id)
+			return;
+		SPPLAYER* info = reinterpret_cast<SPPLAYER*> (buf);
+		SPPLAYER packet;
+		packet.id = id;
+		packet.size = sizeof(packet);
+		packet.type = SP_PLAYER;
+		packet.pos_x = info->pos_x;
+		packet.pos_y = info->pos_y;
+		packet.player_state = info->player_state;
+		SendPacket(send_id, id, &packet);
+	}
+	break;
 	}
 }
 
-void MainServer::SendPacket(int id, void* buf)
+void MainServer::SendPacket(int send_id, int id, void* buf)
 {
 	char* packet = reinterpret_cast<char*>(buf);
 	int packet_size = packet[0];
@@ -213,5 +255,6 @@ void MainServer::SendPacket(int id, void* buf)
 	memcpy(send_over->buffer, packet, packet_size);
 	send_over->wsaBuffer.buf = send_over->buffer;
 	send_over->wsaBuffer.len = packet_size;
-	WSASend(g_mapClient[id].socket, &send_over->wsaBuffer, 1, 0, 0, &send_over->over, NULL);
+	int result = WSASend(g_mapClient[send_id].socket, &send_over->wsaBuffer, 1, 0, 0, &send_over->over, NULL);
+	result = 0;
 }

@@ -22,6 +22,16 @@ const TCHAR* ObjectManager::GetTagFromObj(GameObject* Obj, OBJTYPE ObjType)
 	return iter->first;
 }
 
+GameObject * ObjectManager::GetObjFromTag(const TCHAR * tag, OBJTYPE ObjType)
+{
+	auto& iter = m_mapObj[ObjType].find(tag);
+
+	if (m_mapObj[ObjType].end() == iter)
+		return nullptr;
+
+	return (iter)->second;
+}
+
 void ObjectManager::AddObject(const TCHAR* tag, GameObject* Obj, OBJTYPE ObjType)
 {
 	if (nullptr == Obj)

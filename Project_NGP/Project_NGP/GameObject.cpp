@@ -67,6 +67,11 @@ void GameObject::SetFall(bool fall)
 	}
 }
 
+void GameObject::SetSpriteInfo(SPRITEINFO spriteInfo)
+{
+	m_SpriteInfo = spriteInfo;
+}
+
 bool GameObject::LoadPixelCollider(const char* pFilePath, unsigned char r, unsigned char g, unsigned char b)
 {
 	if (nullptr != m_PixelInfo)
@@ -109,12 +114,6 @@ bool GameObject::LoadPixelCollider(const char* pFilePath, unsigned char r, unsig
 		fread(&m_PixelInfo->vecPixel[0], sizeof(PIXEL24), m_PixelInfo->vecPixel.size(), pFile);
 
 		fclose(pFile);
-
-		fopen_s(&pFile, "test.bmp", "wb");
-
-		fwrite(&tBf, sizeof(tBf), 1, pFile);
-		fwrite(&tIf, sizeof(tIf), 1, pFile);
-		fwrite(&m_PixelInfo->vecPixel[0], sizeof(PIXEL24), m_PixelInfo->vecPixel.size(), pFile);
 	}
 	else
 	{

@@ -18,20 +18,21 @@ TestScene::~TestScene()
 bool TestScene::Initialize()
 {
 	m_CamMgr = GET_MANAGER<CameraManager>();
-	m_pObjManager = GET_MANAGER<ObjectManager>();
+	m_ObjManager = GET_MANAGER<ObjectManager>();
+	m_NetworkManager = GET_MANAGER<NetworkManager>();
 
 	GET_MANAGER<GdiPlusManager>()->LoadImageBySceneState(SCENE_TEST);
 	GET_MANAGER<GdiManager>()->LoadImageBySceneState(SCENE_TEST);
 	
-	m_pObjManager->AddObject(L"background", AbstractFactory<Background>::CreateObj(), OBJ_BACK);
-	m_pObjManager->AddObject(L"player", AbstractFactory<Player>::CreateObj(), OBJ_PLAYER);
-	//m_pObjManager->AddObject(L"monster", AbstractFactory<Monster>::CreateObj(), OBJ_MONSTER);
-	m_pObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_MOUSE);
+	m_ObjManager->AddObject(L"background", AbstractFactory<Background>::CreateObj(), OBJ_BACK);
+	m_ObjManager->AddObject(L"player", AbstractFactory<Player>::CreateObj(), OBJ_PLAYER);
+	//m_ObjManager->AddObject(L"monster", AbstractFactory<Monster>::CreateObj(), OBJ_MONSTER);
+	m_ObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_MOUSE);
 
-	GameObject* pPlayer = m_pObjManager->GetObjFromTag(L"player", OBJ_PLAYER);
+	GameObject* pPlayer = m_ObjManager->GetObjFromTag(L"player", OBJ_PLAYER);
 	m_CamMgr->SetTarget(pPlayer);
 
-	GameObject* pBackGround = m_pObjManager->GetObjFromTag(L"background", OBJ_BACK);
+	GameObject* pBackGround = m_ObjManager->GetObjFromTag(L"background", OBJ_BACK);
 	m_CamMgr->SetResolution(pBackGround->GetInfo().Size_Width, pBackGround->GetInfo().Size_Height);
 
 	return true;
@@ -51,8 +52,39 @@ int TestScene::Update(const float & TimeDelta)
 			GET_MANAGER<CollisionManager>()->SetRenderCheck(true);
 	}
 
-	m_pObjManager->Update(TimeDelta);
+	m_ObjManager->Update(TimeDelta);
 	m_CamMgr->Update(TimeDelta);
+
+	// 플레이어 정보를 보낸다.
+	GameObject *player = m_ObjManager->GetObjFromTag(L"player", OBJ_PLAYER);
+	
+	GAMEOBJINFO objInfo = player->GetInfo();
+	m_NetworkManager->SendPlayerInfo(objInfo.Pos_X, objInfo.Pos_Y, player->GetSpriteInfo().CurState);
+
+	// 다른 플레이어 정보를 받는다.
+	SPPLAYER otherInfo;
+	while(false != m_NetworkManager->RecvOtherInfo(&otherInfo))
+	{
+		// 만약 등록된 id의 플레이어가 없다면 만든다.
+		wstring s = to_wstring(otherInfo.id);
+		GameObject *other_player = nullptr;
+		other_player = m_ObjManager->GetObjFromTag(s.c_str(), OBJ_OTHERPLAYER);
+		
+		if (nullptr == other_player)
+		{
+			other_player = AbstractFactory<Player>::CreateObj();
+			dynamic_cast<Player*>(other_player)->SetOtherCheck(true);
+			m_ObjManager->AddObject(s.c_str(), other_player, OBJ_OTHERPLAYER);
+		}
+		
+		// 위치
+		other_player->SetPosition(otherInfo.pos_x, otherInfo.pos_y);
+
+		// 스프라이트 상태
+		SPRITEINFO sprite_info = other_player->GetSpriteInfo();
+		sprite_info.CurState = otherInfo.player_state;
+		other_player->SetSpriteInfo(sprite_info);
+	}
 	
 	return 0;
 }
@@ -60,11 +92,11 @@ int TestScene::Update(const float & TimeDelta)
 void TestScene::Render(HDC hDC)
 {
 	//Rectangle(hDC, 0, 0, WINSIZE_X, WINSIZE_Y);
-	m_pObjManager->Render(hDC);
+	m_ObjManager->Render(hDC);
 }
 
 void TestScene::Release()
 {
 	m_CamMgr->DestroyInstance();
-	m_pObjManager->DestroyInstance();
+	m_ObjManager->DestroyInstance();
 }

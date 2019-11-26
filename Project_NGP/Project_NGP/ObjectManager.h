@@ -14,8 +14,7 @@ public:
 	const TCHAR* GetTagFromObj(GameObject* Obj, OBJTYPE ObjType);
 	
 	MAPOBJ& GetObjFromType(OBJTYPE ObjType) { return m_mapObj[ObjType]; }
-	GameObject* GetObjFromTag(const TCHAR* tag, OBJTYPE ObjType) 
-	{ return m_mapObj[ObjType].find(tag)->second; }
+	GameObject* GetObjFromTag(const TCHAR* tag, OBJTYPE ObjType);
 	
 public:
 	void AddObject(const TCHAR* tag, GameObject* Obj, OBJTYPE ObjType);

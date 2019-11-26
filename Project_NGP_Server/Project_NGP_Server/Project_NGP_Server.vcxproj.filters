@@ -56,5 +56,8 @@
     <ClInclude Include="MainServer.h">
       <Filter>00.MainServer</Filter>
     </ClInclude>
+    <ClInclude Include="Enum.h">
+      <Filter>98.Header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -57,7 +57,38 @@ bool NetworkManager::ConnectToServer(const char* ip)
 	SPLOGIN recvInfo;
 	Recv(&recvInfo);
 
+	m_myID = recvInfo.id;
+
 	MessageBox(g_hWnd_New, L"서버에 접속하였습니다!", L"알림", MB_OK);
+	return true;
+}
+
+bool NetworkManager::SendPlayerInfo(short pos_x, short pos_y, int sprite_state)
+{
+	SPPLAYER info;
+	info.id = m_myID;
+	info.type = SP_PLAYER;
+	info.size = sizeof(SPPLAYER);
+	info.pos_x = pos_x;
+	info.pos_y = pos_y;
+	info.player_state = sprite_state;
+
+	Send(&info, SP_PLAYER);
+
+	return true;
+}
+
+bool NetworkManager::RecvOtherInfo(SPPLAYER * OutInfo)
+{
+	SPPLAYER recvInfo;
+	int result = Recv(&recvInfo);
+
+	if (0 != result ||
+		SP_PLAYER != recvInfo.type)
+		return false;
+
+	memcpy(OutInfo, &recvInfo, sizeof(SPPLAYER));
+
 	return true;
 }
 
@@ -112,7 +143,19 @@ void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)
 		m_overlappedInfo.sendbytes = s.size;
 	}
 		break;
-	case SP_POS_PLAYER:
+	case SP_PLAYER:
+	{
+		SPPLAYER s;
+		SPPLAYER* ps = reinterpret_cast<SPPLAYER*>(packet_struct);
+		s.size = sizeof(SPPLAYER);
+		s.type = ps->type;
+		s.id = ps->id;
+		s.pos_x = ps->pos_x;
+		s.pos_y = ps->pos_y;
+		s.player_state = ps->player_state;
+		memcpy(OutPacket, &s, s.size);
+		m_overlappedInfo.sendbytes = s.size;
+	}
 		break;
 	case SP_END:
 		break;
@@ -126,7 +169,8 @@ void NetworkManager::Depacking(void* OutPacket_struct, char* buf)
 	case SP_LOGIN_OK:
 		memcpy(OutPacket_struct, buf, sizeof(SPLOGIN));
 		break;
-	case SP_POS_PLAYER:
+	case SP_PLAYER:
+		memcpy(OutPacket_struct, buf, sizeof(SPPLAYER));
 		break;
 	case SP_END:
 		break;

@@ -296,6 +296,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
+	case WM_SETFOCUS:
+		// 포커스 얻음
+		GET_MANAGER<KeyManager>()->SetRunning(true);
+		break;
+	case WM_KILLFOCUS:
+		// 포커스 잃음
+		GET_MANAGER<KeyManager>()->SetRunning(false);
+		break;
+
 	case WM_COMMAND:
 	{
 		int wmId = LOWORD(wParam);

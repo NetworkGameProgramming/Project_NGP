@@ -16,6 +16,7 @@ public:
 
 private:
 	CameraManager   *m_CamMgr = nullptr;
-	ObjectManager   *m_pObjManager = nullptr;
+	ObjectManager   *m_ObjManager = nullptr;
+	NetworkManager  *m_NetworkManager = nullptr;
 };
 
