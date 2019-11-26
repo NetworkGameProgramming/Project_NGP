@@ -191,15 +191,16 @@ void MainServer::ProcessPacket(int id, void* buf)
 	switch (packet[1])
 	{
 	case SP_LOGIN_OK:
-	{
-		int a = 0;
-	}
 	break;
 	case SP_PLAYER:
 	{
-		SPPLAYER* info = reinterpret_cast<SPPLAYER*> (buf);
-		int b = 0;
+		SPPLAYER *PlayerInfo = reinterpret_cast<SPPLAYER*> (buf);
+		g_mapClient[id].posX = PlayerInfo->pos_x;
+		g_mapClient[id].posY = PlayerInfo->pos_y;
+		g_mapClient[id].player_state = PlayerInfo->player_state;
 	}
+	break;
+	case SP_OTHERPLAYER:
 	break;
 	}
 
@@ -227,18 +228,41 @@ void MainServer::SendProcess(int send_id, int id, void* buf)
 	}
 	break;
 	case SP_PLAYER:
+	break;
+	case SP_OTHERPLAYER:
 	{
-		if (send_id == id)
+		if (send_id != id)
 			return;
-		SPPLAYER* info = reinterpret_cast<SPPLAYER*> (buf);
-		SPPLAYER packet;
-		packet.id = id;
-		packet.size = sizeof(packet);
-		packet.type = SP_PLAYER;
-		packet.pos_x = info->pos_x;
-		packet.pos_y = info->pos_y;
-		packet.player_state = info->player_state;
-		SendPacket(send_id, id, &packet);
+		char tempBuffer[MAX_BUFFER];
+
+		// 나를 제외한 다른 클라이언트 사이즈
+		int other_client_count = (int)g_mapClient.size() - 1;
+
+		// size
+		tempBuffer[0] = sizeof(SPOTHERPLAYERS) * other_client_count + sizeof(char) + sizeof(char);
+		// type
+		tempBuffer[1] = SP_OTHERPLAYER;
+
+		// size type을 넣은 패킷의 주소 시작 위치
+		int startAddrPos = 2;
+		int count = 0;
+		for (auto& c : g_mapClient)
+		{
+			// 자신은 넣지 않는다.
+			if (send_id == c.first)
+				continue;
+
+			SPOTHERPLAYERS info = SPOTHERPLAYERS{};
+			info.id = c.first;
+			info.pos_x = c.second.posX;
+			info.pos_y = c.second.posY;
+			info.player_state = c.second.player_state;
+
+			memcpy((tempBuffer + startAddrPos + sizeof(SPOTHERPLAYERS) * count),
+				&info, sizeof(SPOTHERPLAYERS));
+			++count;
+		}
+		SendPacket(send_id, id, &tempBuffer);
 	}
 	break;
 	}

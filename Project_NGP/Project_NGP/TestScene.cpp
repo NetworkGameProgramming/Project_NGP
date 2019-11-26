@@ -4,7 +4,6 @@
 #include "Mouse.h"
 #include "Background.h"
 #include "Monster.h"
-
 TestScene::TestScene()
 {
 }
@@ -60,30 +59,44 @@ int TestScene::Update(const float & TimeDelta)
 	
 	GAMEOBJINFO objInfo = player->GetInfo();
 	m_NetworkManager->SendPlayerInfo(objInfo.Pos_X, objInfo.Pos_Y, player->GetSpriteInfo().CurState);
-
+	
 	// 다른 플레이어 정보를 받는다.
-	SPPLAYER otherInfo;
-	while(false != m_NetworkManager->RecvOtherInfo(&otherInfo))
+	char otherInfo[MAX_BUFFER] = { 0, };
+	if(0 != m_NetworkManager->SendAndRecvOtherInfo(otherInfo))
 	{
-		// 만약 등록된 id의 플레이어가 없다면 만든다.
-		wstring s = to_wstring(otherInfo.id);
-		GameObject *other_player = nullptr;
-		other_player = m_ObjManager->GetObjFromTag(s.c_str(), OBJ_OTHERPLAYER);
-		
-		if (nullptr == other_player)
-		{
-			other_player = AbstractFactory<Player>::CreateObj();
-			dynamic_cast<Player*>(other_player)->SetOtherCheck(true);
-			m_ObjManager->AddObject(s.c_str(), other_player, OBJ_OTHERPLAYER);
-		}
-		
-		// 위치
-		other_player->SetPosition(otherInfo.pos_x, otherInfo.pos_y);
+		char size = otherInfo[0];
+		if (0 == size)
+			return 0;
 
-		// 스프라이트 상태
-		SPRITEINFO sprite_info = other_player->GetSpriteInfo();
-		sprite_info.CurState = otherInfo.player_state;
-		other_player->SetSpriteInfo(sprite_info);
+		int startAddrPos = 2;
+		int count = (size - startAddrPos) / sizeof(SPOTHERPLAYERS);
+
+		for (int i = 0; i < count; ++i)
+		{
+			SPOTHERPLAYERS info = SPOTHERPLAYERS{};
+			memcpy(&info, (otherInfo + startAddrPos + sizeof(SPOTHERPLAYERS) * i),
+				sizeof(SPOTHERPLAYERS));
+
+			// 만약 등록된 id의 플레이어가 없다면 만든다.
+			wstring s = to_wstring(info.id);
+			GameObject* other_player = nullptr;
+			other_player = m_ObjManager->GetObjFromTag(s.c_str(), OBJ_OTHERPLAYER);
+
+			if (nullptr == other_player)
+			{
+				other_player = AbstractFactory<Player>::CreateObj();
+				dynamic_cast<Player*>(other_player)->SetOtherCheck(true);
+				m_ObjManager->AddObject(s.c_str(), other_player, OBJ_OTHERPLAYER);
+			}
+
+			// 위치
+			other_player->SetPosition(info.pos_x, info.pos_y);
+
+			// 스프라이트 상태
+			SPRITEINFO sprite_info = other_player->GetSpriteInfo();
+			sprite_info.CurState = info.player_state;
+			other_player->SetSpriteInfo(sprite_info);
+		}
 	}
 	
 	return 0;

@@ -52,11 +52,12 @@ bool NetworkManager::ConnectToServer(const char* ip)
 	info.type = SP_LOGIN_OK;
 	info.id = 0;
 
-	Send(&info, SP_LOGIN_OK);
+	Send_Blocking(&info, SP_LOGIN_OK);
 
 	SPLOGIN recvInfo;
-	Recv(&recvInfo);
-
+	
+	Recv_Blocking(&recvInfo);
+	
 	m_myID = recvInfo.id;
 
 	MessageBox(g_hWnd_New, L"서버에 접속하였습니다!", L"알림", MB_OK);
@@ -78,16 +79,15 @@ bool NetworkManager::SendPlayerInfo(short pos_x, short pos_y, int sprite_state)
 	return true;
 }
 
-bool NetworkManager::RecvOtherInfo(SPPLAYER * OutInfo)
+bool NetworkManager::SendAndRecvOtherInfo(char* OutInfo)
 {
-	SPPLAYER recvInfo;
-	int result = Recv(&recvInfo);
+	Send_Blocking(OutInfo, SP_OTHERPLAYER);
 
-	if (0 != result ||
-		SP_PLAYER != recvInfo.type)
+	int result = Recv_Blocking(OutInfo);
+
+	if (0 == result ||
+		SP_OTHERPLAYER != OutInfo[1])
 		return false;
-
-	memcpy(OutInfo, &recvInfo, sizeof(SPPLAYER));
 
 	return true;
 }
@@ -128,6 +128,28 @@ int NetworkManager::Recv(void* OutPacket_struct)
 	return result;
 }
 
+int NetworkManager::Send_Blocking(void* packet_struct, char type)
+{
+	// 패킷변환후
+	Packing(m_overlappedInfo.buffer, packet_struct, type);
+
+	// 서버로 패킷을 보낸다.
+	int byte = send(m_serversocket, m_overlappedInfo.buffer, 
+		m_overlappedInfo.buffer[0], 0);
+
+	return byte;
+}
+
+int NetworkManager::Recv_Blocking(void* OutPacket_struct)
+{
+	int byte = recv(m_serversocket, m_overlappedInfo.buffer, MAX_BUFFER, 0);
+
+	// 풀기
+	Depacking(OutPacket_struct, m_overlappedInfo.buffer, byte);
+
+	return byte;
+}
+
 void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)
 {
 	switch (type)
@@ -156,13 +178,20 @@ void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)
 		memcpy(OutPacket, &s, s.size);
 		m_overlappedInfo.sendbytes = s.size;
 	}
-		break;
+	break;
+	case SP_OTHERPLAYER:
+	{
+		OutPacket[0] = 2;
+		OutPacket[1] = SP_OTHERPLAYER;
+		m_overlappedInfo.sendbytes = 2;
+	}
+	break;
 	case SP_END:
 		break;
 	}
 }
 
-void NetworkManager::Depacking(void* OutPacket_struct, char* buf)
+void NetworkManager::Depacking(void* OutPacket_struct, char* buf, char size)
 {
 	switch (buf[1])
 	{
@@ -171,6 +200,9 @@ void NetworkManager::Depacking(void* OutPacket_struct, char* buf)
 		break;
 	case SP_PLAYER:
 		memcpy(OutPacket_struct, buf, sizeof(SPPLAYER));
+		break;
+	case SP_OTHERPLAYER:
+		memcpy(OutPacket_struct, buf, size);
 		break;
 	case SP_END:
 		break;

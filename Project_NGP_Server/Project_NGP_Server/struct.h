@@ -18,10 +18,11 @@ struct SOCKET_INFO
 	OVERLAPPED_INFO over_info;
 	SOCKADDR_IN		addr_info;
 	SOCKET socket;				// 소켓
-	int id;						// 클라이언트마다 id를 놓는다.
 	
 	// 게임 정보가 들어간다.
-	int posX, posY;
+	// 플레이어
+	short posX, posY;
+	int player_state;
 };
 
 // 패킷 구조체
@@ -43,6 +44,13 @@ typedef struct ClientPacketTypePlayer
 	short pos_x, pos_y;
 	int player_state;
 }SPPLAYER;
+
+typedef struct ClientPacketOtherPlayers
+{
+	int id;
+	short pos_x, pos_y;
+	int player_state;
+}SPOTHERPLAYERS;
 
 typedef struct ServerPacketEnd
 {
