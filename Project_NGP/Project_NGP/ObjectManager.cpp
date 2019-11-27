@@ -24,7 +24,8 @@ const TCHAR* ObjectManager::GetTagFromObj(GameObject* Obj, OBJTYPE ObjType)
 
 GameObject * ObjectManager::GetObjFromTag(const TCHAR * tag, OBJTYPE ObjType)
 {
-	auto& iter = m_mapObj[ObjType].find(tag);
+	MAPOBJ::iterator iter = find_if(begin(m_mapObj[ObjType]), end(m_mapObj[ObjType]),
+		[&](auto& p) {return 0 == wcscmp(p.first, tag); });
 
 	if (m_mapObj[ObjType].end() == iter)
 		return nullptr;

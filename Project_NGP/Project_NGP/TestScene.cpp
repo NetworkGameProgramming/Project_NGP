@@ -70,7 +70,6 @@ int TestScene::Update(const float & TimeDelta)
 
 		int startAddrPos = 2;
 		int count = (size - startAddrPos) / sizeof(SPOTHERPLAYERS);
-
 		for (int i = 0; i < count; ++i)
 		{
 			SPOTHERPLAYERS info = SPOTHERPLAYERS{};
@@ -78,15 +77,20 @@ int TestScene::Update(const float & TimeDelta)
 				sizeof(SPOTHERPLAYERS));
 
 			// 만약 등록된 id의 플레이어가 없다면 만든다.
-			wstring s = to_wstring(info.id);
+			TCHAR *tchar = new TCHAR[64];
+			wsprintf(tchar, L"%d", info.id);
+
 			GameObject* other_player = nullptr;
-			other_player = m_ObjManager->GetObjFromTag(s.c_str(), OBJ_OTHERPLAYER);
+
+			other_player = m_ObjManager->GetObjFromTag(tchar,
+				OBJ_OTHERPLAYER);
 
 			if (nullptr == other_player)
 			{
 				other_player = AbstractFactory<Player>::CreateObj();
 				dynamic_cast<Player*>(other_player)->SetOtherCheck(true);
-				m_ObjManager->AddObject(s.c_str(), other_player, OBJ_OTHERPLAYER);
+				m_ObjManager->AddObject(tchar, other_player,
+					OBJ_OTHERPLAYER);
 			}
 
 			// 위치
