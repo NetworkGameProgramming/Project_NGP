@@ -34,6 +34,8 @@ bool TestScene::Initialize()
 	GameObject* pBackGround = m_ObjManager->GetObjFromTag(L"background", OBJ_BACK);
 	m_CamMgr->SetResolution(pBackGround->GetInfo().Size_Width, pBackGround->GetInfo().Size_Height);
 
+	// 이미 접속된 플레이어들을 가지고 온다.
+
 	return true;
 }
 
@@ -66,7 +68,7 @@ int TestScene::Update(const float & TimeDelta)
 	
 	// 다른 플레이어 정보를 받는다.
 	char otherInfo[MAX_BUFFER] = { 0, };
-	if(0 != m_NetworkManager->SendAndRecvOtherInfo(otherInfo))
+	if(true == m_NetworkManager->SendAndRecvOtherInfo(otherInfo))
 	{
 		char size = otherInfo[0];
 		if (0 == size)
@@ -80,36 +82,64 @@ int TestScene::Update(const float & TimeDelta)
 			memcpy(&other_PInfo, (otherInfo + startAddrPos + sizeof(SPOTHERPLAYERS) * i),
 				sizeof(SPOTHERPLAYERS));
 
-			// 만약 등록된 id의 플레이어가 없다면 만든다.
-			TCHAR *tchar = new TCHAR[64];
-			wsprintf(tchar, L"%d", other_PInfo.id);
-
 			GameObject* other_player = nullptr;
 
-			other_player = m_ObjManager->GetObjFromTag(tchar,
+			other_player = m_ObjManager->GetObjFromTag(to_wstring(other_PInfo.id).c_str(),
 				OBJ_OTHERPLAYER);
 
+			if (nullptr != other_player)
+			{
+				// 위치
+				other_player->SetPosition(other_PInfo.info.pos_x, other_PInfo.info.pos_y);
+
+				// 스프라이트 상태
+				SPRITEINFO sprite_info = other_player->GetSpriteInfo();
+				sprite_info.CurState = other_PInfo.info.player_state;
+				other_player->SetSpriteInfo(sprite_info);
+
+				// 방향
+				other_player->SetDirection((DIRECTION)other_PInfo.info.player_dir);
+			}
+		}
+	}
+
+	// 이벤트 처리를 한다.
+	EVENTINFO evInfo;
+	if (true == m_NetworkManager->SendAndRecvEvent(&evInfo))
+	{
+		switch (evInfo.state)
+		{
+		case EV_PUTOTHERPLAYER:
+		{
+			GameObject* other_player = nullptr;
+
+			other_player = m_ObjManager->GetObjFromTag(to_wstring(evInfo.id).c_str(),
+				OBJ_OTHERPLAYER);
+
+			// 만약 등록된 id의 플레이어가 없다면 만든다.
 			if (nullptr == other_player)
 			{
+				TCHAR* tchar = new TCHAR[64];
+				wsprintf(tchar, L"%d", evInfo.id);
+
 				other_player = AbstractFactory<Player>::CreateObj();
 				dynamic_cast<Player*>(other_player)->SetOtherCheck(true);
 				m_ObjManager->AddObject(tchar, other_player,
 					OBJ_OTHERPLAYER);
 			}
-
-			// 위치
-			other_player->SetPosition(other_PInfo.info.pos_x, other_PInfo.info.pos_y);
-
-			// 스프라이트 상태
-			SPRITEINFO sprite_info = other_player->GetSpriteInfo();
-			sprite_info.CurState = other_PInfo.info.player_state;
-			other_player->SetSpriteInfo(sprite_info);
-
-			// 방향
-			other_player->SetDirection((DIRECTION)other_PInfo.info.player_dir);
+		}
+		break;
+		case EV_END:
+		{
+			m_ObjManager->ReleaseObjFromTag(to_wstring(evInfo.id).c_str(),
+				OBJ_OTHERPLAYER);
+		}
+		break;
+		case EV_NONE:
+			break;
 		}
 	}
-	
+
 	return 0;
 }
 

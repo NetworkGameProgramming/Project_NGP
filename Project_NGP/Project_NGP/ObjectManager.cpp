@@ -99,7 +99,7 @@ void ObjectManager::ReleaseAll()
 	}
 }
 
-void ObjectManager::ReleaseType(OBJTYPE ObjType)
+void ObjectManager::ReleaseFromType(OBJTYPE ObjType)
 {
 	for (auto& obj : m_mapObj[ObjType])
 	{
@@ -112,11 +112,12 @@ void ObjectManager::ReleaseType(OBJTYPE ObjType)
 	m_mapObj[ObjType].clear();
 }
 
-void ObjectManager::ReleaseObj(const TCHAR* tag, OBJTYPE ObjType)
+void ObjectManager::ReleaseObjFromTag(const TCHAR* tag, OBJTYPE ObjType)
 {
-	MAPOBJ::iterator iter = m_mapObj[ObjType].find(tag);
+	MAPOBJ::iterator iter = find_if(begin(m_mapObj[ObjType]), end(m_mapObj[ObjType]),
+		[&](auto& p) {return 0 == wcscmp(p.first, tag); });
 
-	if (end(m_mapObj[ObjType]) == iter)
+	if (m_mapObj[ObjType].end() == iter)
 		return;
 
 	if (nullptr != iter->second)
@@ -125,10 +126,10 @@ void ObjectManager::ReleaseObj(const TCHAR* tag, OBJTYPE ObjType)
 		iter->second = nullptr;
 	}
 
-	m_mapObj[ObjType].erase(tag);
+	m_mapObj[ObjType].erase(iter);
 }
 
 void ObjectManager::ReleaseObj(GameObject* Obj, OBJTYPE ObjType)
 {
-	ReleaseObj(GetTagFromObj(Obj, ObjType), ObjType);
+	ReleaseObjFromTag(GetTagFromObj(Obj, ObjType), ObjType);
 }

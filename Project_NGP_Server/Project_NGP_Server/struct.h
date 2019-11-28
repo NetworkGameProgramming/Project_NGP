@@ -14,12 +14,28 @@ struct OVERLAPPED_INFO
 };
 
 #pragma pack(push, 1)
+enum EventState
+{
+	EV_PUTOTHERPLAYER,
+	EV_END,
+	EV_NONE
+};
+
+typedef struct EventInfo
+{
+	char size;
+	char type;
+	int id;
+	EventState state;
+}EVENTINFO;
+
 typedef struct PlayerInfo
 {
 	short	pos_x, pos_y;
 	int		player_state;
 	char	player_dir;
 }PLAYERINFO;
+
 #pragma pack(pop)
 
 struct SOCKET_INFO
@@ -31,6 +47,9 @@ struct SOCKET_INFO
 	// 게임 정보가 들어간다.
 	// 플레이어
 	PLAYERINFO player_info;
+	// 이벤트 큐
+	queue<EVENTINFO> event_queue;
+	mutex event_lock;
 };
 
 // 패킷 구조체

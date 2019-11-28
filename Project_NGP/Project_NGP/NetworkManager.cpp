@@ -16,7 +16,7 @@ bool NetworkManager::Initialize()
 		return false;
 
 	// server socket
-	m_serversocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	m_serversocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, 0);
 	if (INVALID_SOCKET == m_serversocket)
 		return false;
 
@@ -52,11 +52,11 @@ bool NetworkManager::ConnectToServer(const char* ip)
 	info.type = SP_LOGIN_OK;
 	info.id = 0;
 
-	Send_Blocking(&info, SP_LOGIN_OK);
+	Send(&info, SP_LOGIN_OK);
 
 	SPLOGIN recvInfo;
 	
-	Recv_Blocking(&recvInfo);
+	Recv(&recvInfo);
 	
 	m_myID = recvInfo.id;
 
@@ -79,9 +79,9 @@ bool NetworkManager::SendPlayerInfo(const PLAYERINFO& info)
 
 bool NetworkManager::SendAndRecvOtherInfo(char* OutInfo)
 {
-	Send_Blocking(OutInfo, SP_OTHERPLAYER);
+	Send(OutInfo, SP_OTHERPLAYER);
 
-	int result = Recv_Blocking(OutInfo);
+	int result = Recv(OutInfo);
 
 	if (0 == result ||
 		SP_OTHERPLAYER != OutInfo[1])
@@ -90,60 +90,37 @@ bool NetworkManager::SendAndRecvOtherInfo(char* OutInfo)
 	return true;
 }
 
+bool NetworkManager::SendAndRecvEvent(EVENTINFO* OutEvInfo)
+{
+	Send(OutEvInfo, SP_EVENT);
+
+	int result = Recv(OutEvInfo);
+
+	if (0 == result ||
+		SP_EVENT != OutEvInfo->type)
+		return false;
+
+	return true;
+}
+
 int NetworkManager::Send(void* packet_struct, char type)
 {
 	// 패킷변환후
-	Packing(m_overlappedInfo.buffer, packet_struct, type);
-
-	// 보내거나 받을때 항상 Overlapped 구조체를 초기화 해줘야한다.
-	memset(&m_overlappedInfo.overlapped, 0x00, sizeof(WSAOVERLAPPED));
-	m_overlappedInfo.wsabuf.len = m_overlappedInfo.buffer[0];
-	m_overlappedInfo.wsabuf.buf = m_overlappedInfo.buffer;
+	Packing(m_netBuffer, packet_struct, type);
 
 	// 서버로 패킷을 보낸다.
-	int result = WSASend(m_serversocket, &(m_overlappedInfo.wsabuf), 1,  
-		&(m_overlappedInfo.sendbytes), 0, &(m_overlappedInfo.overlapped), NULL);
-
-	return result;
-}
-
-int NetworkManager::Recv(void* OutPacket_struct)
-{
-	DWORD flags = 0;
-
-	// 보내거나 받을때 항상 Overlapped 구조체를 초기화 해줘야한다.
-	memset(&m_overlappedInfo.overlapped, 0x00, sizeof(WSAOVERLAPPED));
-	m_overlappedInfo.wsabuf.len = MAX_BUFFER;
-	m_overlappedInfo.wsabuf.buf = m_overlappedInfo.buffer;
-
-	// 서버로부터 패킷을 받는다.
-	int result = WSARecv(m_serversocket, &(m_overlappedInfo.wsabuf), 1,
-		0, &flags, &(m_overlappedInfo.overlapped), NULL);
-
-	// 풀기
-	Depacking(OutPacket_struct, m_overlappedInfo.buffer);
-
-	return result;
-}
-
-int NetworkManager::Send_Blocking(void* packet_struct, char type)
-{
-	// 패킷변환후
-	Packing(m_overlappedInfo.buffer, packet_struct, type);
-
-	// 서버로 패킷을 보낸다.
-	int byte = send(m_serversocket, m_overlappedInfo.buffer, 
-		m_overlappedInfo.buffer[0], 0);
+	int byte = send(m_serversocket, m_netBuffer,
+		m_netBuffer[0], 0);
 
 	return byte;
 }
 
-int NetworkManager::Recv_Blocking(void* OutPacket_struct)
+int NetworkManager::Recv(void* OutPacket_struct)
 {
-	int byte = recv(m_serversocket, m_overlappedInfo.buffer, MAX_BUFFER, 0);
+	int byte = recv(m_serversocket, m_netBuffer, MAX_BUFFER, 0);
 
 	// 풀기
-	Depacking(OutPacket_struct, m_overlappedInfo.buffer, byte);
+	Depacking(OutPacket_struct, m_netBuffer, byte);
 
 	return byte;
 }
@@ -160,7 +137,6 @@ void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)
 		s.type = ps->type;
 		s.id = ps->id;
 		memcpy(OutPacket, &s, s.size);
-		m_overlappedInfo.sendbytes = s.size;
 	}
 		break;
 	case SP_PLAYER:
@@ -172,7 +148,6 @@ void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)
 		s.id = ps->id;
 		s.info = ps->info;
 		memcpy(OutPacket, &s, s.size);
-		m_overlappedInfo.sendbytes = s.size;
 	}
 	break;
 	case SP_OTHERPLAYER:
@@ -180,11 +155,14 @@ void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)
 		// 다른 플레이어
 		OutPacket[0] = 2;
 		OutPacket[1] = SP_OTHERPLAYER;
-		m_overlappedInfo.sendbytes = 2;
 	}
 	break;
-	case SP_END:
-		break;
+	case SP_EVENT:
+	{
+		OutPacket[0] = 2;
+		OutPacket[1] = SP_EVENT;
+	}
+	break;
 	}
 }
 
@@ -201,7 +179,8 @@ void NetworkManager::Depacking(void* OutPacket_struct, char* buf, char size)
 	case SP_OTHERPLAYER:
 		memcpy(OutPacket_struct, buf, size);
 		break;
-	case SP_END:
+	case SP_EVENT:
+		memcpy(OutPacket_struct, buf, sizeof(EVENTINFO));
 		break;
 	}
 }

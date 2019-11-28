@@ -13,18 +13,14 @@ public:
 public:
 	bool ConnectToServer(const char* ip);
 	bool SendPlayerInfo(const PLAYERINFO& PInfo);
-	
 	bool SendAndRecvOtherInfo(char* OutInfo);
+	bool SendAndRecvEvent(EVENTINFO* OutEvInfo);
 
 private:
-	// 보내기
-	int Send(void* packet_struct, char type);
-	// 받기
-	int Recv(void* OutPacket_struct);
 	// 블로킹 보내기
-	int Send_Blocking(void* packet_struct, char type);
+	int Send(void* packet_struct, char type);
 	// 블로킹 받기
-	int Recv_Blocking(void* OutPacket_struct);
+	int Recv(void* OutPacket_struct);
 	// 패킹
 	void Packing(char* OutBuf, void* packet_struct, char type);
 	// 풀기
@@ -35,7 +31,7 @@ private:
 	SOCKET			m_serversocket;
 	sockaddr_in		m_serverAddr;
 
-	OVERLAPPEDINFO	m_overlappedInfo = OVERLAPPEDINFO{};
+	char			m_netBuffer[MAX_BUFFER];
 	
 	int				m_myID = 0;
 };

@@ -4,9 +4,9 @@
 #include "pch.h"
 #include "MainServer.h"
 
-std::map<int, SOCKET_INFO>  g_mapClient;
-HANDLE						g_iocp = NULL;
-int							g_id = 1;
+std::map<int, SOCKET_INFO*>  g_mapClient;
+HANDLE						 g_iocp = NULL;
+int							 g_id = 1;
 int main()
 {
 	MainServer server;

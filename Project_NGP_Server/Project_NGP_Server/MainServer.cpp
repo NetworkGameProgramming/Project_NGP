@@ -83,22 +83,43 @@ bool MainServer::Running()
 		m_clientSocket = accept(m_listenSocket, (sockaddr*)&m_clientAddr, &addrLen);
 		int user_id = g_id++;
 
-		g_mapClient[user_id] = SOCKET_INFO{};
-		g_mapClient[user_id].socket = m_clientSocket;
-		g_mapClient[user_id].over_info.wsaBuffer.len = MAX_BUFFER;
-		g_mapClient[user_id].over_info.wsaBuffer.buf = g_mapClient[user_id].over_info.buffer;
-		g_mapClient[user_id].over_info.is_recv = true;
+		g_mapClient[user_id] = new SOCKET_INFO;
+		memset(&g_mapClient[user_id]->over_info.over, 0x00, sizeof(WSAOVERLAPPED));
+		g_mapClient[user_id]->socket = m_clientSocket;
+		g_mapClient[user_id]->over_info.wsaBuffer.len = MAX_BUFFER;
+		g_mapClient[user_id]->over_info.wsaBuffer.buf = g_mapClient[user_id]->over_info.buffer;
+		g_mapClient[user_id]->over_info.is_recv = true;
 
 		printf("[클라이언트 접속] ID : %d, IP : %s, PORT : %d, SOCKET : %d\n",  
 			user_id, inet_ntoa(m_clientAddr.sin_addr), ntohs(m_clientAddr.sin_port), m_clientSocket);
 
-		memcpy(&g_mapClient[user_id].addr_info, &m_clientAddr, sizeof(SOCKADDR_IN));
+		memcpy(&g_mapClient[user_id]->addr_info, &m_clientAddr, sizeof(SOCKADDR_IN));
 
 		m_flags = 0;
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(m_clientSocket), g_iocp, user_id, 0);
 
-		int result = WSARecv(m_clientSocket, &g_mapClient[user_id].over_info.wsaBuffer, 
-			1, NULL, &m_flags, &(g_mapClient[user_id].over_info.over), NULL);
+		// 나를 제외한 다른 클라이언트 이벤트 큐에 내가 추가되었음을 알리는 이벤트 추가
+		EVENTINFO info;
+		info.size = sizeof(info);
+		info.type = SP_EVENT;
+		info.state = EV_PUTOTHERPLAYER;
+		for (auto& cl : g_mapClient)
+		{
+			if (cl.first == user_id) continue;
+
+			info.id = user_id;
+			cl.second->event_lock.lock();
+			cl.second->event_queue.push(info);
+			cl.second->event_lock.unlock();
+
+			info.id = cl.first;
+			g_mapClient[user_id]->event_lock.lock();
+			g_mapClient[user_id]->event_queue.push(info);
+			g_mapClient[user_id]->event_lock.unlock();
+		}
+
+		int result = WSARecv(m_clientSocket, &g_mapClient[user_id]->over_info.wsaBuffer,
+			1, NULL, &m_flags, &(g_mapClient[user_id]->over_info.over), NULL);
 		if (0 != result)
 		{
 			int err_no = WSAGetLastError();
@@ -151,19 +172,32 @@ void MainServer::do_worker()
 		GetQueuedCompletionStatus(g_iocp, &byte, (PULONG_PTR)pKey,
 			&pOver, INFINITE);
 
-		SOCKET clientsocket = g_mapClient[key].socket;
+		SOCKET clientsocket = g_mapClient[key]->socket;
 
 		if (0 == byte)
 		{
 			closesocket(clientsocket);
 			printf("[클라이언트 종료] ID : %d, IP : %s, PORT : %d, SOCKET : %d\n",
-				key, inet_ntoa(g_mapClient[key].addr_info.sin_addr),
-					 ntohs(g_mapClient[key].addr_info.sin_port), clientsocket);
+				key, inet_ntoa(g_mapClient[key]->addr_info.sin_addr),
+					 ntohs(g_mapClient[key]->addr_info.sin_port), clientsocket);
 
 			// 종료 작업
+			EVENTINFO info;
+			info.size = sizeof(info);
+			info.type = SP_EVENT;
+			info.id = key;
+			info.state = EV_END;
+			for (auto& cl : g_mapClient)
+			{
+				if (cl.first == key) continue;
+				cl.second->event_lock.lock();
+				cl.second->event_queue.push(info);
+				cl.second->event_lock.unlock();
+			}
 
-
-			g_mapClient.erase(clientsocket);
+			delete g_mapClient[key];
+			g_mapClient[key] = nullptr;
+			g_mapClient.erase(key);
 			continue;
 		}
 
@@ -194,28 +228,21 @@ void MainServer::ProcessPacket(int id, void* buf)
 
 	switch (packet[1])
 	{
-	case SP_LOGIN_OK:
-	break;
 	case SP_PLAYER:
 	{
 		SPPLAYER *PlayerInfo = reinterpret_cast<SPPLAYER*> (buf);
-		g_mapClient[id].player_info.pos_x = PlayerInfo->info.pos_x;
-		g_mapClient[id].player_info.pos_y = PlayerInfo->info.pos_y;
-		g_mapClient[id].player_info.player_state = PlayerInfo->info.player_state;
-		g_mapClient[id].player_info.player_dir = PlayerInfo->info.player_dir;
+		g_mapClient[id]->player_info.pos_x = PlayerInfo->info.pos_x;
+		g_mapClient[id]->player_info.pos_y = PlayerInfo->info.pos_y;
+		g_mapClient[id]->player_info.player_state = PlayerInfo->info.player_state;
+		g_mapClient[id]->player_info.player_dir = PlayerInfo->info.player_dir;
 	}
-	break;
-	case SP_OTHERPLAYER:
 	break;
 	}
 
-	for (auto& cl : g_mapClient)
-	{
-		SendProcess(cl.first, id, buf);
-	}
+	SendProcess(id, buf);
 }
 
-void MainServer::SendProcess(int send_id, int id, void* buf)
+void MainServer::SendProcess(int send_id, void* buf)
 {
 	char* packet = reinterpret_cast<char*> (buf);
 
@@ -223,25 +250,15 @@ void MainServer::SendProcess(int send_id, int id, void* buf)
 	{
 	case SP_LOGIN_OK:
 	{
-		// 나한테만 보낸다.
-		if (send_id != id)
-			return;
-
 		SPLOGIN packet;
-		packet.id = id;
+		packet.id = send_id;
 		packet.size = sizeof(packet);
 		packet.type = SP_LOGIN_OK;
-		SendPacket(send_id, id, &packet);
+		SendPacket(send_id, &packet);
 	}
-	break;
-	case SP_PLAYER:
 	break;
 	case SP_OTHERPLAYER:
 	{
-		// 나한테만 보낸다.
-		if (send_id != id)
-			return;
-
 		char tempBuffer[MAX_BUFFER];
 
 		// 나를 제외한 다른 클라이언트 사이즈
@@ -263,22 +280,42 @@ void MainServer::SendProcess(int send_id, int id, void* buf)
 
 			SPOTHERPLAYERS info = SPOTHERPLAYERS{};
 			info.id = c.first;
-			info.info.pos_x = c.second.player_info.pos_x;
-			info.info.pos_y = c.second.player_info.pos_y;
-			info.info.player_state = c.second.player_info.player_state;
-			info.info.player_dir = c.second.player_info.player_dir;
+			info.info.pos_x = c.second->player_info.pos_x;
+			info.info.pos_y = c.second->player_info.pos_y;
+			info.info.player_state = c.second->player_info.player_state;
+			info.info.player_dir = c.second->player_info.player_dir;
 
 			memcpy((tempBuffer + startAddrPos + sizeof(SPOTHERPLAYERS) * count),
 				&info, sizeof(SPOTHERPLAYERS));
 			++count;
 		}
-		SendPacket(send_id, id, &tempBuffer);
+		SendPacket(send_id, &tempBuffer);
+	}
+	break;
+	case SP_EVENT:
+	{
+		g_mapClient[send_id]->event_lock.lock();
+		if (g_mapClient[send_id]->event_queue.empty())
+		{
+			g_mapClient[send_id]->event_lock.unlock();
+			EVENTINFO packet = EVENTINFO{ };
+			packet.size = sizeof(packet);
+			packet.state = EV_NONE;
+			SendPacket(send_id, &packet);
+			break;
+		}
+
+		const EVENTINFO& evInfo = g_mapClient[send_id]->event_queue.front();
+		EVENTINFO packet = evInfo;
+		g_mapClient[send_id]->event_queue.pop();
+		g_mapClient[send_id]->event_lock.unlock();
+		SendPacket(send_id, &packet);
 	}
 	break;
 	}
 }
 
-void MainServer::SendPacket(int send_id, int id, void* buf)
+void MainServer::SendPacket(int send_id, void* buf)
 {
 	char* packet = reinterpret_cast<char*>(buf);
 	int packet_size = packet[0];
@@ -289,6 +326,6 @@ void MainServer::SendPacket(int send_id, int id, void* buf)
 	memcpy(send_over->buffer, packet, packet_size);
 	send_over->wsaBuffer.buf = send_over->buffer;
 	send_over->wsaBuffer.len = packet_size;
-	int result = WSASend(g_mapClient[send_id].socket, &send_over->wsaBuffer, 1, 0, 0, &send_over->over, NULL);
+	int result = WSASend(g_mapClient[send_id]->socket, &send_over->wsaBuffer, 1, 0, 0, &send_over->over, NULL);
 	result = 0;
 }

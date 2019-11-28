@@ -21,8 +21,8 @@ public:
 	void Update(const float& TimeDelta);
 	void Render(HDC hDC);
 	void ReleaseAll();
-	void ReleaseType(OBJTYPE ObjType);
-	void ReleaseObj(const TCHAR* tag, OBJTYPE ObjType);
+	void ReleaseFromType(OBJTYPE ObjType);
+	void ReleaseObjFromTag(const TCHAR* tag, OBJTYPE ObjType);
 	void ReleaseObj(GameObject* Obj, OBJTYPE ObjType);
 
 private:

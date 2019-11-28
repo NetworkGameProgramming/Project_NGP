@@ -14,7 +14,8 @@
 #include <vector>
 #include <map>
 #include <thread>
-
+#include <queue>
+#include <mutex>
 using namespace std;
 
 #include <WS2tcpip.h>

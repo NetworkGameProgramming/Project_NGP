@@ -13,8 +13,8 @@ private:
 	void error_display(const char *msg);
 	static void do_worker();
 	static void ProcessPacket(int id, void* buf);
-	static void SendProcess(int send_id, int id, void* buf);
-	static void SendPacket(int send_id, int id, void* buf);
+	static void SendProcess(int send_id, void* buf);
+	static void SendPacket(int send_id, void* buf);
 private:
 	WSADATA			m_WSAData;
 	SOCKET			m_listenSocket;
