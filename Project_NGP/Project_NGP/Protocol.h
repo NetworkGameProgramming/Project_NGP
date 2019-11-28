@@ -22,6 +22,13 @@ typedef struct OverInfo
 }OVERLAPPEDINFO;
 
 #pragma pack(push, 1)
+typedef struct PlayerInfo
+{
+	short	pos_x, pos_y;
+	int		player_state;
+	char	player_dir;
+}PLAYERINFO;
+
 // Network Packet
 typedef struct ServerPacketTypeLogin
 {
@@ -35,15 +42,13 @@ typedef struct ClientPacketTypePlayer
 	char size;
 	char type;
 	int id;
-	short pos_x, pos_y;
-	int player_state;
+	PLAYERINFO info;
 }SPPLAYER;
 
 typedef struct ClientPacketOtherPlayers
 {
 	int id;
-	short pos_x, pos_y;
-	int player_state;
+	PLAYERINFO info;
 }SPOTHERPLAYERS;
 
 typedef struct ServerPacketEnd

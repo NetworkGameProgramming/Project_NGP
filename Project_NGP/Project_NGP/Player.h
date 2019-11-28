@@ -34,8 +34,7 @@ public:
 private:
 	float m_TimeDelta = 0.f;
 	
-	DIRECTION m_Direction = DIR_END;
-	DWORD m_Dir = 0;
+	
 
 	//float m_GravitySpeed = 0.f;
 	//float m_GravityAcc = 9.8f;

@@ -58,7 +58,11 @@ int TestScene::Update(const float & TimeDelta)
 	GameObject *player = m_ObjManager->GetObjFromTag(L"player", OBJ_PLAYER);
 	
 	GAMEOBJINFO objInfo = player->GetInfo();
-	m_NetworkManager->SendPlayerInfo(objInfo.Pos_X, objInfo.Pos_Y, player->GetSpriteInfo().CurState);
+	char objDir = (char)player->GetDirection();
+
+	PLAYERINFO PInfo = PLAYERINFO{ (short)objInfo.Pos_X, (short)objInfo.Pos_Y,
+						player->GetSpriteInfo().CurState, objDir };
+	m_NetworkManager->SendPlayerInfo(PInfo);
 	
 	// 다른 플레이어 정보를 받는다.
 	char otherInfo[MAX_BUFFER] = { 0, };
@@ -72,13 +76,13 @@ int TestScene::Update(const float & TimeDelta)
 		int count = (size - startAddrPos) / sizeof(SPOTHERPLAYERS);
 		for (int i = 0; i < count; ++i)
 		{
-			SPOTHERPLAYERS info = SPOTHERPLAYERS{};
-			memcpy(&info, (otherInfo + startAddrPos + sizeof(SPOTHERPLAYERS) * i),
+			SPOTHERPLAYERS other_PInfo = SPOTHERPLAYERS{};
+			memcpy(&other_PInfo, (otherInfo + startAddrPos + sizeof(SPOTHERPLAYERS) * i),
 				sizeof(SPOTHERPLAYERS));
 
 			// 만약 등록된 id의 플레이어가 없다면 만든다.
 			TCHAR *tchar = new TCHAR[64];
-			wsprintf(tchar, L"%d", info.id);
+			wsprintf(tchar, L"%d", other_PInfo.id);
 
 			GameObject* other_player = nullptr;
 
@@ -94,12 +98,15 @@ int TestScene::Update(const float & TimeDelta)
 			}
 
 			// 위치
-			other_player->SetPosition(info.pos_x, info.pos_y);
+			other_player->SetPosition(other_PInfo.info.pos_x, other_PInfo.info.pos_y);
 
 			// 스프라이트 상태
 			SPRITEINFO sprite_info = other_player->GetSpriteInfo();
-			sprite_info.CurState = info.player_state;
+			sprite_info.CurState = other_PInfo.info.player_state;
 			other_player->SetSpriteInfo(sprite_info);
+
+			// 방향
+			other_player->SetDirection((DIRECTION)other_PInfo.info.player_dir);
 		}
 	}
 	

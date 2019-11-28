@@ -16,6 +16,7 @@ public:
 	const float& GetGravity()					{ return m_GravitySpeed; }
 	const PIXELCOLLIDERINFO* GetPixelCollider() { return m_PixelInfo; }
 	const SPRITEINFO& GetSpriteInfo()			{ return m_SpriteInfo; }
+	const DIRECTION& GetDirection()				{ return m_Direction; }
 
 public:
 	void SetPosition(int posX, int posY);
@@ -25,6 +26,7 @@ public:
 	void SetCollideOn(bool on);
 	void SetFall(bool fall);
 	void SetSpriteInfo(SPRITEINFO spriteInfo);
+	void SetDirection(DIRECTION dir);
 
 public:
 	bool LoadPixelCollider(const char* pFilePath,
@@ -43,6 +45,9 @@ protected:
 
 	RENDERTYPE		m_RenderType = RENDER_END;
 
+	DIRECTION		m_Direction = DIR_END;
+	DWORD			m_Dir = 0;
+
 	bool			m_isNoScroll = false;
 	bool			m_isDead = false;
 	bool			m_isCollideOn = true;
@@ -58,5 +63,6 @@ protected:
 
 	GAMEOBJINFO			m_CollideInfo;
 	RECT				m_CollideRect;
+
 };
 

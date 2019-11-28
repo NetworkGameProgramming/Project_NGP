@@ -64,17 +64,15 @@ bool NetworkManager::ConnectToServer(const char* ip)
 	return true;
 }
 
-bool NetworkManager::SendPlayerInfo(short pos_x, short pos_y, int sprite_state)
+bool NetworkManager::SendPlayerInfo(const PLAYERINFO& info)
 {
-	SPPLAYER info;
-	info.id = m_myID;
-	info.type = SP_PLAYER;
-	info.size = sizeof(SPPLAYER);
-	info.pos_x = pos_x;
-	info.pos_y = pos_y;
-	info.player_state = sprite_state;
+	SPPLAYER PInfo;
+	PInfo.id = m_myID;
+	PInfo.type = SP_PLAYER;
+	PInfo.size = sizeof(SPPLAYER);
+	PInfo.info = info;
 
-	Send(&info, SP_PLAYER);
+	Send(&PInfo, SP_PLAYER);
 
 	return true;
 }
@@ -172,15 +170,14 @@ void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)
 		s.size = sizeof(SPPLAYER);
 		s.type = ps->type;
 		s.id = ps->id;
-		s.pos_x = ps->pos_x;
-		s.pos_y = ps->pos_y;
-		s.player_state = ps->player_state;
+		s.info = ps->info;
 		memcpy(OutPacket, &s, s.size);
 		m_overlappedInfo.sendbytes = s.size;
 	}
 	break;
 	case SP_OTHERPLAYER:
 	{
+		// 다른 플레이어
 		OutPacket[0] = 2;
 		OutPacket[1] = SP_OTHERPLAYER;
 		m_overlappedInfo.sendbytes = 2;

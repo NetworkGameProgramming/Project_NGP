@@ -72,6 +72,11 @@ void GameObject::SetSpriteInfo(SPRITEINFO spriteInfo)
 	m_SpriteInfo = spriteInfo;
 }
 
+void GameObject::SetDirection(DIRECTION dir)
+{
+	m_Direction = dir;
+}
+
 bool GameObject::LoadPixelCollider(const char* pFilePath, unsigned char r, unsigned char g, unsigned char b)
 {
 	if (nullptr != m_PixelInfo)

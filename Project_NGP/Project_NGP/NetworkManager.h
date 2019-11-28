@@ -12,7 +12,7 @@ public:
 
 public:
 	bool ConnectToServer(const char* ip);
-	bool SendPlayerInfo(short pos_x, short pos_y, int sprite_state);
+	bool SendPlayerInfo(const PLAYERINFO& PInfo);
 	
 	bool SendAndRecvOtherInfo(char* OutInfo);
 

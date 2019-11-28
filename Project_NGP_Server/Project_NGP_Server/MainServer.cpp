@@ -159,6 +159,10 @@ void MainServer::do_worker()
 			printf("[클라이언트 종료] ID : %d, IP : %s, PORT : %d, SOCKET : %d\n",
 				key, inet_ntoa(g_mapClient[key].addr_info.sin_addr),
 					 ntohs(g_mapClient[key].addr_info.sin_port), clientsocket);
+
+			// 종료 작업
+
+
 			g_mapClient.erase(clientsocket);
 			continue;
 		}
@@ -195,9 +199,10 @@ void MainServer::ProcessPacket(int id, void* buf)
 	case SP_PLAYER:
 	{
 		SPPLAYER *PlayerInfo = reinterpret_cast<SPPLAYER*> (buf);
-		g_mapClient[id].posX = PlayerInfo->pos_x;
-		g_mapClient[id].posY = PlayerInfo->pos_y;
-		g_mapClient[id].player_state = PlayerInfo->player_state;
+		g_mapClient[id].player_info.pos_x = PlayerInfo->info.pos_x;
+		g_mapClient[id].player_info.pos_y = PlayerInfo->info.pos_y;
+		g_mapClient[id].player_info.player_state = PlayerInfo->info.player_state;
+		g_mapClient[id].player_info.player_dir = PlayerInfo->info.player_dir;
 	}
 	break;
 	case SP_OTHERPLAYER:
@@ -218,8 +223,10 @@ void MainServer::SendProcess(int send_id, int id, void* buf)
 	{
 	case SP_LOGIN_OK:
 	{
+		// 나한테만 보낸다.
 		if (send_id != id)
 			return;
+
 		SPLOGIN packet;
 		packet.id = id;
 		packet.size = sizeof(packet);
@@ -231,8 +238,10 @@ void MainServer::SendProcess(int send_id, int id, void* buf)
 	break;
 	case SP_OTHERPLAYER:
 	{
+		// 나한테만 보낸다.
 		if (send_id != id)
 			return;
+
 		char tempBuffer[MAX_BUFFER];
 
 		// 나를 제외한 다른 클라이언트 사이즈
@@ -254,9 +263,10 @@ void MainServer::SendProcess(int send_id, int id, void* buf)
 
 			SPOTHERPLAYERS info = SPOTHERPLAYERS{};
 			info.id = c.first;
-			info.pos_x = c.second.posX;
-			info.pos_y = c.second.posY;
-			info.player_state = c.second.player_state;
+			info.info.pos_x = c.second.player_info.pos_x;
+			info.info.pos_y = c.second.player_info.pos_y;
+			info.info.player_state = c.second.player_info.player_state;
+			info.info.player_dir = c.second.player_info.player_dir;
 
 			memcpy((tempBuffer + startAddrPos + sizeof(SPOTHERPLAYERS) * count),
 				&info, sizeof(SPOTHERPLAYERS));
