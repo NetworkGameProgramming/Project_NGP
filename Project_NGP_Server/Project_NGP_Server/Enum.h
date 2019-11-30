@@ -1,5 +1,20 @@
 #pragma once
 
+enum SCENESTATE
+{
+	SCENE_MENU,
+	SCENE_TEST,
+	SCENE_END
+};
+
+enum DIRECTION
+{
+	DIR_LEFT,
+	DIR_RIGHT,
+	DIR_TOP,
+	DIR_BOTTOM,
+	DIR_END
+};
 
 enum PlayerState
 {
@@ -14,3 +29,24 @@ enum PlayerState
 	Player_Hanging, 
 	Player_End
 };
+
+enum MonsterState
+{
+	Monster_Idle,
+	Monster_Move,
+	Monster_Att,
+	Monster_Spell,
+	Monster_Hit,
+	Monster_Die,
+	Monster_End
+};
+
+enum MONSTERTYPE
+{
+	MONTYPE_SNAIL,
+	MONTYPE_SLIME,
+	MONTYPE_MUSHROOM,
+	MONTYPE_BOSS,
+	MONTYPE_END
+};
+

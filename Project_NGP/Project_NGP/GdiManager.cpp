@@ -34,6 +34,7 @@ void GdiManager::LoadImageBySceneState(SCENESTATE SceneState)
 		// Test
 		GdiMgr->LoadGdiImage(L"balrock", L"../Resources/0.bmp");
 		GdiMgr->LoadGdiImage(L"balrock_other", L"../Resources/510.bmp");
+		GdiMgr->LoadGdiImage(L"snail", L"../Resources/Monster/0.bmp");
 		// Background
 		GdiMgr->LoadGdiImage(L"background", L"../Resources/Map/Back.bmp");
 		GdiMgr->LoadGdiImage(L"background_collider", L"../Resources/Map/Back_Collider.bmp");

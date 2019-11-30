@@ -54,6 +54,8 @@ int TestScene::Update(const float & TimeDelta)
 	m_ObjManager->Update(TimeDelta);
 	m_CamMgr->Update(TimeDelta);
 
+	SCENESTATE curScene = GET_MANAGER<SceneManager>()->GetCurrentSceneState();
+
 #ifdef SERVER_MODE
 	// 플레이어 정보를 보낸다.
 	GameObject *player = m_ObjManager->GetObjFromTag(L"player", OBJ_PLAYER);
@@ -64,7 +66,7 @@ int TestScene::Update(const float & TimeDelta)
 	PLAYERINFO PInfo = PLAYERINFO{ (short)objInfo.Pos_X, (short)objInfo.Pos_Y,
 						player->GetSpriteInfo().CurState, objDir };
 	
-	if (false == m_NetworkManager->SendPlayerInfo(PInfo))
+	if (false == m_NetworkManager->SendPlayerInfo(curScene, PInfo))
 	{
 		MessageBox(g_hWnd, L"서버에 연결할 수 없습니다.", L"Error", MB_OK);
 		return -1;
@@ -74,11 +76,12 @@ int TestScene::Update(const float & TimeDelta)
 	char otherInfo[MAX_BUFFER] = { 0, };
 	if(true == m_NetworkManager->SendAndRecvOtherInfo(otherInfo))
 	{
-		char size = otherInfo[0];
+		short size = 0;
+		memcpy(&size, otherInfo, sizeof(short));
 		if (0 == size)
 			return 0;
 
-		int startAddrPos = 2;
+		int startAddrPos = 2 + 1;
 		int count = (size - startAddrPos) / sizeof(SPOTHERPLAYERS);
 		for (int i = 0; i < count; ++i)
 		{
@@ -112,11 +115,61 @@ int TestScene::Update(const float & TimeDelta)
 		return -1;
 	}
 
+	// 몬스터 정보를 받는다.
+	// 씬 정보를 넣는다.
+	otherInfo[3] = curScene;
+	if (true == m_NetworkManager->SendAndRecvMonster(otherInfo))
+	{
+		short size = 0;
+		memcpy(&size, otherInfo, sizeof(short));
+		if (0 == size)
+			return 0;
+
+		int startAddrPos = 2 + 1;
+		int count = (size - startAddrPos) / sizeof(SPMONSTER);
+		for (int i = 0; i < count; ++i)
+		{
+			SPMONSTER MInfo = SPMONSTER{};
+			memcpy(&MInfo, (otherInfo + startAddrPos + sizeof(SPMONSTER) * i),
+				sizeof(SPMONSTER));
+
+			GameObject* monster = nullptr;
+
+			monster = m_ObjManager->GetObjFromTag(to_wstring(MInfo.monster_id).c_str(),
+				OBJ_MONSTER);
+
+			if (nullptr == monster)
+			{
+				TCHAR* tchar = new TCHAR[64];
+				wsprintf(tchar, L"%d", MInfo.monster_id);
+
+				monster = AbstractFactory<Monster>::CreateObj();
+				m_ObjManager->AddObject(tchar, monster,
+					OBJ_MONSTER);
+			}
+			// 위치
+			monster->SetPosition(MInfo.info.pos_x, MInfo.info.pos_y);
+
+			// 스프라이트 상태
+			SPRITEINFO sprite_info = monster->GetSpriteInfo();
+			sprite_info.CurState = MInfo.info.monster_state;
+			monster->SetSpriteInfo(sprite_info);
+
+			// 방향
+			monster->SetDirection((DIRECTION)MInfo.info.monster_dir);
+		}
+	}
+	else
+	{
+		MessageBox(g_hWnd, L"서버에 연결할 수 없습니다.", L"Error", MB_OK);
+		return -1;
+	}
+
 	// 이벤트 처리를 한다.
 	EVENTINFO evInfo;
 	if (true == m_NetworkManager->SendAndRecvEvent(&evInfo))
 	{
-		switch (evInfo.state)
+		switch (evInfo.event_state)
 		{
 		case EV_PUTOTHERPLAYER:
 		{
@@ -124,6 +177,11 @@ int TestScene::Update(const float & TimeDelta)
 
 			other_player = m_ObjManager->GetObjFromTag(to_wstring(evInfo.id).c_str(),
 				OBJ_OTHERPLAYER);
+
+			// 큐로부터 보내온 정보의 다른 유저의 Scene이 현재 Scene과 다른 경우는 
+			// 서로 다른 Scene에 있다는 뜻이므로 추가하지 않는다.
+			if (evInfo.scene_state != curScene)
+				break;
 
 			// 만약 등록된 id의 플레이어가 없다면 만든다.
 			if (nullptr == other_player)
