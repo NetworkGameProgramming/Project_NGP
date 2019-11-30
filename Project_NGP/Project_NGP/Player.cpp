@@ -18,14 +18,14 @@ int Player::Update_Input(const float& TimeDelta)
 		return 0;
 
 	m_Dir = 0;
-	KeyManager *keyManager = GET_MANAGER<KeyManager>();
+	KeyManager* keyManager = GET_MANAGER<KeyManager>();
 
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
 	{
 		m_Dir |= 0x00000001;
 		m_Direction = DIR_LEFT;
-		
-		if(false == m_fallCheck)
+
+		if (false == m_fallCheck)
 			m_SpriteInfo.CurState = Walk;
 	}
 
@@ -33,7 +33,7 @@ int Player::Update_Input(const float& TimeDelta)
 	{
 		m_Dir |= 0x00000002;
 		m_Direction = DIR_RIGHT;
-		
+
 		if (false == m_fallCheck)
 			m_SpriteInfo.CurState = Walk;
 	}
@@ -69,7 +69,7 @@ int Player::Update_Input(const float& TimeDelta)
 
 	if (false == m_fallCheck &&
 		false == keyManager->GetKeyState(STATE_PUSH, VK_LEFT) &&
-		false == keyManager->GetKeyState(STATE_PUSH, VK_RIGHT) && 
+		false == keyManager->GetKeyState(STATE_PUSH, VK_RIGHT) &&
 		false == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
 	{
 		m_SpriteInfo.CurState = Idle;
@@ -78,7 +78,7 @@ int Player::Update_Input(const float& TimeDelta)
 	return 0;
 }
 
-int Player::Update_Position(const float& TimeDelta, const DIRECTION & Direction)
+int Player::Update_Position(const float& TimeDelta, const DIRECTION& Direction)
 {
 	if (true == m_isOther)
 		return 0;
@@ -112,7 +112,7 @@ int Player::Update_Position(const float& TimeDelta, const DIRECTION & Direction)
 	// ม฿ทย
 	m_Info.Pos_Y += int(m_GravitySpeed * TimeDelta);
 	m_GravitySpeed += m_GravityAcc * TimeDelta;
-	
+
 	if (true == m_fallCheck)
 	{
 		if (1000.f > m_GravityAcc)
@@ -154,8 +154,8 @@ int Player::Update_Sprite(const float& TimeDelta)
 
 	switch (m_Direction)
 	{
-	case DIR_LEFT : m_SpriteInfo.key = L"player_left"; break;
-	case DIR_RIGHT : m_SpriteInfo.key = L"player_right"; break;
+	case DIR_LEFT: m_SpriteInfo.key = L"player_left"; break;
+	case DIR_RIGHT: m_SpriteInfo.key = L"player_right"; break;
 	}
 
 	return 0;
@@ -163,11 +163,11 @@ int Player::Update_Sprite(const float& TimeDelta)
 
 bool Player::Initialize()
 {
-	m_Info = GAMEOBJINFO{ 800, 600, 200, 200};
+	m_Info = GAMEOBJINFO{ 800, 600, 200, 200 };
 	m_CollideInfo = GAMEOBJINFO{ 0, 0, 40, 70 };
 	m_Speed = 200.f;
 	m_RenderType = RENDER_OBJ;
-	
+
 	m_Direction = DIR_RIGHT;
 	m_SpriteInfo.key = L"player_right";
 	m_SpriteInfo.CurState = Idle;
@@ -178,7 +178,7 @@ bool Player::Initialize()
 	return true;
 }
 
-int Player::Update(const float & TimeDelta)
+int Player::Update(const float& TimeDelta)
 {
 	m_TimeDelta = TimeDelta;
 
@@ -208,16 +208,18 @@ int Player::Update(const float & TimeDelta)
 
 void Player::Render(HDC hdc)
 {
-	if(true == GET_MANAGER<CollisionManager>()->GetRenderCheck())
+	if (true == GET_MANAGER<CollisionManager>()->GetRenderCheck())
 		Rectangle(hdc, m_CollideRect.left, m_CollideRect.top, m_CollideRect.right, m_CollideRect.bottom);
 
 	HDC hMemDC = GET_MANAGER<GdiManager>()->FindImage(m_SpriteInfo.key)->GetGdiImageDefault();
-	
-	TransparentBlt(hdc, m_Rect.left, m_Rect.top, m_Info.Size_Width, m_Info.Size_Height, 
-		hMemDC, 
-		(int)m_SpriteInfo.SpriteIndex * m_Info.Size_Width, 
-		m_SpriteInfo.StateIndex * m_Info.Size_Height, 
+
+	TransparentBlt(hdc, m_Rect.left, m_Rect.top, m_Info.Size_Width, m_Info.Size_Height,
+		hMemDC,
+		(int)m_SpriteInfo.SpriteIndex * m_Info.Size_Width,
+		m_SpriteInfo.StateIndex * m_Info.Size_Height,
 		m_Info.Size_Width, m_Info.Size_Height, RGB(255, 0, 255));
+
+	//std::cout << m_Info.Pos_X << ", " << m_Info.Pos_Y << std::endl;
 }
 
 void Player::Release()
@@ -245,7 +247,7 @@ void Player::StateChange()
 		m_SpriteInfo.SpriteIndex = 0.f;
 		switch (m_SpriteInfo.CurState)
 		{
-		case Idle:	
+		case Idle:
 			m_SpriteInfo.Type = SPRITE_REPEAT;
 			m_SpriteInfo.StateIndex = 0;
 			m_SpriteInfo.MaxFrame = 5;

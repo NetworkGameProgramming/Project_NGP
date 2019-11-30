@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="AbstractFactory.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="BlueSnail.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="GdiImage.h" />
     <ClInclude Include="CameraManager.h" />
@@ -196,6 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="BlueSnail.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="GdiImage.cpp" />
     <ClCompile Include="CameraManager.cpp" />

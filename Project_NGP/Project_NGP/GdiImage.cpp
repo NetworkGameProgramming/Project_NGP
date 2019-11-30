@@ -35,7 +35,7 @@ HDC GdiImage::GetGdiImageFromIndex(int index)
 	if (index >= (int)m_vecImages.size() || m_vecImages.empty())
 		return NULL;
 
-	return m_vecImages[0].hMemDC;
+	return m_vecImages[index].hMemDC;
 }
 
 GdiImage * GdiImage::LoadGdiImage(const TCHAR * pFilePath)

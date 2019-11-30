@@ -201,6 +201,9 @@
     <ClInclude Include="MainMenu.h">
       <Filter>02.SceneState\MainMenu</Filter>
     </ClInclude>
+    <ClInclude Include="BlueSnail.h">
+      <Filter>01.GameObject\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -280,6 +283,9 @@
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
       <Filter>02.SceneState\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="BlueSnail.cpp">
+      <Filter>01.GameObject\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

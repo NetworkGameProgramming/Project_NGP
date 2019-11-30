@@ -1,7 +1,10 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(438,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  Background.cpp
-  CameraManager.cpp
-  CollisionManager.cpp
-  GdiManager.cpp
+  BlueSnail.cpp
+D:\학교수업\넷겜플\Project_NGP\Project_NGP\Project_NGP\BlueSnail.cpp(27,35): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\학교수업\넷겜플\Project_NGP\Project_NGP\Project_NGP\BlueSnail.cpp(84,36): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\학교수업\넷겜플\Project_NGP\Project_NGP\Project_NGP\BlueSnail.cpp(190,51): warning C4244: '+=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\학교수업\넷겜플\Project_NGP\Project_NGP\Project_NGP\BlueSnail.cpp(194,51): warning C4244: '-=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Player.cpp
   코드를 생성하고 있습니다...
-  Project_NGP.vcxproj -> C:\Users\Bum\Desktop\GitHub\Project_NGP\Project_NGP\Project_NGP\..\Bin\Bin64_Debug\Project_NGP.exe
+D:\학교수업\넷겜플\Project_NGP\Project_NGP\Project_NGP\BlueSnail.cpp(246,104): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Project_NGP.vcxproj -> D:\학교수업\넷겜플\Project_NGP\Project_NGP\Project_NGP\..\Bin\Bin64_Debug\Project_NGP.exe
