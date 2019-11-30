@@ -34,8 +34,6 @@ bool TestScene::Initialize()
 	GameObject* pBackGround = m_ObjManager->GetObjFromTag(L"background", OBJ_BACK);
 	m_CamMgr->SetResolution(pBackGround->GetInfo().Size_Width, pBackGround->GetInfo().Size_Height);
 
-	// 이미 접속된 플레이어들을 가지고 온다.
-
 	return true;
 }
 
@@ -56,6 +54,7 @@ int TestScene::Update(const float & TimeDelta)
 	m_ObjManager->Update(TimeDelta);
 	m_CamMgr->Update(TimeDelta);
 
+#ifdef SERVER_MODE
 	// 플레이어 정보를 보낸다.
 	GameObject *player = m_ObjManager->GetObjFromTag(L"player", OBJ_PLAYER);
 	
@@ -64,7 +63,12 @@ int TestScene::Update(const float & TimeDelta)
 
 	PLAYERINFO PInfo = PLAYERINFO{ (short)objInfo.Pos_X, (short)objInfo.Pos_Y,
 						player->GetSpriteInfo().CurState, objDir };
-	m_NetworkManager->SendPlayerInfo(PInfo);
+	
+	if (false == m_NetworkManager->SendPlayerInfo(PInfo))
+	{
+		MessageBox(g_hWnd, L"서버에 연결할 수 없습니다.", L"Error", MB_OK);
+		return -1;
+	}
 	
 	// 다른 플레이어 정보를 받는다.
 	char otherInfo[MAX_BUFFER] = { 0, };
@@ -101,6 +105,11 @@ int TestScene::Update(const float & TimeDelta)
 				other_player->SetDirection((DIRECTION)other_PInfo.info.player_dir);
 			}
 		}
+	}
+	else
+	{
+		MessageBox(g_hWnd, L"서버에 연결할 수 없습니다.", L"Error", MB_OK);
+		return -1;
 	}
 
 	// 이벤트 처리를 한다.
@@ -139,6 +148,12 @@ int TestScene::Update(const float & TimeDelta)
 			break;
 		}
 	}
+	else
+	{
+		MessageBox(g_hWnd, L"서버에 연결할 수 없습니다.", L"Error", MB_OK);
+		return -1;
+	}
+#endif
 
 	return 0;
 }

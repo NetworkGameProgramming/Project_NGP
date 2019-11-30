@@ -42,9 +42,11 @@ bool SceneManager::ChangeSceneState(SCENESTATE SceneState)
 	return true;
 }
 
-void SceneManager::Update(const float & TimeDelta)
+int SceneManager::Update(const float & TimeDelta)
 {
-	m_Scene->Update(TimeDelta);
+	if (-1 == m_Scene->Update(TimeDelta))
+		return -1;
+	return 0;
 }
 
 void SceneManager::Render(HDC hDC)

@@ -86,10 +86,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// KeyManager 선언
 	KeyManager *pKeyManager = GET_MANAGER<KeyManager>();
 
+#ifdef SERVER_MODE
 	// Network Manager 선언 및 초기화
 	NetworkManager* pNetManager = GET_MANAGER<NetworkManager>();
 	if (false == pNetManager->Initialize())
 		return FALSE;
+#endif
 
 	// MainGame
 	Maingame mainGame;
@@ -169,7 +171,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	pTimerManager->DestroyInstance();
 	pKeyManager->DestroyInstance();
 	GET_MANAGER<FileManager>()->DestroyInstance();
+#ifdef SERVER_MODE
 	pNetManager->DestroyInstance();
+#endif
 
 	return (int)msg.wParam;
 }

@@ -52,11 +52,13 @@ bool NetworkManager::ConnectToServer(const char* ip)
 	info.type = SP_LOGIN_OK;
 	info.id = 0;
 
-	Send(&info, SP_LOGIN_OK);
+	if (-1 == Send(&info, SP_LOGIN_OK))
+		return false;
 
 	SPLOGIN recvInfo;
 	
-	Recv(&recvInfo);
+	if (-1 == Recv(&recvInfo))
+		return false;
 	
 	m_myID = recvInfo.id;
 
@@ -72,19 +74,18 @@ bool NetworkManager::SendPlayerInfo(const PLAYERINFO& info)
 	PInfo.size = sizeof(SPPLAYER);
 	PInfo.info = info;
 
-	Send(&PInfo, SP_PLAYER);
+	if (-1 == Send(&PInfo, SP_PLAYER))
+		return false;
 
 	return true;
 }
 
 bool NetworkManager::SendAndRecvOtherInfo(char* OutInfo)
 {
-	Send(OutInfo, SP_OTHERPLAYER);
+	if (-1 == Send(OutInfo, SP_OTHERPLAYER))
+		return false;
 
-	int result = Recv(OutInfo);
-
-	if (0 == result ||
-		SP_OTHERPLAYER != OutInfo[1])
+	if (-1 == Recv(OutInfo))
 		return false;
 
 	return true;
@@ -92,12 +93,10 @@ bool NetworkManager::SendAndRecvOtherInfo(char* OutInfo)
 
 bool NetworkManager::SendAndRecvEvent(EVENTINFO* OutEvInfo)
 {
-	Send(OutEvInfo, SP_EVENT);
+	if (-1 == Send(OutEvInfo, SP_EVENT))
+		return false;
 
-	int result = Recv(OutEvInfo);
-
-	if (0 == result ||
-		SP_EVENT != OutEvInfo->type)
+	if (-1 == Recv(OutEvInfo))
 		return false;
 
 	return true;
@@ -112,12 +111,18 @@ int NetworkManager::Send(void* packet_struct, char type)
 	int byte = send(m_serversocket, m_netBuffer,
 		m_netBuffer[0], 0);
 
+	if (0 == byte)
+		return -1;
+
 	return byte;
 }
 
 int NetworkManager::Recv(void* OutPacket_struct)
 {
 	int byte = recv(m_serversocket, m_netBuffer, MAX_BUFFER, 0);
+
+	if (0 == byte)
+		return -1;
 
 	// Ç®±â
 	Depacking(OutPacket_struct, m_netBuffer, byte);

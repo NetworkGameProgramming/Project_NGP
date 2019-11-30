@@ -20,10 +20,19 @@ bool Maingame::Initialize()
 	m_SceneMgr = GET_MANAGER<SceneManager>();
 	
 	// 씬에 필요한 것들을 미리 준비해 놓는다.
+#ifdef SERVER_MODE
 	if (false == m_SceneMgr->ChangeSceneState(SCENE_MENU))
 	{
 		return false;
 	}
+#endif
+
+#ifdef CLIENT_MODE
+	if (false == m_SceneMgr->ChangeSceneState(SCENE_TEST))
+	{
+		return false;
+	}
+#endif
 
 	// 그릴 DC핸들을 주윈도우 핸들로 부터 가져온다.
 	m_hDC = GetDC(g_hWnd);
@@ -36,7 +45,8 @@ int Maingame::Update(const float & TimeDelta)
 	// 씬을 업데이트
 	if (m_SceneMgr)
 	{
-		m_SceneMgr->Update(TimeDelta);
+		if (-1 == m_SceneMgr->Update(TimeDelta))
+			return -1;
 	}
 
 	return 0;

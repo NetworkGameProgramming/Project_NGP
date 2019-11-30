@@ -14,7 +14,7 @@ public:
 	bool ChangeSceneState(SCENESTATE SceneState);
 
 public:
-	void Update(const float& TimeDelta);
+	int Update(const float& TimeDelta);
 	void Render(HDC hDC);
 	void Release();
 
