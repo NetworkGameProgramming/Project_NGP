@@ -119,6 +119,8 @@ int Player::Update_Position(const float& TimeDelta, const DIRECTION& Direction)
 			m_GravityAcc += 9.8f * 10.f;
 	}
 
+	printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y);
+
 	return 0;
 }
 
@@ -228,7 +230,6 @@ void Player::Release()
 
 void Player::CollisionPixelPart(DIRECTION dir)
 {
-	int speed = int(m_Speed * m_TimeDelta);
 	switch (dir)
 	{
 	case DIR_BOTTOM:

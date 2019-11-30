@@ -1,5 +1,12 @@
 #include "pch.h"
 #include "MainServer.h"
+#include "Scene.h"
+#include "TestScene.h"
+#include "Spawn.h"
+#include "Monster.h"
+#include "GameObject.h"
+
+vector<Scene*> MainServer::m_vecScene;
 
 MainServer::MainServer()
 {
@@ -71,10 +78,11 @@ bool MainServer::Running()
 	int thread_count = sys_info.dwNumberOfProcessors;
 
 	// cpu thread 갯수만큼 서버처리를 하겠다.
-	for (int i = 0; i < thread_count; ++i)
+	for (int i = 0; i < thread_count - 1; ++i)
 	{
 		m_vecThread.emplace_back(do_worker);
 	}
+	m_vecThread.emplace_back(do_scene);
 
 	int addrLen = sizeof(SOCKADDR_IN);
 	g_id = 1;
@@ -102,17 +110,19 @@ bool MainServer::Running()
 		EVENTINFO info;
 		info.size = sizeof(info);
 		info.type = SP_EVENT;
-		info.state = EV_PUTOTHERPLAYER;
+		info.event_state = EV_PUTOTHERPLAYER;
 		for (auto& cl : g_mapClient)
 		{
 			if (cl.first == user_id) continue;
 
 			info.id = user_id;
+			info.scene_state = SCENE_TEST;
 			cl.second->event_lock.lock();
 			cl.second->event_queue.push(info);
 			cl.second->event_lock.unlock();
 
 			info.id = cl.first;
+			info.scene_state = cl.second->scene_state;
 			g_mapClient[user_id]->event_lock.lock();
 			g_mapClient[user_id]->event_queue.push(info);
 			g_mapClient[user_id]->event_lock.unlock();
@@ -186,7 +196,7 @@ void MainServer::do_worker()
 			info.size = sizeof(info);
 			info.type = SP_EVENT;
 			info.id = key;
-			info.state = EV_END;
+			info.event_state = EV_END;
 			for (auto& cl : g_mapClient)
 			{
 				if (cl.first == key) continue;
@@ -222,15 +232,86 @@ void MainServer::do_worker()
 	}
 }
 
+void MainServer::do_scene()
+{
+	// cpu 진동수로 timedelta 계산
+	LARGE_INTEGER cpuTick;
+	LARGE_INTEGER fixTime;
+	LARGE_INTEGER lastTime;
+	LARGE_INTEGER frameTime;
+
+	QueryPerformanceCounter(&frameTime);
+	QueryPerformanceCounter(&fixTime);
+	QueryPerformanceCounter(&lastTime);
+	QueryPerformanceFrequency(&cpuTick);
+
+	float TimeDelta = 0.f;
+	float TimeAcc = 0.f;
+	float FrameLimitTime = 1 / 60.f;
+
+	// Scene을 초기화 한다.
+	for (int i = SCENE_MENU; i < SCENE_END; ++i)
+	{
+		Scene* s = nullptr;
+
+		switch (i)
+		{
+		case SCENE_MENU:
+			break;
+		case SCENE_TEST:
+			s = new TestScene;
+			break;
+		}
+
+		if (nullptr != s &&
+			false == s->Initialize())
+		{
+			cout << "Scene 초기화 실패!" << endl;
+			delete s;
+			s = nullptr;
+			return;
+		}
+
+		m_vecScene.emplace_back(s);
+	}
+
+	while (true)
+	{
+		QueryPerformanceCounter(&frameTime);
+		
+		if ((frameTime.QuadPart - lastTime.QuadPart) > cpuTick.QuadPart)
+		{
+			QueryPerformanceFrequency(&cpuTick);
+			lastTime.QuadPart = frameTime.QuadPart;
+		}
+		
+		TimeDelta = float(frameTime.QuadPart - fixTime.QuadPart) / cpuTick.QuadPart;
+		fixTime = frameTime;
+
+		TimeAcc += TimeDelta;
+
+		if (FrameLimitTime <= TimeAcc)
+		{
+			for (auto& scene : m_vecScene)
+			{
+				if (nullptr != scene)
+					scene->Update(FrameLimitTime);
+			}
+			TimeAcc = 0.f;
+		}
+	}
+}
+
 void MainServer::ProcessPacket(int id, void* buf)
 {
 	char* packet = reinterpret_cast<char*> (buf);
 
-	switch (packet[1])
+	switch (packet[2])
 	{
 	case SP_PLAYER:
 	{
 		SPPLAYER *PlayerInfo = reinterpret_cast<SPPLAYER*> (buf);
+		g_mapClient[id]->scene_state = PlayerInfo->scene_state;
 		g_mapClient[id]->player_info.pos_x = PlayerInfo->info.pos_x;
 		g_mapClient[id]->player_info.pos_y = PlayerInfo->info.pos_y;
 		g_mapClient[id]->player_info.player_state = PlayerInfo->info.player_state;
@@ -246,7 +327,7 @@ void MainServer::SendProcess(int send_id, void* buf)
 {
 	char* packet = reinterpret_cast<char*> (buf);
 
-	switch (packet[1])
+	switch (packet[2])
 	{
 	case SP_LOGIN_OK:
 	{
@@ -254,23 +335,15 @@ void MainServer::SendProcess(int send_id, void* buf)
 		packet.id = send_id;
 		packet.size = sizeof(packet);
 		packet.type = SP_LOGIN_OK;
-		SendPacket(send_id, &packet);
+		SendPacket(send_id, &packet, sizeof(packet));
 	}
 	break;
 	case SP_OTHERPLAYER:
 	{
 		char tempBuffer[MAX_BUFFER];
 
-		// 나를 제외한 다른 클라이언트 사이즈
-		int other_client_count = (int)g_mapClient.size() - 1;
-
-		// size
-		tempBuffer[0] = sizeof(SPOTHERPLAYERS) * other_client_count + sizeof(char) + sizeof(char);
-		// type
-		tempBuffer[1] = SP_OTHERPLAYER;
-
 		// size type을 넣은 패킷의 주소 시작 위치
-		int startAddrPos = 2;
+		int startAddrPos = 2 + 1;
 		int count = 0;
 		for (auto& c : g_mapClient)
 		{
@@ -280,6 +353,7 @@ void MainServer::SendProcess(int send_id, void* buf)
 
 			SPOTHERPLAYERS info = SPOTHERPLAYERS{};
 			info.id = c.first;
+			info.scene_state = c.second->scene_state;
 			info.info.pos_x = c.second->player_info.pos_x;
 			info.info.pos_y = c.second->player_info.pos_y;
 			info.info.player_state = c.second->player_info.player_state;
@@ -289,7 +363,64 @@ void MainServer::SendProcess(int send_id, void* buf)
 				&info, sizeof(SPOTHERPLAYERS));
 			++count;
 		}
-		SendPacket(send_id, &tempBuffer);
+		// size
+		short size = sizeof(SPOTHERPLAYERS) * count + sizeof(short) + sizeof(char);
+		memcpy(&tempBuffer[0], &size, sizeof(short));
+		// type
+		tempBuffer[2] = SP_OTHERPLAYER;
+
+		SendPacket(send_id, &tempBuffer, size);
+	}
+	break;
+	case SP_MONSTER:
+	{
+		SCENESTATE CurSceneState = (SCENESTATE)packet[3];
+
+		Scene* CurScene = m_vecScene[CurSceneState];
+		char tempBuffer[MAX_BUFFER];
+
+		if (nullptr == CurScene)
+		{
+			int size = 2;
+			memcpy(&tempBuffer[0], &size, sizeof(short));
+			tempBuffer[2] = SP_MONSTER;
+			SendPacket(send_id, &tempBuffer, 3);
+			break;
+		}
+
+		// size type을 넣은 패킷의 주소 시작 위치
+		int startAddrPos = 2 + 1;
+		int count = 0;
+		for (auto& s : CurScene->GetMapSpawn())
+		{
+			// packet struct
+			SPMONSTER monster_info = SPMONSTER{};
+			monster_info.monster_id = s.first;
+
+			Monster* m = s.second->GetMonster();
+			if (nullptr == m)
+				continue;
+
+			// monster info struct
+			MONSTERINFO info = MONSTERINFO{};
+			info.monster_type = m->GetMonType();
+			info.monster_state = m->GetMonState();
+			info.pos_x = m->GetInfo().Pos_X;
+			info.pos_y = m->GetInfo().Pos_Y;
+			info.monster_dir = m->GetDirection();
+
+			monster_info.info = info;
+
+			memcpy((tempBuffer + startAddrPos + sizeof(SPMONSTER) * count),
+				&monster_info, sizeof(SPMONSTER));
+			++count;
+		}
+		// size
+		short size = sizeof(SPMONSTER) * count + sizeof(short) + sizeof(char);
+		memcpy(&tempBuffer[0], &size, sizeof(short));
+		// type
+		tempBuffer[2] = SP_MONSTER;
+		SendPacket(send_id, &tempBuffer, size);
 	}
 	break;
 	case SP_EVENT:
@@ -300,8 +431,8 @@ void MainServer::SendProcess(int send_id, void* buf)
 			g_mapClient[send_id]->event_lock.unlock();
 			EVENTINFO packet = EVENTINFO{ };
 			packet.size = sizeof(packet);
-			packet.state = EV_NONE;
-			SendPacket(send_id, &packet);
+			packet.event_state = EV_NONE;
+			SendPacket(send_id, &packet, sizeof(packet));
 			break;
 		}
 
@@ -309,16 +440,16 @@ void MainServer::SendProcess(int send_id, void* buf)
 		EVENTINFO packet = evInfo;
 		g_mapClient[send_id]->event_queue.pop();
 		g_mapClient[send_id]->event_lock.unlock();
-		SendPacket(send_id, &packet);
+		SendPacket(send_id, &packet, sizeof(packet));
 	}
 	break;
 	}
 }
 
-void MainServer::SendPacket(int send_id, void* buf)
+void MainServer::SendPacket(int send_id, void* buf, int size)
 {
 	char* packet = reinterpret_cast<char*>(buf);
-	int packet_size = packet[0];
+	int packet_size = size;
 
 	OVERLAPPED_INFO* send_over = new OVERLAPPED_INFO;
 	memset(send_over, 0x00, sizeof(OVERLAPPED_INFO));

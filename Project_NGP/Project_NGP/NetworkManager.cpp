@@ -52,7 +52,7 @@ bool NetworkManager::ConnectToServer(const char* ip)
 	info.type = SP_LOGIN_OK;
 	info.id = 0;
 
-	if (-1 == Send(&info, SP_LOGIN_OK))
+	if (-1 == Send(&info, SP_LOGIN_OK, sizeof(SPLOGIN)))
 		return false;
 
 	SPLOGIN recvInfo;
@@ -66,15 +66,16 @@ bool NetworkManager::ConnectToServer(const char* ip)
 	return true;
 }
 
-bool NetworkManager::SendPlayerInfo(const PLAYERINFO& info)
+bool NetworkManager::SendPlayerInfo(SCENESTATE SceneState, const PLAYERINFO& info)
 {
 	SPPLAYER PInfo;
 	PInfo.id = m_myID;
+	PInfo.scene_state = SceneState;
 	PInfo.type = SP_PLAYER;
 	PInfo.size = sizeof(SPPLAYER);
 	PInfo.info = info;
-
-	if (-1 == Send(&PInfo, SP_PLAYER))
+	
+	if (-1 == Send(&PInfo, SP_PLAYER, sizeof(SPPLAYER)))
 		return false;
 
 	return true;
@@ -82,7 +83,7 @@ bool NetworkManager::SendPlayerInfo(const PLAYERINFO& info)
 
 bool NetworkManager::SendAndRecvOtherInfo(char* OutInfo)
 {
-	if (-1 == Send(OutInfo, SP_OTHERPLAYER))
+	if (-1 == Send(OutInfo, SP_OTHERPLAYER, 3))
 		return false;
 
 	if (-1 == Recv(OutInfo))
@@ -93,7 +94,7 @@ bool NetworkManager::SendAndRecvOtherInfo(char* OutInfo)
 
 bool NetworkManager::SendAndRecvEvent(EVENTINFO* OutEvInfo)
 {
-	if (-1 == Send(OutEvInfo, SP_EVENT))
+	if (-1 == Send(OutEvInfo, SP_EVENT, 3))
 		return false;
 
 	if (-1 == Recv(OutEvInfo))
@@ -102,14 +103,25 @@ bool NetworkManager::SendAndRecvEvent(EVENTINFO* OutEvInfo)
 	return true;
 }
 
-int NetworkManager::Send(void* packet_struct, char type)
+bool NetworkManager::SendAndRecvMonster(char* OutInfo)
+{
+	if (-1 == Send(OutInfo, SP_MONSTER, 4))
+		return false;
+
+	if (-1 == Recv(OutInfo))
+		return false;
+
+	return true;
+}
+
+int NetworkManager::Send(void* packet_struct, char type, short size)
 {
 	// 패킷변환후
 	Packing(m_netBuffer, packet_struct, type);
 
 	// 서버로 패킷을 보낸다.
 	int byte = send(m_serversocket, m_netBuffer,
-		m_netBuffer[0], 0);
+		size, 0);
 
 	if (0 == byte)
 		return -1;
@@ -151,6 +163,7 @@ void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)
 		s.size = sizeof(SPPLAYER);
 		s.type = ps->type;
 		s.id = ps->id;
+		s.scene_state = ps->scene_state;
 		s.info = ps->info;
 		memcpy(OutPacket, &s, s.size);
 	}
@@ -158,22 +171,35 @@ void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)
 	case SP_OTHERPLAYER:
 	{
 		// 다른 플레이어
-		OutPacket[0] = 2;
-		OutPacket[1] = SP_OTHERPLAYER;
+		short size = 3;
+		memcpy(&OutPacket[0], &size, sizeof(short));
+		OutPacket[2] = SP_OTHERPLAYER;
+	}
+	break;
+	case SP_MONSTER:
+	{
+		char* ps = reinterpret_cast<char*>(packet_struct);
+
+		// 다른 플레이어
+		short size = 4;
+		memcpy(&OutPacket[0], &size, sizeof(short));
+		OutPacket[2] = SP_MONSTER;
+		OutPacket[3] = ps[3];
 	}
 	break;
 	case SP_EVENT:
 	{
-		OutPacket[0] = 2;
-		OutPacket[1] = SP_EVENT;
+		short size = 3;
+		memcpy(&OutPacket[0], &size, sizeof(short));
+		OutPacket[2] = SP_EVENT;
 	}
 	break;
 	}
 }
 
-void NetworkManager::Depacking(void* OutPacket_struct, char* buf, char size)
+void NetworkManager::Depacking(void* OutPacket_struct, char* buf, short size)
 {
-	switch (buf[1])
+	switch (buf[2])
 	{
 	case SP_LOGIN_OK:
 		memcpy(OutPacket_struct, buf, sizeof(SPLOGIN));
@@ -182,6 +208,9 @@ void NetworkManager::Depacking(void* OutPacket_struct, char* buf, char size)
 		memcpy(OutPacket_struct, buf, sizeof(SPPLAYER));
 		break;
 	case SP_OTHERPLAYER:
+		memcpy(OutPacket_struct, buf, size);
+		break;
+	case SP_MONSTER:
 		memcpy(OutPacket_struct, buf, size);
 		break;
 	case SP_EVENT:

@@ -16,7 +16,9 @@
 #include <thread>
 #include <queue>
 #include <mutex>
+#include <chrono>
 using namespace std;
+using namespace chrono;
 
 #include <WS2tcpip.h>
 #pragma comment(lib, "Ws2_32.lib")

@@ -12,19 +12,20 @@ public:
 
 public:
 	bool ConnectToServer(const char* ip);
-	bool SendPlayerInfo(const PLAYERINFO& PInfo);
+	bool SendPlayerInfo(SCENESTATE SceneState, const PLAYERINFO& PInfo);
 	bool SendAndRecvOtherInfo(char* OutInfo);
 	bool SendAndRecvEvent(EVENTINFO* OutEvInfo);
+	bool SendAndRecvMonster(char* OutInfo);
 
 private:
 	// 블로킹 보내기
-	int Send(void* packet_struct, char type);
+	int Send(void* packet_struct, char type, short size);
 	// 블로킹 받기
 	int Recv(void* OutPacket_struct);
 	// 패킹
 	void Packing(char* OutBuf, void* packet_struct, char type);
 	// 풀기
-	void Depacking(void* OutPacket_struct, char* buf, char size = 0);
+	void Depacking(void* OutPacket_struct, char* buf, short size = 0);
 
 private:
 	WSADATA			m_wsa;
