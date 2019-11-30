@@ -119,7 +119,7 @@ int Player::Update_Position(const float& TimeDelta, const DIRECTION& Direction)
 			m_GravityAcc += 9.8f * 10.f;
 	}
 
-	printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y);
+	//printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y);
 
 	return 0;
 }

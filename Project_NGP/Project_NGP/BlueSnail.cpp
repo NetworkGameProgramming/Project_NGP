@@ -12,7 +12,7 @@ BlueSnail::~BlueSnail()
 
 bool BlueSnail::Initialize()
 {
-	m_Info = GAMEOBJINFO{ 800	, 280, 44, 34 };
+	m_Info = GAMEOBJINFO{ 800, 280, 44, 34 };
 	m_CollideInfo = GAMEOBJINFO{ 0, 0, 40, 70 };
 	m_Speed = 0.f;
 	m_RenderType = RENDER_OBJ;
@@ -24,7 +24,7 @@ bool BlueSnail::Initialize()
 	m_SpriteInfo.SpriteIndex = 0.f;
 	m_SpriteInfo.StateIndex = 0;
 	//몬스터가 Idle이 되기까지의 시간
-	m_ChangeIdleTime = (rand() % 10) + 5;
+	m_ChangeIdleTime = float((rand() % 10) + 5);
 	m_CloseIdleTime = 3.f;
 
 	//m_Dir |= 0x00000002;
@@ -81,7 +81,7 @@ int BlueSnail::Update_Input(const float& TimeDelta)
  		m_SpriteInfo.CurState = Idle;
 		m_Speed = 0;
 		//Idle이 되는 시간을 다시 랜덤하게 조절
-		m_ChangeIdleTime = (rand() % 10) + 5;
+		m_ChangeIdleTime = float((rand() % 10) + 5);
 		m_IdleTimeDelta = 0;
 	}
 
@@ -187,11 +187,11 @@ int BlueSnail::Update_Position(const float& TimeDelta, const DIRECTION& Directio
 			m_Speed = 300;
 			if (m_Direction == DIR_LEFT)
 			{
-				m_Info.Pos_X += m_Speed * m_KnockBackTimeDelta;
+				m_Info.Pos_X += int(m_Speed * m_KnockBackTimeDelta);
 			}
 			else
 			{
-				m_Info.Pos_X -= m_Speed * m_KnockBackTimeDelta;
+				m_Info.Pos_X -= int(m_Speed * m_KnockBackTimeDelta);
 			}
 		}
 	}
@@ -226,6 +226,13 @@ int BlueSnail::Update_Sprite(const float& TimeDelta)
 			m_SpriteInfo.SpriteIndex = 0.f;
 		}
 		break;
+	case SPRITE_REPEAT_END:
+		if ((float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)
+		{
+			m_SpriteInfo.CurState = m_SpriteInfo.PreState;
+			m_SpriteInfo.SpriteIndex = 4.f;
+		}
+		break;
 	}
 
 	switch (m_Direction)
@@ -243,7 +250,7 @@ void BlueSnail::Render(HDC hdc)
 	if (true == GET_MANAGER<CollisionManager>()->GetRenderCheck())
 		Rectangle(hdc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
 
-	HDC hMemDC = GET_MANAGER<GdiManager>()->FindImage(m_SpriteInfo.key)->GetGdiImageFromIndex(m_SpriteInfo.SpriteIndex);
+	HDC hMemDC = GET_MANAGER<GdiManager>()->FindImage(m_SpriteInfo.key)->GetGdiImageFromIndex((int)m_SpriteInfo.SpriteIndex);
 
 	TransparentBlt(hdc, m_Rect.left, m_Rect.top, m_Info.Size_Width, m_Info.Size_Height
 		, hMemDC, 0, 0, m_Info.Size_Width, m_Info.Size_Height, RGB(255, 0, 255));
@@ -265,26 +272,22 @@ void BlueSnail::StateChange()
 		{
 		case Idle:
 			m_SpriteInfo.Type = SPRITE_ONCE;
-			m_SpriteInfo.StateIndex = 0;
 			m_SpriteInfo.MaxFrame = 1;
 			m_SpriteInfo.Speed = 0.f;
 			break;
 		case Move:
 			m_SpriteInfo.Type = SPRITE_REPEAT;
-			m_SpriteInfo.StateIndex = 0;
 			m_SpriteInfo.MaxFrame = 4;
 			m_SpriteInfo.Speed = 6.f;
 			break;
 		case Hit:
-			m_SpriteInfo.Type = SPRITE_ONCE;
-			m_SpriteInfo.StateIndex = 0;
+			m_SpriteInfo.Type = SPRITE_REPEAT_END;
 			m_SpriteInfo.SpriteIndex = 4.f;
 			m_SpriteInfo.MaxFrame = 1;
-			m_SpriteInfo.Speed = 0.f;
+			m_SpriteInfo.Speed = 1.f;
 			break;
 		case Die:
 			m_SpriteInfo.Type = SPRITE_ONCE_END;
-			m_SpriteInfo.StateIndex = 14;
 			m_SpriteInfo.MaxFrame = 3;
 			m_SpriteInfo.Speed = 4.f;
 			break;
