@@ -16,7 +16,7 @@ private:
 	static void do_worker();
 	// ¾À Ã³¸®
 	static void do_scene();
-	static void ProcessPacket(int id, void* buf);
+	static void ProcessPacket(int id, void* buf, int recv_byte);
 	static void SendProcess(int send_id, void* buf);
 	static void SendPacket(int send_id, void* buf, int size);
 private:

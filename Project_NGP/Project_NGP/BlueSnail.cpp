@@ -254,8 +254,6 @@ void BlueSnail::Render(HDC hdc)
 
 	TransparentBlt(hdc, m_Rect.left, m_Rect.top, m_Info.Size_Width, m_Info.Size_Height
 		, hMemDC, 0, 0, m_Info.Size_Width, m_Info.Size_Height, RGB(255, 0, 255));
-
-	std::cout << m_SpriteInfo.CurState << std::endl;
 }
 
 void BlueSnail::Release()

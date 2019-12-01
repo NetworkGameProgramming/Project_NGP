@@ -39,14 +39,18 @@ public:
 	virtual void Release() PURE;
 	virtual void CollisionActivate(GameObject* collideTarget);
 	virtual void CollisionPixelPart(DIRECTION dir);
+
 protected:
 	GAMEOBJINFO		m_Info;
 	SPRITEINFO		m_SpriteInfo;
-
 	RENDERTYPE		m_RenderType = RENDER_END;
-
 	DIRECTION		m_Direction = DIR_END;
 	DWORD			m_Dir = 0;
+	// Collider
+	PIXELCOLLIDERINFO	*m_PixelInfo = nullptr;
+	RECT				m_Rect;
+	GAMEOBJINFO			m_CollideInfo;
+	RECT				m_CollideRect;
 
 	bool			m_isNoScroll = false;
 	bool			m_isDead = false;
@@ -56,13 +60,5 @@ protected:
 	float			m_Speed = 0.f;
 	float			m_GravitySpeed = 0.f;
 	float			m_GravityAcc = 9.8f;
-
-	// Collider
-	PIXELCOLLIDERINFO	*m_PixelInfo = nullptr;
-	RECT				m_Rect;
-
-	GAMEOBJINFO			m_CollideInfo;
-	RECT				m_CollideRect;
-
 };
 

@@ -216,7 +216,7 @@ void MainServer::do_worker()
 		if (true == over_info->is_recv)
 		{
 			// 클라이언트에서 받은 패킷을 처리
-			ProcessPacket(key, over_info->buffer);
+			ProcessPacket(key, over_info->buffer, byte);
 
 			// 받았을때의 처리
 			DWORD flags = 0;
@@ -302,9 +302,38 @@ void MainServer::do_scene()
 	}
 }
 
-void MainServer::ProcessPacket(int id, void* buf)
+void MainServer::ProcessPacket(int id, void* buf, int recv_byte)
 {
 	char* packet = reinterpret_cast<char*> (buf);
+
+#ifdef LOG_CHECK
+	SOCKET_INFO* sockInfo = g_mapClient[id];
+	printf("-----------------------------------------------------\n");
+	printf("[수신] ID : %d, IP : %s, PORT : %d, SOCKET : %d\n",
+		id, inet_ntoa(g_mapClient[id]->addr_info.sin_addr),
+		ntohs(g_mapClient[id]->addr_info.sin_port), g_mapClient[id]->socket);
+	printf("[수신 내역] ");
+	switch (packet[2])
+	{
+	case SP_LOGIN_OK: 
+		printf(" 로그인 요청");
+		break;
+	case SP_PLAYER:
+		printf(" 클라이언트 플레이어 정보");
+		break;
+	case SP_OTHERPLAYER:
+		printf(" 다른 클라이언트 플레이어 정보 요청");
+		break;
+	case SP_MONSTER:
+		printf(" 몬스터 정보 요청");
+		break;
+	case SP_EVENT:
+		printf(" 이벤트 정보 요청");
+		break;
+	}
+	printf(" 수신 받은 바이트 크기 : %d[byte]\n", recv_byte);
+	printf("-----------------------------------------------------\n");
+#endif
 
 	switch (packet[2])
 	{
@@ -326,6 +355,33 @@ void MainServer::ProcessPacket(int id, void* buf)
 void MainServer::SendProcess(int send_id, void* buf)
 {
 	char* packet = reinterpret_cast<char*> (buf);
+
+#ifdef LOG_CHECK
+	SOCKET_INFO* sockInfo = g_mapClient[send_id];
+	printf("-----------------------------------------------------\n");
+	printf("[송신] ID : %d, IP : %s, PORT : %d, SOCKET : %d\n",
+		send_id, inet_ntoa(g_mapClient[send_id]->addr_info.sin_addr),
+		ntohs(g_mapClient[send_id]->addr_info.sin_port), g_mapClient[send_id]->socket);
+	printf("[송신 내역] ");
+	switch (packet[2])
+	{
+	case SP_LOGIN_OK:
+		printf(" 로그인 정보");
+		break;
+	case SP_PLAYER:
+		printf(" 클라이언트 플레이어 정보");
+		break;
+	case SP_OTHERPLAYER:
+		printf(" 다른 클라이언트 플레이어 정보");
+		break;
+	case SP_MONSTER:
+		printf(" 몬스터 정보");
+		break;
+	case SP_EVENT:
+		printf(" 이벤트 정보");
+		break;
+	}
+#endif
 
 	switch (packet[2])
 	{
@@ -450,6 +506,11 @@ void MainServer::SendPacket(int send_id, void* buf, int size)
 {
 	char* packet = reinterpret_cast<char*>(buf);
 	int packet_size = size;
+
+#ifdef LOG_CHECK
+	printf(" 송신한 바이트 크기 : %d[byte]\n", packet_size);
+	printf("-----------------------------------------------------\n");
+#endif
 
 	OVERLAPPED_INFO* send_over = new OVERLAPPED_INFO;
 	memset(send_over, 0x00, sizeof(OVERLAPPED_INFO));
