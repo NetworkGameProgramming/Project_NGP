@@ -24,6 +24,93 @@ bool BlueSnail::Initialize()
 	return true;
 }
 
+int BlueSnail::Update_Input(const float& TimeDelta)
+{
+	if (true == m_isOther)
+		return 0;
+
+	KeyManager* keyManager = GET_MANAGER<KeyManager>();
+
+	//몬스터가 지형의 끝에 도달했는지
+	bool OnBulePixel = false;
+	//몬스터가 플레이어로부터 공격받았는지
+	bool Damaged = false;
+	//몬스터가 플레이어의 방향과 일치하는 방향에서 맞았는지
+	bool HitBack = false;
+
+	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
+	{
+		Damaged = true;
+	}
+
+	if (m_SpriteInfo.CurState == Idle)
+	{
+		m_CloseIdleDelta += TimeDelta;
+		if (m_CloseIdleTime <= m_CloseIdleDelta)
+ 		{
+			m_Direction = DIRECTION(rand() % 2);
+			m_CloseIdleDelta = 0;
+			m_SpriteInfo.CurState = Move;
+			m_Speed = 100;
+		}
+	}
+	else
+	{
+		//Idle 상태가 되기 까지의 시간의 누적치
+		if (m_SpriteInfo.CurState == Hit){}
+		else
+			m_IdleTimeDelta += TimeDelta;
+	}
+
+	//Idle이 되는 조건
+	if (m_ChangeIdleTime <= m_IdleTimeDelta)
+	{
+ 		m_SpriteInfo.CurState = Idle;
+		m_Speed = 0;
+		//Idle이 되는 시간을 다시 랜덤하게 조절
+		m_ChangeIdleTime = float((rand() % 10) + 5);
+		m_IdleTimeDelta = 0;
+	}
+
+	//몬스터가 지형의 끝에 도달했으면 방향을 바꿔준다.
+	if (OnBulePixel == true)
+	{
+		if (m_Direction == DIR_RIGHT)
+		{
+			m_Direction = DIR_LEFT;
+			m_SpriteInfo.CurState = Move;
+			OnBulePixel = false;
+		}
+
+		else if (m_Direction == DIR_LEFT)
+		{
+			m_Direction = DIR_RIGHT;
+			m_SpriteInfo.CurState = Move;
+			OnBulePixel = false;
+		}
+	}
+
+	//몬스터가 공격 받았을때
+	if (Damaged == true)
+	{
+		//만약 플레어의 방향과 몬스터의 방향이 반대라면 플레이어의 반대 방향으로 뒤돌아본다.
+		if (HitBack)
+		{
+			if (m_Direction == DIR_LEFT)
+			{
+				m_Direction = DIR_RIGHT;
+			}
+			else
+			{
+				m_Direction = DIR_LEFT;
+			}
+		}
+		m_SpriteInfo.CurState = Hit;
+	}
+
+	return 0;
+}
+
 int BlueSnail::Update(const float& TimeDelta)
 {
 	if (-1 == GameObject::Update(TimeDelta))

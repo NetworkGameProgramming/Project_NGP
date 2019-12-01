@@ -85,6 +85,9 @@
     <Filter Include="02.SceneState\MainMenu">
       <UniqueIdentifier>{6917861c-a48a-48d3-8b21-eb05460e1e6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\Effect">
+      <UniqueIdentifier>{070e1ba3-0e4b-46c9-9012-7c58abff877b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -204,6 +207,9 @@
     <ClInclude Include="BlueSnail.h">
       <Filter>01.GameObject\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="NomalAttack.h">
+      <Filter>01.GameObject\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -286,6 +292,9 @@
     </ClCompile>
     <ClCompile Include="BlueSnail.cpp">
       <Filter>01.GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="NomalAttack.cpp">
+      <Filter>01.GameObject\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -60,9 +60,14 @@ int Player::Update_Input(const float& TimeDelta)
 
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
 	{
+		bool AttEnable = true;
 		int r = rand() % 2;
 		if (0 == r)
+		{
 			m_SpriteInfo.CurState = Att_1;
+			m_NomalAtt->SetDirection(m_Direction);
+			m_NomalAtt->SetPosition(m_Info.Pos_X, m_Info.Pos_Y);
+		}
 		else
 			m_SpriteInfo.CurState = Att_2;
 	}
@@ -176,6 +181,9 @@ bool Player::Initialize()
 	m_SpriteInfo.PreState = End;
 	m_SpriteInfo.SpriteIndex = 0.f;
 	m_SpriteInfo.StateIndex = 0;
+
+	// Skill
+	m_NomalAtt = GET_MANAGER<ObjectManager>()->GetObjFromTag(L"nomalattack", OBJ_EFFECT);
 
 	return true;
 }

@@ -181,6 +181,7 @@
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="NomalAttack.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Project_NGP.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="NomalAttack.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Project_NGP.cpp" />
