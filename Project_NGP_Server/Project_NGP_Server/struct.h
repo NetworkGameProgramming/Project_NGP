@@ -93,6 +93,15 @@ typedef struct ClientPacketMonster
 	MONSTERINFO info;
 }SPMONSTER;
 
+typedef struct ClientPacketHit
+{
+	short size;
+	char type;
+	int id;
+	int monster_id;
+	int damage;
+}SPHIT;
+
 typedef struct ServerPacketEnd
 {
 	short size;
@@ -118,6 +127,7 @@ typedef struct _tagPixelColliderInfo
 	UINT				Width;
 	UINT				Height;
 	PIXEL24				CollPixel;
+	PIXEL24				TurnPixel;
 }PIXELCOLLIDERINFO;
 
 // 게임 오브젝트 정보

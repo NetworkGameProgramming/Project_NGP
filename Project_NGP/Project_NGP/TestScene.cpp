@@ -27,7 +27,7 @@ bool TestScene::Initialize()
 	m_ObjManager->AddObject(L"background", AbstractFactory<Background>::CreateObj(), OBJ_BACK);
 	m_ObjManager->AddObject(L"player", AbstractFactory<Player>::CreateObj(), OBJ_PLAYER);
 	//m_ObjManager->AddObject(L"monster", AbstractFactory<Monster>::CreateObj(), OBJ_MONSTER);
-	m_ObjManager->AddObject(L"BlueSnail", AbstractFactory<BlueSnail>::CreateObj(), OBJ_MONSTER);
+	//m_ObjManager->AddObject(L"BlueSnail", AbstractFactory<BlueSnail>::CreateObj(), OBJ_MONSTER);
 	m_ObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_MOUSE);
 
 	GameObject* pPlayer = m_ObjManager->GetObjFromTag(L"player", OBJ_PLAYER);
@@ -145,7 +145,7 @@ int TestScene::Update(const float & TimeDelta)
 				TCHAR* tchar = new TCHAR[64];
 				wsprintf(tchar, L"%d", MInfo.monster_id);
 
-				monster = AbstractFactory<Monster>::CreateObj();
+				monster = AbstractFactory<BlueSnail>::CreateObj();
 				m_ObjManager->AddObject(tchar, monster,
 					OBJ_MONSTER);
 			}

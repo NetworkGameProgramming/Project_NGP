@@ -178,6 +178,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Includes.h" />
     <ClInclude Include="MainServer.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Scene.h" />

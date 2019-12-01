@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "NetworkManager.h"
+#include "GameObject.h"
 
 NetworkManager::NetworkManager()
 {
@@ -79,6 +80,8 @@ bool NetworkManager::SendPlayerInfo(SCENESTATE SceneState, const PLAYERINFO& inf
 		return false;
 
 	return true;
+
+	
 }
 
 bool NetworkManager::SendAndRecvOtherInfo(char* OutInfo)
@@ -112,6 +115,45 @@ bool NetworkManager::SendAndRecvMonster(char* OutInfo)
 		return false;
 
 	return true;
+}
+
+bool NetworkManager::SendHitInfo(int monster_id, int damage)
+{
+	SPHIT PInfo;
+	PInfo.id = m_myID;
+	PInfo.type = SP_HIT;
+	PInfo.size = sizeof(SPHIT);
+	PInfo.monster_id = monster_id;
+	PInfo.damage = damage;
+
+	if (-1 == Send(&PInfo, SP_HIT, sizeof(SPHIT)))
+		return false;
+
+	return true;
+}
+
+void NetworkManager::AttackCollisionForNetwork(ObjectManager::MAPOBJ* TargetList, ObjectManager::MAPOBJ* SkillList)
+{
+	// 렉트 충돌 검사
+	RECT rc = {};
+
+	for (auto& target : *TargetList)
+	{
+		if (true == target.second->GetState())
+			continue;
+
+		for (auto& Skill : *SkillList)
+		{
+			if (true == Skill.second->GetState())
+				continue;
+
+			if (IntersectRect(&rc, &target.second->GetCollideRect(), &Skill.second->GetCollideRect()))
+			{
+				// 몬스터가 맞은 정보를 서버로 보내준다.
+				SendHitInfo(_wtoi(target.first), 10/*Damage*/);
+			}
+		}
+	}
 }
 
 int NetworkManager::Send(void* packet_struct, char type, short size)
@@ -155,7 +197,7 @@ void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)
 		s.id = ps->id;
 		memcpy(OutPacket, &s, s.size);
 	}
-		break;
+	break;
 	case SP_PLAYER:
 	{
 		SPPLAYER s;
@@ -187,6 +229,14 @@ void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)
 		OutPacket[3] = ps[3];
 	}
 	break;
+	case SP_HIT:
+	{
+		SPHIT s;
+		SPHIT* ps = reinterpret_cast<SPHIT*>(packet_struct);
+		s = *ps;
+		memcpy(OutPacket, &s, s.size);
+	}
+	break;
 	case SP_EVENT:
 	{
 		short size = 3;
@@ -212,6 +262,9 @@ void NetworkManager::Depacking(void* OutPacket_struct, char* buf, short size)
 		break;
 	case SP_MONSTER:
 		memcpy(OutPacket_struct, buf, size);
+		break;
+	case SP_HIT:
+		memcpy(OutPacket_struct, buf, sizeof(SPHIT));
 		break;
 	case SP_EVENT:
 		memcpy(OutPacket_struct, buf, sizeof(EVENTINFO));

@@ -7,6 +7,7 @@
 #define SP_PLAYER			2		// 플레이어 위치
 #define SP_OTHERPLAYER		3
 #define SP_MONSTER			4
+#define SP_HIT  			5
 #define SP_EVENT			99		// Event
 
 
@@ -76,6 +77,15 @@ typedef struct ClientPacketMonster
 	int monster_id;
 	MONSTERINFO info;
 }SPMONSTER;
+
+typedef struct ClientPacketHit
+{
+	short size;
+	char type;
+	int id;
+	int monster_id;
+	int damage;
+}SPHIT;
 
 typedef struct ServerPacketEnd
 {

@@ -16,6 +16,10 @@ public:
 	bool SendAndRecvOtherInfo(char* OutInfo);
 	bool SendAndRecvEvent(EVENTINFO* OutEvInfo);
 	bool SendAndRecvMonster(char* OutInfo);
+	bool SendHitInfo(int monster_id, int damage);
+
+public:
+	void AttackCollisionForNetwork(ObjectManager::MAPOBJ* TargetList, ObjectManager::MAPOBJ* SkillList);
 
 private:
 	// 블로킹 보내기

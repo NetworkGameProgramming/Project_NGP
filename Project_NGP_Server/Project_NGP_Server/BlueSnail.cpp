@@ -23,7 +23,8 @@ bool BlueSnail::Initialize(int pos_x, int pos_y, int width, int height)
 int BlueSnail::Update(const float& TimeDelta)
 {
 	Monster::Update(TimeDelta);
-	// AI
+	
+	
 
 	return 0;
 }

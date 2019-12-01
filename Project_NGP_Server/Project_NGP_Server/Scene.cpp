@@ -15,7 +15,6 @@ Scene::~Scene()
 int Scene::Update(const float& TimeDelta)
 {
 	// 픽셀 충돌
-
 	if (nullptr == m_PixelInfo)
 		return -1;
 
@@ -35,11 +34,15 @@ int Scene::Update(const float& TimeDelta)
 
 		// 아래 
 		addr = rc.bottom * m_PixelInfo->Width + info.Pos_X;
-		if (addr < 0 || addr >= (int)m_PixelInfo->vecPixel.size()) return -1;
+		if (addr < 0 || addr >= (int)m_PixelInfo->vecPixel.size()) 
+			return -1;
+
+		// 지형 충돌 픽셀일때 
 		if (m_PixelInfo->vecPixel[addr].r == m_PixelInfo->CollPixel.r &&
 			m_PixelInfo->vecPixel[addr].g == m_PixelInfo->CollPixel.g &&
 			m_PixelInfo->vecPixel[addr].b == m_PixelInfo->CollPixel.b)
 		{
+			// 지형 높이값 만큼 게임 오브젝트를 올려준다.
 			int Y = rc.bottom;
 			while (Y > 0)
 			{
@@ -65,10 +68,19 @@ int Scene::Update(const float& TimeDelta)
 		}
 		else
 		{
+			// 떨림 방지
 			// 밑에 한 픽셀 더 검사
 			addr = (rc.bottom + 2) * m_PixelInfo->Width + info.Pos_X;
 			if (addr < 0 || addr >= (int)m_PixelInfo->vecPixel.size()) return -1;
-			if (m_PixelInfo->vecPixel[addr].r != m_PixelInfo->CollPixel.r &&
+
+			// 몬스터가 돌아보는 위치에 있는경우
+			if (m_PixelInfo->vecPixel[addr].r == m_PixelInfo->TurnPixel.r &&
+				m_PixelInfo->vecPixel[addr].g == m_PixelInfo->TurnPixel.g &&
+				m_PixelInfo->vecPixel[addr].b == m_PixelInfo->TurnPixel.b)
+			{
+				mon->SetTurnCheck(true);
+			}
+			else if (m_PixelInfo->vecPixel[addr].r != m_PixelInfo->CollPixel.r &&
 				m_PixelInfo->vecPixel[addr].g != m_PixelInfo->CollPixel.g &&
 				m_PixelInfo->vecPixel[addr].b != m_PixelInfo->CollPixel.b)
 			{
@@ -102,9 +114,15 @@ bool Scene::LoadPixelCollider(const char* pFilePath, unsigned char r, unsigned c
 	}
 
 	m_PixelInfo = new PIXELCOLLIDERINFO;
+	// 지형충돌 체크
 	m_PixelInfo->CollPixel.r = r;
 	m_PixelInfo->CollPixel.g = g;
 	m_PixelInfo->CollPixel.b = b;
+
+	// 돌아보는 체크
+	m_PixelInfo->TurnPixel.r = 255;
+	m_PixelInfo->TurnPixel.g = 255;
+	m_PixelInfo->TurnPixel.b = 255;
 
 	FILE* pFile = NULL;
 

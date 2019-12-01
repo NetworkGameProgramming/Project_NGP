@@ -327,6 +327,9 @@ void MainServer::ProcessPacket(int id, void* buf, int recv_byte)
 	case SP_MONSTER:
 		printf(" 몬스터 정보 요청");
 		break;
+	case SP_HIT:
+		printf(" 공격 정보");
+		break;
 	case SP_EVENT:
 		printf(" 이벤트 정보 요청");
 		break;
@@ -345,6 +348,18 @@ void MainServer::ProcessPacket(int id, void* buf, int recv_byte)
 		g_mapClient[id]->player_info.pos_y = PlayerInfo->info.pos_y;
 		g_mapClient[id]->player_info.player_state = PlayerInfo->info.player_state;
 		g_mapClient[id]->player_info.player_dir = PlayerInfo->info.player_dir;
+	}
+	break;
+	case SP_HIT:
+	{
+		SPHIT* HitInfo = reinterpret_cast<SPHIT*> (buf);
+		Scene* curScene = m_vecScene[g_mapClient[HitInfo->id]->scene_state];
+		if (nullptr == curScene)
+			return;
+		Monster* DstMon = curScene->GetMapSpawn().find(HitInfo->monster_id)->second->GetMonster();
+		if (nullptr == DstMon)
+			return;
+		DstMon->Hit(HitInfo->id, HitInfo->damage);
 	}
 	break;
 	}

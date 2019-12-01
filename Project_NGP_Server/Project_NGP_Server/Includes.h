@@ -5,3 +5,4 @@
 #include "Enum.h"
 #include "Constant.h"
 #include "Struct.h"
+#include "Math.h"

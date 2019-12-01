@@ -7,6 +7,7 @@ class BlueSnail
 public:
 	BlueSnail();
 	virtual ~BlueSnail();
+
 public:
 	virtual bool Initialize(int pos_x, int pos_y, int width, int height);
 	virtual int  Update(const float& TimeDelta);
