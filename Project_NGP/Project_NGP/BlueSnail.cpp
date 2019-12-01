@@ -12,7 +12,7 @@ BlueSnail::~BlueSnail()
 
 bool BlueSnail::Initialize()
 {
-	m_Info = GAMEOBJINFO{ 0, 0, 41, 39 };
+	m_Info = GAMEOBJINFO{ 200, 400, 41, 39 };
 	m_CollideInfo = GAMEOBJINFO{ 0, 0, 40, 70 };
 	m_RenderType = RENDER_OBJ;
 	m_SpriteInfo.key = L"bluesnail_right";
@@ -117,6 +117,13 @@ int BlueSnail::Update(const float& TimeDelta)
 	{
 		return -1;
 	}
+
+#ifdef CLIENT_MODE
+	if (-1 == Update_Input(TimeDelta))
+	{
+		return -1;
+	}
+#endif
 
 	if (-1 == Update_Sprite(TimeDelta))
 	{
