@@ -5,6 +5,7 @@
 #include "Background.h"
 #include "Monster.h"
 #include "BlueSnail.h"
+#include "NomalAttack.h"
 TestScene::TestScene()
 {
 }
@@ -25,9 +26,10 @@ bool TestScene::Initialize()
 	GET_MANAGER<GdiManager>()->LoadImageBySceneState(SCENE_TEST);
 	
 	m_ObjManager->AddObject(L"background", AbstractFactory<Background>::CreateObj(), OBJ_BACK);
+	m_ObjManager->AddObject(L"nomalattack", AbstractFactory<NomalAttack>::CreateObj(), OBJ_EFFECT);
 	m_ObjManager->AddObject(L"player", AbstractFactory<Player>::CreateObj(), OBJ_PLAYER);
 	//m_ObjManager->AddObject(L"monster", AbstractFactory<Monster>::CreateObj(), OBJ_MONSTER);
-	m_ObjManager->AddObject(L"BlueSnail", AbstractFactory<BlueSnail>::CreateObj(), OBJ_MONSTER);
+	m_ObjManager->AddObject(L"bluesnail", AbstractFactory<BlueSnail>::CreateObj(), OBJ_MONSTER);
 	m_ObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_MOUSE);
 
 	GameObject* pPlayer = m_ObjManager->GetObjFromTag(L"player", OBJ_PLAYER);

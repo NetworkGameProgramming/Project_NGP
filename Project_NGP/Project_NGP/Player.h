@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-
+#include "NomalAttack.h"
 class Player
 	: public GameObject
 {
@@ -33,9 +33,10 @@ public:
 
 private:
 	float m_TimeDelta = 0.f;
-	
+	GameObject *m_NomalAtt;
 	//float m_GravitySpeed = 0.f;
 	//float m_GravityAcc = 9.8f;
 	bool m_isOther = false;
+	
 };
 

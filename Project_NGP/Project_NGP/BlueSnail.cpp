@@ -89,7 +89,7 @@ int BlueSnail::Update_Input(const float& TimeDelta)
 			OnBulePixel = false;
 		}
 
-		if (m_Direction == DIR_LEFT)
+		else if (m_Direction == DIR_LEFT)
 		{
 			m_Direction = DIR_RIGHT;
 			m_SpriteInfo.CurState = Move;
