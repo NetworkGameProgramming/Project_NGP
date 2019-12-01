@@ -12,7 +12,7 @@ BlueSnail::~BlueSnail()
 
 bool BlueSnail::Initialize()
 {
-	m_Info = GAMEOBJINFO{ 800, 280, 44, 34 };
+	m_Info = GAMEOBJINFO{ 800, 280, 41, 39 };
 	m_CollideInfo = GAMEOBJINFO{ 0, 0, 40, 70 };
 	m_Speed = 0.f;
 	m_RenderType = RENDER_OBJ;
@@ -56,14 +56,6 @@ int BlueSnail::Update_Input(const float& TimeDelta)
 		if (m_CloseIdleTime <= m_CloseIdleDelta)
  		{
 			m_Direction = DIRECTION(rand() % 2);
-			if (m_Direction == DIR_LEFT)
-			{
-			//	m_Dir |= 0x00000001;
-			}
-			else
-			{
-			//	m_Dir |= 0x00000002;
-			}
 			m_CloseIdleDelta = 0;
 			m_SpriteInfo.CurState = Move;
 			m_Speed = 100;
@@ -72,7 +64,9 @@ int BlueSnail::Update_Input(const float& TimeDelta)
 	else
 	{
 		//Idle 상태가 되기 까지의 시간의 누적치
-		m_IdleTimeDelta += TimeDelta;
+		if (m_SpriteInfo.CurState == Hit){}
+		else
+			m_IdleTimeDelta += TimeDelta;
 	}
 
 	//Idle이 되는 조건
@@ -184,15 +178,16 @@ int BlueSnail::Update_Position(const float& TimeDelta, const DIRECTION& Directio
 		}
 		else
 		{
-			m_Speed = 300;
+			//m_Speed = 300;
 			if (m_Direction == DIR_LEFT)
 			{
-				m_Info.Pos_X += int(m_Speed * m_KnockBackTimeDelta);
+				m_Info.Pos_X = Lerp<float, float>(m_Info.Pos_X, m_Info.Pos_X += 5, 5 * TimeDelta);
 			}
 			else
 			{
-				m_Info.Pos_X -= int(m_Speed * m_KnockBackTimeDelta);
+				m_Info.Pos_X = Lerp<float, float>(m_Info.Pos_X, m_Info.Pos_X -= 5, 5 * TimeDelta);
 			}
+
 		}
 	}
 	return 0;
@@ -229,7 +224,7 @@ int BlueSnail::Update_Sprite(const float& TimeDelta)
 	case SPRITE_REPEAT_END:
 		if ((float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)
 		{
-			m_SpriteInfo.CurState = m_SpriteInfo.PreState;
+			//m_SpriteInfo.CurState = m_SpriteInfo.PreState;
 			m_SpriteInfo.SpriteIndex = 4.f;
 		}
 		break;
