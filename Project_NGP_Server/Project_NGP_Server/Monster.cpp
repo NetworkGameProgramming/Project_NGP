@@ -19,6 +19,7 @@ void Monster::Hit(int target, int damage)
 		m_hp -= damage;
 		if (0 >= m_hp)
 		{
+			m_Speed = 0;
 			m_State = Monster_Die;
 			return;
 		}
@@ -80,8 +81,10 @@ void Monster::UpdateAI(const float& TimeDelta)
 	if (Monster_Die == m_State)
 	{
 		m_DeadAcc += TimeDelta;
-		if (m_DeadAcc > 1.5f)
+		
+		if (m_DeadAcc > 1.f)
 			m_isDead = true;
+		
 		return;
 	}
 

@@ -286,7 +286,7 @@ void BlueSnail::StateChange()
 			m_SpriteInfo.Type = SPRITE_ONCE;
 			m_SpriteInfo.SpriteIndex = 0;
 			m_SpriteInfo.MaxFrame = 12;
-			m_SpriteInfo.Speed = 4.f;
+			m_SpriteInfo.Speed = 12.f;
 			break;
 		}
 	}
