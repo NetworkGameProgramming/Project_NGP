@@ -60,9 +60,6 @@
     <ClCompile Include="Scene.cpp">
       <Filter>01.Scene</Filter>
     </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>01.Scene\TestScene</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>02.Object</Filter>
     </ClCompile>
@@ -74,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="Spawn.cpp">
       <Filter>02.Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene_1.cpp">
+      <Filter>01.Scene\TestScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +104,6 @@
     <ClInclude Include="Scene.h">
       <Filter>01.Scene</Filter>
     </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>01.Scene\TestScene</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>02.Object</Filter>
     </ClInclude>
@@ -121,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="Math.h">
       <Filter>98.Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene_1.h">
+      <Filter>01.Scene\TestScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

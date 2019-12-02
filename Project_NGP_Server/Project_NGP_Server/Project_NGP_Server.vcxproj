@@ -168,7 +168,7 @@
     <ClCompile Include="Project_NGP_Server.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Spawn.cpp" />
-    <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="MainScene_1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlueSnail.h" />
@@ -185,7 +185,7 @@
     <ClInclude Include="Spawn.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="Enum.h" />
-    <ClInclude Include="TestScene.h" />
+    <ClInclude Include="MainScene_1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

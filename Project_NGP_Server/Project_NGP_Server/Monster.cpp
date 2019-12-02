@@ -80,7 +80,7 @@ void Monster::UpdateAI(const float& TimeDelta)
 	if (Monster_Die == m_State)
 	{
 		m_DeadAcc += TimeDelta;
-		if (m_DeadAcc > 1.f)
+		if (m_DeadAcc > 1.5f)
 			m_isDead = true;
 		return;
 	}
@@ -110,18 +110,26 @@ void Monster::UpdateAI(const float& TimeDelta)
 	{
 		if (-1 != target_id)
 		{
+			m_FollowAcc += TimeDelta;
+
 			// 플레이어가 없으면
 			if (g_mapClient.end() == g_mapClient.find(target_id))
 			{ 
 				target_id = -1;
+				m_FollowAcc = 0.f;
 				return;
 			}
 
-			if (g_mapClient[target_id]->player_info.pos_x >= m_Info.Pos_X)
-				m_Direction = DIR_RIGHT;
-		
-			if (g_mapClient[target_id]->player_info.pos_x < m_Info.Pos_X)
-				m_Direction = DIR_LEFT;
+			if (2.f <= m_FollowAcc)
+			{
+				if (g_mapClient[target_id]->player_info.pos_x >= m_Info.Pos_X)
+					m_Direction = DIR_RIGHT;
+
+				if (g_mapClient[target_id]->player_info.pos_x < m_Info.Pos_X)
+					m_Direction = DIR_LEFT;
+
+				m_FollowAcc = 0.f;
+			}
 		}
 	}
 

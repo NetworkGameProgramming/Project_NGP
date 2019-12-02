@@ -13,6 +13,110 @@ Player::~Player()
 	Release();
 }
 
+bool Player::Initialize()
+{
+	m_Info = GAMEOBJINFO{ 800, 600, 200, 200 };
+	m_CollideInfo = GAMEOBJINFO{ 0, 0, 40, 60 };
+	m_Speed = 200.f;
+	m_RenderType = RENDER_OBJ;
+
+	m_Direction = DIR_LEFT;
+	m_SpriteInfo.key = L"player_left";
+	m_SpriteInfo.CurState = Idle;
+	m_SpriteInfo.PreState = End;
+	m_SpriteInfo.SpriteIndex = 0.f;
+	m_SpriteInfo.StateIndex = 0;
+
+	return true;
+}
+
+int Player::Update(const float& TimeDelta)
+{
+	m_TimeDelta = TimeDelta;
+
+	if (-1 == GameObject::Update(TimeDelta))
+	{
+		return -1;
+	}
+
+	if (-1 == Update_Input(TimeDelta))
+	{
+		return -1;
+	}
+
+	if (-1 == Update_Position(TimeDelta, m_Direction))
+	{
+		return -1;
+	}
+
+	if (-1 == Update_Sprite(TimeDelta))
+	{
+		return -1;
+	}
+
+	if (-1 == Update_Skill(TimeDelta))
+	{
+		return -1;
+	}
+
+	StateChange();
+	return 0;
+}
+
+void Player::Render(HDC hdc)
+{
+	if (true == GET_MANAGER<CollisionManager>()->GetRenderCheck())
+		Rectangle(hdc, m_CollideRect.left, m_CollideRect.top, m_CollideRect.right, m_CollideRect.bottom);
+
+	HDC hMemDC = GET_MANAGER<GdiManager>()->FindImage(m_SpriteInfo.key)->GetGdiImageDefault();
+
+	TransparentBlt(hdc, m_Rect.left, m_Rect.top, m_Info.Size_Width, m_Info.Size_Height,
+		hMemDC,
+		(int)m_SpriteInfo.SpriteIndex * m_Info.Size_Width,
+		m_SpriteInfo.StateIndex * m_Info.Size_Height,
+		m_Info.Size_Width, m_Info.Size_Height, RGB(255, 0, 255));
+
+	//std::cout << m_Info.Pos_X << ", " << m_Info.Pos_Y << std::endl;
+}
+
+void Player::Release()
+{
+}
+
+void Player::CollisionPixelPart(DIRECTION dir)
+{
+	switch (dir)
+	{
+	case DIR_BOTTOM:
+		m_GravitySpeed = 0.f;
+		m_GravityAcc = 0.f;
+		m_fallCheck = false;
+		m_SpriteInfo.CurState = Idle;
+		break;
+	}
+}
+
+void Player::CollisionActivate(GameObject* collideTarget)
+{
+	switch (collideTarget->GetObjectType())
+	{
+	case OBJ_PORTAL:
+		m_isReadyGoNext = true;
+		m_NextSceneInfo = dynamic_cast<Portal*>(collideTarget)->GetSceneInfo();
+		break;
+	}
+}
+
+void Player::CollisionDeactivate(GameObject* collideTarget)
+{
+	switch (collideTarget->GetObjectType())
+	{
+	case OBJ_PORTAL:
+		m_isReadyGoNext = false;
+		break;
+	}
+}
+
 int Player::Update_Input(const float& TimeDelta)
 {
 	if (true == m_isOther)
@@ -21,7 +125,7 @@ int Player::Update_Input(const float& TimeDelta)
 	m_Dir = 0;
 	KeyManager* keyManager = GET_MANAGER<KeyManager>();
 
-if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
+	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
 	{
 		m_Dir |= 0x00000001;
 		m_Direction = DIR_LEFT;
@@ -48,7 +152,7 @@ if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
 			Fade* fade = dynamic_cast<Fade*>
 				(GET_MANAGER<ObjectManager>()->GetObjFromTag(L"fade", OBJ_UI));
 			fade->SetNextSceneInfo(m_NextSceneInfo);
-			fade->SetFade(true);	
+			fade->SetFade(true);
 
 			m_isReadyGoNext = false;
 			m_NextSceneInfo = SCENE_END;
@@ -72,11 +176,6 @@ if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
 
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
 	{
-
-		GameObject* effect = AbstractFactory<NomalAttack>::CreateObj();
-		dynamic_cast<CEffect*>(effect)->SetEffectSpawn(m_Info.Pos_X, m_Info.Pos_Y, m_Direction, true);
-		GET_MANAGER<ObjectManager>()->AddObject(L"effect", effect, OBJ_EFFECT);
-
 		int r = rand() % 2;
 		if (0 == r)
 		{
@@ -144,6 +243,23 @@ int Player::Update_Position(const float& TimeDelta, const DIRECTION& Direction)
 	return 0;
 }
 
+int Player::Update_Skill(const float& TimeDelta)
+{
+	if (Att_1 == m_SpriteInfo.CurState ||
+		Att_2 == m_SpriteInfo.CurState)
+	{
+		if (false == m_OnceCheck &&
+			1.f <= m_SpriteInfo.SpriteIndex)
+		{
+			GameObject* effect = AbstractFactory<NomalAttack>::CreateObj();
+			dynamic_cast<CEffect*>(effect)->SetEffectSpawn(m_Info.Pos_X, m_Info.Pos_Y, m_Direction, true);
+			GET_MANAGER<ObjectManager>()->AddObject(L"effect", effect, OBJ_EFFECT);
+			m_OnceCheck = true;
+		}
+	}
+	return 0;
+}
+
 int Player::Update_Sprite(const float& TimeDelta)
 {
 	m_SpriteInfo.SpriteIndex += m_SpriteInfo.Speed * TimeDelta;
@@ -164,6 +280,7 @@ int Player::Update_Sprite(const float& TimeDelta)
 		else
 		{
 			m_SpriteInfo.CurState = 0;
+			m_OnceCheck = false;
 		}
 		break;
 	case SPRITE_REPEAT:
@@ -181,105 +298,6 @@ int Player::Update_Sprite(const float& TimeDelta)
 	}
 
 	return 0;
-}
-
-bool Player::Initialize()
-{
-	m_Info = GAMEOBJINFO{ 800, 600, 200, 200 };
-	m_CollideInfo = GAMEOBJINFO{ 0, 0, 40, 70 };
-	m_Speed = 200.f;
-	m_RenderType = RENDER_OBJ;
-
-	m_Direction = DIR_LEFT;
-	m_SpriteInfo.key = L"player_left";
-	m_SpriteInfo.CurState = Idle;
-	m_SpriteInfo.PreState = End;
-	m_SpriteInfo.SpriteIndex = 0.f;
-	m_SpriteInfo.StateIndex = 0;
-
-	return true;
-}
-
-int Player::Update(const float& TimeDelta)
-{
-	m_TimeDelta = TimeDelta;
-
-	if (-1 == GameObject::Update(TimeDelta))
-	{
-		return -1;
-	}
-
-	if (-1 == Update_Input(TimeDelta))
-	{
-		return -1;
-	}
-
-	if (-1 == Update_Position(TimeDelta, m_Direction))
-	{
-		return -1;
-	}
-
-	if (-1 == Update_Sprite(TimeDelta))
-	{
-		return -1;
-	}
-
-	StateChange();
-	return 0;
-}
-
-void Player::Render(HDC hdc)
-{
-	if (true == GET_MANAGER<CollisionManager>()->GetRenderCheck())
-		Rectangle(hdc, m_CollideRect.left, m_CollideRect.top, m_CollideRect.right, m_CollideRect.bottom);
-
-	HDC hMemDC = GET_MANAGER<GdiManager>()->FindImage(m_SpriteInfo.key)->GetGdiImageDefault();
-
-	TransparentBlt(hdc, m_Rect.left, m_Rect.top, m_Info.Size_Width, m_Info.Size_Height,
-		hMemDC,
-		(int)m_SpriteInfo.SpriteIndex * m_Info.Size_Width,
-		m_SpriteInfo.StateIndex * m_Info.Size_Height,
-		m_Info.Size_Width, m_Info.Size_Height, RGB(255, 0, 255));
-
-	//std::cout << m_Info.Pos_X << ", " << m_Info.Pos_Y << std::endl;
-}
-
-void Player::Release()
-{
-}
-
-void Player::CollisionPixelPart(DIRECTION dir)
-{
-	switch (dir)
-	{
-	case DIR_BOTTOM:
-		m_GravitySpeed = 0.f;
-		m_GravityAcc = 0.f;
-		m_fallCheck = false;
-		m_SpriteInfo.CurState = Idle;
-		break;
-	}
-}
-
-void Player::CollisionActivate(GameObject* collideTarget)
-{
-	switch (collideTarget->GetObjectType())
-	{
-	case OBJ_PORTAL:
-		m_isReadyGoNext = true;
-		m_NextSceneInfo = dynamic_cast<Portal*>(collideTarget)->GetSceneInfo();
-		break;
-	}
-}
-
-void Player::CollisionDeactivate(GameObject* collideTarget)
-{
-	switch (collideTarget->GetObjectType())
-	{
-	case OBJ_PORTAL:
-		m_isReadyGoNext = false;
-		break;
-	}
 }
 
 void Player::StateChange()
@@ -317,13 +335,13 @@ void Player::StateChange()
 			m_SpriteInfo.Type = SPRITE_ONCE_END;
 			m_SpriteInfo.StateIndex = 14;
 			m_SpriteInfo.MaxFrame = 3;
-			m_SpriteInfo.Speed = 15.f;
+			m_SpriteInfo.Speed = 5.f;
 			break;
 		case Att_2:
 			m_SpriteInfo.Type = SPRITE_ONCE_END;
 			m_SpriteInfo.StateIndex = 15;
 			m_SpriteInfo.MaxFrame = 3;
-			m_SpriteInfo.Speed = 15.f;
+			m_SpriteInfo.Speed = 5.f;
 			break;
 		}
 	}
