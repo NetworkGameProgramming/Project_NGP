@@ -157,8 +157,11 @@
   <ItemGroup>
     <ClInclude Include="AbstractFactory.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="Background_2.h" />
+    <ClInclude Include="Background_3.h" />
     <ClInclude Include="BlueSnail.h" />
     <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="GdiImage.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Constant.h" />
@@ -187,6 +190,7 @@
     <ClInclude Include="NomalAttack.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Portal.h" />
     <ClInclude Include="Project_NGP.h" />
     <ClInclude Include="Protocol.h" />
     <ClInclude Include="Resource.h" />
@@ -201,8 +205,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Background_2.cpp" />
+    <ClCompile Include="Background_3.cpp" />
     <ClCompile Include="BlueSnail.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GdiImage.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="FileManager.cpp" />
@@ -224,6 +231,7 @@
     <ClCompile Include="NomalAttack.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Project_NGP.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />

@@ -97,6 +97,21 @@
     <Filter Include="02.SceneState\MainScene_3">
       <UniqueIdentifier>{1fce29d5-03f9-4d95-8c66-a30c3337040f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\Background\1">
+      <UniqueIdentifier>{d9e4cb51-5d7d-4154-9324-a7b9e4ce6141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Background\2">
+      <UniqueIdentifier>{3293038d-a521-4c86-8e19-5174d29800c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Background\3">
+      <UniqueIdentifier>{172e2bef-00bb-474e-bfc6-de10d3686b83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Background\Portal">
+      <UniqueIdentifier>{68f12b90-10bb-40e9-95c9-c43a14f5a1e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\UI">
+      <UniqueIdentifier>{7b446693-3f2f-4473-acf1-62c5a562c616}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -183,9 +198,6 @@
     <ClInclude Include="CameraManager.h">
       <Filter>97.Manager\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Background.h">
-      <Filter>01.GameObject\Background</Filter>
-    </ClInclude>
     <ClInclude Include="GdiImage.h">
       <Filter>97.Manager\Gdi</Filter>
     </ClInclude>
@@ -227,6 +239,21 @@
     </ClInclude>
     <ClInclude Include="MainScene_3.h">
       <Filter>02.SceneState\MainScene_3</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>01.GameObject\Background\1</Filter>
+    </ClInclude>
+    <ClInclude Include="Background_2.h">
+      <Filter>01.GameObject\Background\2</Filter>
+    </ClInclude>
+    <ClInclude Include="Background_3.h">
+      <Filter>01.GameObject\Background\3</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>01.GameObject\Background\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="Fade.h">
+      <Filter>01.GameObject\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -284,9 +311,6 @@
     <ClCompile Include="CameraManager.cpp">
       <Filter>97.Manager\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Background.cpp">
-      <Filter>01.GameObject\Background</Filter>
-    </ClCompile>
     <ClCompile Include="GdiImage.cpp">
       <Filter>97.Manager\Gdi</Filter>
     </ClCompile>
@@ -322,6 +346,21 @@
     </ClCompile>
     <ClCompile Include="MainScene_3.cpp">
       <Filter>02.SceneState\MainScene_3</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>01.GameObject\Background\1</Filter>
+    </ClCompile>
+    <ClCompile Include="Background_2.cpp">
+      <Filter>01.GameObject\Background\2</Filter>
+    </ClCompile>
+    <ClCompile Include="Background_3.cpp">
+      <Filter>01.GameObject\Background\3</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>01.GameObject\Background\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="Fade.cpp">
+      <Filter>01.GameObject\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

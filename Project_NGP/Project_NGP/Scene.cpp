@@ -13,7 +13,6 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-	m_CamManager->DestroyInstance();
 }
 
 bool Scene::InitializeNetwork(SCENESTATE curScene)

@@ -134,9 +134,7 @@ void NomalAttack::Render(HDC hdc)
 
 	Image* img = GET_MANAGER<GdiPlusManager>()->FindImage(m_SpriteInfo.key)->GetGdiPlusImageFromIndex((int)m_SpriteInfo.SpriteIndex);
 
-	cout << m_Info.Pos_X << "   , " << m_Info.Pos_Y << endl;
 	G.DrawImage(img, m_Rect.left, m_Rect.top, m_Info.Size_Width, m_Info.Size_Height);
-
 }
 
 void NomalAttack::Release()

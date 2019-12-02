@@ -17,7 +17,7 @@ public:
 	const PIXELCOLLIDERINFO* GetPixelCollider() { return m_PixelInfo; }
 	const SPRITEINFO& GetSpriteInfo()			{ return m_SpriteInfo; }
 	const DIRECTION& GetDirection()				{ return m_Direction; }
-
+	const OBJTYPE& GetObjectType()				{ return m_ObjType; }
 public:
 	void SetPosition(int posX, int posY);
 	void SetSize(int sizeWidth, int sizeHeight);
@@ -27,7 +27,7 @@ public:
 	void SetFall(bool fall);
 	void SetSpriteInfo(SPRITEINFO spriteInfo);
 	void SetDirection(DIRECTION dir);
-
+	void SetObjectType(OBJTYPE type);
 public:
 	bool LoadPixelCollider(const char* pFilePath,
 		unsigned char r, unsigned char g, unsigned char b);
@@ -38,6 +38,7 @@ public:
 	virtual void Render(HDC hdc) PURE;
 	virtual void Release() PURE;
 	virtual void CollisionActivate(GameObject* collideTarget);
+	virtual void CollisionDeactivate(GameObject* collideTarget);
 	virtual void CollisionPixelPart(DIRECTION dir);
 
 protected:
@@ -51,6 +52,8 @@ protected:
 	RECT				m_Rect;
 	GAMEOBJINFO			m_CollideInfo;
 	RECT				m_CollideRect;
+
+	OBJTYPE				m_ObjType = OBJ_END;
 
 	bool			m_isNoScroll = false;
 	bool			m_isDead = false;

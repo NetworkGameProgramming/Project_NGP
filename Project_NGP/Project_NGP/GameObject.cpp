@@ -77,6 +77,11 @@ void GameObject::SetDirection(DIRECTION dir)
 	m_Direction = dir;
 }
 
+void GameObject::SetObjectType(OBJTYPE type)
+{
+	m_ObjType = type;
+}
+
 bool GameObject::LoadPixelCollider(const char* pFilePath, unsigned char r, unsigned char g, unsigned char b)
 {
 	if (nullptr != m_PixelInfo)
@@ -145,15 +150,19 @@ int GameObject::Update(const float & TimeDelta)
 	m_Rect.bottom = (int)TotalPos.Y + m_Info.Size_Height / 2;
 
 	// Collide Rect 정보를 갱신한다.
-	m_CollideRect.left = (int)TotalPos.X - m_CollideInfo.Size_Width / 2;
-	m_CollideRect.top = (int)TotalPos.Y - m_CollideInfo.Size_Height / 2;
-	m_CollideRect.right = (int)TotalPos.X + m_CollideInfo.Size_Width / 2;
-	m_CollideRect.bottom = (int)TotalPos.Y + m_CollideInfo.Size_Height / 2;
+	m_CollideRect.left = (int)(TotalPos.X + m_CollideInfo.Pos_X) - m_CollideInfo.Size_Width / 2;
+	m_CollideRect.top = (int)(TotalPos.Y + m_CollideInfo.Pos_Y) - m_CollideInfo.Size_Height / 2;
+	m_CollideRect.right = (int)(TotalPos.X + m_CollideInfo.Pos_X) + m_CollideInfo.Size_Width / 2;
+	m_CollideRect.bottom = (int)(TotalPos.Y + m_CollideInfo.Pos_Y) + m_CollideInfo.Size_Height / 2;
 
 	return 0;
 }
 
 void GameObject::CollisionActivate(GameObject* collideTarget)
+{
+}
+
+void GameObject::CollisionDeactivate(GameObject* collideTarget)
 {
 }
 

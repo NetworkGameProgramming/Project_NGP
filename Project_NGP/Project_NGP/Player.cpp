@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
-
+#include "Portal.h"
+#include "Fade.h"
 
 Player::Player()
 	: GameObject()
@@ -38,9 +39,20 @@ int Player::Update_Input(const float& TimeDelta)
 			m_SpriteInfo.CurState = Walk;
 	}
 
-	if (true == keyManager->GetKeyState(STATE_PUSH, VK_UP))
+	if (true == keyManager->GetKeyState(STATE_DOWN, VK_UP))
 	{
 		m_Dir |= 0x00000004;
+		if (true == m_isReadyGoNext &&
+			SCENE_END != m_NextSceneInfo)
+		{
+			Fade* fade = dynamic_cast<Fade*>
+				(GET_MANAGER<ObjectManager>()->GetObjFromTag(L"fade", OBJ_UI));
+			fade->SetNextSceneInfo(m_NextSceneInfo);
+			fade->SetFade(true);
+
+			m_isReadyGoNext = false;
+			m_NextSceneInfo = SCENE_END;
+		}
 	}
 
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_DOWN))
@@ -124,7 +136,7 @@ int Player::Update_Position(const float& TimeDelta, const DIRECTION& Direction)
 			m_GravityAcc += 9.8f * 10.f;
 	}
 
-	//printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y);
+	//printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y + (m_CollideInfo.Size_Height / 2));
 
 	return 0;
 }
@@ -245,6 +257,27 @@ void Player::CollisionPixelPart(DIRECTION dir)
 		m_GravityAcc = 0.f;
 		m_fallCheck = false;
 		m_SpriteInfo.CurState = Idle;
+		break;
+	}
+}
+
+void Player::CollisionActivate(GameObject* collideTarget)
+{
+	switch (collideTarget->GetObjectType())
+	{
+	case OBJ_PORTAL:
+		m_isReadyGoNext = true;
+		m_NextSceneInfo = dynamic_cast<Portal*>(collideTarget)->GetSceneInfo();
+		break;
+	}
+}
+
+void Player::CollisionDeactivate(GameObject* collideTarget)
+{
+	switch (collideTarget->GetObjectType())
+	{
+	case OBJ_PORTAL:
+		m_isReadyGoNext = false;
 		break;
 	}
 }

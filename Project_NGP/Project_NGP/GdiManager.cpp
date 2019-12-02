@@ -28,9 +28,11 @@ void GdiManager::LoadImageBySceneState(SCENESTATE SceneState)
 	GdiManager* GdiMgr = GET_MANAGER<GdiManager>();
 	switch (SceneState)
 	{
+	case SCENESTATE::SCENE_MENU:
+		break;
 	case SCENESTATE::SCENE_TEST:
+	case SCENESTATE::SCENE_MAIN_1:
 		// Load Image
-		// Test
 		GdiMgr->LoadGdiImageFromFolder(L"bluesnail_left", "../Resources/Monster/BlueSnail/BlueSnail_Left");
 		GdiMgr->LoadGdiImageFromFolder(L"bluesnail_right", "../Resources/Monster/BlueSnail/BlueSnail_Right");
 		GdiMgr->LoadGdiImage(L"snail", L"../Resources/Monster/0.bmp");
@@ -40,7 +42,21 @@ void GdiManager::LoadImageBySceneState(SCENESTATE SceneState)
 		// Player
 		GdiMgr->LoadGdiImage(L"player_left", L"../Resources/Player/player_L.bmp");
 		GdiMgr->LoadGdiImage(L"player_right", L"../Resources/Player/player_R.bmp");
-	case SCENESTATE::SCENE_MAIN_1:
+		// Portal
+		GdiMgr->LoadGdiImage(L"portal", L"../Resources/Map/portal.bmp");
+		// Fade
+		GdiMgr->LoadGdiImage(L"fade", L"../Resources/FadeBuffer.bmp");
+	
+		break;
+	case SCENESTATE::SCENE_MAIN_2:
+		// Background
+		GdiMgr->LoadGdiImage(L"background_2", L"../Resources/Map/Back_2.bmp");
+		GdiMgr->LoadGdiImage(L"background_collider_2", L"../Resources/Map/Back_2_Collider.bmp");
+		break;
+	case SCENESTATE::SCENE_MAIN_3:
+		// Background
+		GdiMgr->LoadGdiImage(L"background_3", L"../Resources/Map/Back_Town.bmp");
+		GdiMgr->LoadGdiImage(L"background_collider_3", L"../Resources/Map/Back_Town_Collider.bmp");
 		break;
 	}
 }

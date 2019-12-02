@@ -38,6 +38,8 @@ void ObjectManager::AddObject(const TCHAR* tag, GameObject* Obj, OBJTYPE ObjType
 	if (nullptr == Obj)
 		return;
 
+	Obj->SetObjectType(ObjType);
+
 	m_mapObj[ObjType].insert(MAPOBJ::value_type(tag, Obj));
 }
 
@@ -48,7 +50,15 @@ void ObjectManager::Update(const float& TimeDelta)
 	{
 		for (auto& obj : m_mapObj[i])
 		{
-			obj.second->Update(TimeDelta);
+			// 죽은 상태라면 컨테이너에서 삭제한다.
+			if (true == obj.second->GetState())
+			{
+				delete obj.second;
+				obj.second = nullptr;
+				m_mapObj[i].erase(obj.first);
+			}
+			else
+				obj.second->Update(TimeDelta);
 		}
 	}
 
@@ -56,6 +66,7 @@ void ObjectManager::Update(const float& TimeDelta)
 	//GET_MANAGER<CollisionManager>()->CollisionRect(&m_mapObj[OBJ_PLAYER], &m_mapObj[OBJ_MONSTER]);
 	//GET_MANAGER<CollisionManager>()->CollisionRectEx(&m_mapObj[OBJ_PLAYER], &m_mapObj[OBJ_MONSTER]);
 	GET_MANAGER<CollisionManager>()->CollisionPixelToRect(&m_mapObj[OBJ_BACK], &m_mapObj[OBJ_PLAYER]);
+	GET_MANAGER<CollisionManager>()->CollisionRect(&m_mapObj[OBJ_PLAYER], &m_mapObj[OBJ_PORTAL]);
 }
 
 void ObjectManager::Render(HDC hDC)

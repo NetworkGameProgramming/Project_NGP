@@ -22,8 +22,8 @@ void GdiPlusManager::LoadImageBySceneState(SCENESTATE SceneState)
 	switch (SceneState)
 	{
 	case SCENESTATE::SCENE_TEST:
+	case SCENESTATE::SCENE_MAIN_1:
 		// Load Image
-		LoadGdiPlusImage(L"background", L"../Resources/back.bmp");
 		LoadGdiPlusImage(L"cursor", L"../Resources/Cursor.png");
 		LoadGdiPlusImageFromFolder(L"nomal_attack","../Resources/NomalAttack");
 		LoadGdiPlusImageFromFolder(L"nomal_attack_hit", "../Resources/NomalAttackHit");
@@ -31,7 +31,10 @@ void GdiPlusManager::LoadImageBySceneState(SCENESTATE SceneState)
 		LoadGdiPlusImageFromFolder(L"skill1_hit", "../Resources/Skill1Hit");
 		LoadGdiPlusImageFromFolder(L"skill2", "../Resources/Skill2");
 		LoadGdiPlusImageFromFolder(L"skill2_hit", "../Resources/Skill2Hit");
-	case SCENESTATE::SCENE_MAIN_1:
+		break;
+	case SCENESTATE::SCENE_MAIN_2:
+		break;
+	case SCENESTATE::SCENE_MAIN_3:
 		break;
 	}
 }

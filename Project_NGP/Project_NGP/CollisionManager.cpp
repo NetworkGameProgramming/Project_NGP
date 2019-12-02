@@ -31,6 +31,11 @@ void CollisionManager::CollisionRect(ObjectManager::MAPOBJ* DstList, ObjectManag
 				Src.second->CollisionActivate(Dst.second);
 				Dst.second->CollisionActivate(Src.second);
 			}
+			else
+			{
+				Src.second->CollisionDeactivate(Dst.second);
+				Dst.second->CollisionDeactivate(Src.second);
+			}
 		}
 	}
 }

@@ -29,6 +29,10 @@ public:
 	virtual void CollisionPixelPart(DIRECTION dir);
 
 public:
+	virtual void CollisionActivate(GameObject* collideTarget);
+	virtual void CollisionDeactivate(GameObject* collideTarget);
+
+public:
 	void StateChange();
 
 private:
@@ -38,5 +42,7 @@ private:
 	//float m_GravityAcc = 9.8f;
 	bool m_isOther = false;
 	
+	SCENESTATE m_NextSceneInfo = SCENE_END;
+	bool	  m_isReadyGoNext = false;
 };
 

@@ -3,6 +3,7 @@
 #include "MainMenu.h"
 #include "TestScene.h"
 #include "MainScene_1.h"
+#include "MainScene_2.h"
 
 SceneManager::SceneManager()
 {
@@ -31,6 +32,9 @@ bool SceneManager::ChangeSceneState(SCENESTATE SceneState)
 		break;
 	case SCENE_MAIN_1:
 		m_Scene = new MainScene_1;
+		break;
+	case SCENE_MAIN_2:
+		m_Scene = new MainScene_2;
 		break;
 	}
 

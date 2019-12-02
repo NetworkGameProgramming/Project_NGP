@@ -6,6 +6,9 @@
 #include "Monster.h"
 #include "BlueSnail.h"
 #include "NomalAttack.h"
+#include "Portal.h"
+#include "Fade.h"
+
 TestScene::TestScene()
 	:Scene()
 {
@@ -23,20 +26,24 @@ bool TestScene::Initialize()
 	
 	m_ObjManager->AddObject(L"background", AbstractFactory<Background>::CreateObj(), OBJ_BACK);
 	m_ObjManager->AddObject(L"nomalattack", AbstractFactory<NomalAttack>::CreateObj(), OBJ_EFFECT);
-	m_ObjManager->AddObject(L"player", AbstractFactory<Player>::CreateObj(), OBJ_PLAYER);
-	//m_ObjManager->AddObject(L"monster", AbstractFactory<Monster>::CreateObj(), OBJ_MONSTER);
-	//m_ObjManager->AddObject(L"BlueSnail", AbstractFactory<BlueSnail>::CreateObj(), OBJ_MONSTER);
 	m_ObjManager->AddObject(L"bluesnail", AbstractFactory<BlueSnail>::CreateObj(), OBJ_MONSTER);
-	m_ObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_MOUSE);
+	m_ObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_UI);
+	m_ObjManager->AddObject(L"fade", AbstractFactory<Fade>::CreateObj(), OBJ_UI);
+
+	GameObject* pPortal = AbstractFactory<Portal>::CreateObj(1172, 298 - (257 / 2));
+	dynamic_cast<Portal*>(pPortal)->SetSceneInfo(SCENE_MAIN_2);
+	m_ObjManager->AddObject(L"portal", pPortal, OBJ_PORTAL);
 
 	GameObject* pPlayer = m_ObjManager->GetObjFromTag(L"player", OBJ_PLAYER);
+	if (nullptr == pPlayer)
+	{
+		pPlayer = AbstractFactory<Player>::CreateObj();
+		m_ObjManager->AddObject(L"player", pPlayer, OBJ_PLAYER);
+	}
 	m_CamManager->SetTarget(pPlayer);
 
 	GameObject* pBackGround = m_ObjManager->GetObjFromTag(L"background", OBJ_BACK);
 	m_CamManager->SetResolution(pBackGround->GetInfo().Size_Width, pBackGround->GetInfo().Size_Height);
-
-	if (false == InitializeNetwork(SCENE_TEST))
-		return false;
 
 	return true;
 }
@@ -55,13 +62,8 @@ int TestScene::Update(const float & TimeDelta)
 			GET_MANAGER<CollisionManager>()->SetRenderCheck(true);
 	}
 
-	m_ObjManager->Update(TimeDelta);
 	m_CamManager->Update(TimeDelta);
-
-#ifdef SERVER_MODE
-	if (false == UpdateNetwork())
-		return -1;
-#endif
+	m_ObjManager->Update(TimeDelta);
 
 	return 0;
 }
@@ -78,4 +80,5 @@ void TestScene::Release()
 	m_ObjManager->ReleaseFromType(OBJ_OTHERPLAYER);
 	m_ObjManager->ReleaseFromType(OBJ_MONSTER);
 	m_ObjManager->ReleaseFromType(OBJ_EFFECT);
+	m_ObjManager->ReleaseFromType(OBJ_PORTAL);
 }
