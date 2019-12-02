@@ -43,6 +43,7 @@ bool MainScene_1::Initialize()
 		pPlayer = AbstractFactory<Player>::CreateObj();
 		m_ObjManager->AddObject(L"player", pPlayer, OBJ_PLAYER);
 	}
+	pPlayer->SetPosition(1703, 1272);
 	m_CamManager->SetTarget(pPlayer);
 
 	GameObject* pBackGround = m_ObjManager->GetObjFromTag(L"background", OBJ_BACK);

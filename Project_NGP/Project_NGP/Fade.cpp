@@ -48,7 +48,7 @@ int Fade::Update(const float& TimeDelta)
 			m_Alpha = 0.f;
 	}
 
-	cout << m_Alpha << endl;
+	//cout << m_Alpha << endl;
 
 	/*KeyManager* keyManager = GET_MANAGER<KeyManager>();
 	if (true == keyManager->GetKeyState(STATE_DOWN, VK_F2))

@@ -26,13 +26,13 @@ bool MainScene_2::Initialize()
 
 	m_ObjManager->AddObject(L"background", AbstractFactory<Background_2>::CreateObj(), OBJ_BACK);
 
-	/*GameObject* pPortal = AbstractFactory<Portal>::CreateObj(1172, 298 - (257 / 2));
-	dynamic_cast<Portal*>(pPortal)->SetSceneInfo(SCENE_MAIN_2);
-	m_ObjManager->AddObject(L"portal", pPortal, OBJ_PORTAL);*/
+	GameObject* pPortal = AbstractFactory<Portal>::CreateObj(85, 727 - (257 / 2));
+	dynamic_cast<Portal*>(pPortal)->SetSceneInfo(SCENE_TEST);
+	m_ObjManager->AddObject(L"portal_left", pPortal, OBJ_PORTAL);
 
-	/*GameObject* pPortal = AbstractFactory<Portal>::CreateObj(1172, 298 - (257 / 2));
-	dynamic_cast<Portal*>(pPortal)->SetSceneInfo(SCENE_MAIN_2);
-	m_ObjManager->AddObject(L"portal", pPortal, OBJ_PORTAL);*/
+	pPortal = AbstractFactory<Portal>::CreateObj(1813, 282 - (257 / 2));
+	dynamic_cast<Portal*>(pPortal)->SetSceneInfo(SCENE_MAIN_3);
+	m_ObjManager->AddObject(L"portal_right", pPortal, OBJ_PORTAL);
 
 	GameObject* pPlayer = m_ObjManager->GetObjFromTag(L"player", OBJ_PLAYER);
 	if (nullptr == pPlayer)
@@ -40,7 +40,7 @@ bool MainScene_2::Initialize()
 		pPlayer = AbstractFactory<Player>::CreateObj();
 		m_ObjManager->AddObject(L"player", pPlayer, OBJ_PLAYER);
 	}
-	pPlayer->SetPosition(100, 200);
+	pPlayer->SetPosition(85, 669);
 	m_CamManager->SetTarget(pPlayer);
 
 	GameObject* pBackGround = m_ObjManager->GetObjFromTag(L"background", OBJ_BACK);

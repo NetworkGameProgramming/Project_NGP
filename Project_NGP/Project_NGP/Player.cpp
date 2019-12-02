@@ -48,7 +48,7 @@ if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
 			Fade* fade = dynamic_cast<Fade*>
 				(GET_MANAGER<ObjectManager>()->GetObjFromTag(L"fade", OBJ_UI));
 			fade->SetNextSceneInfo(m_NextSceneInfo);
-			fade->SetFade(true);
+			fade->SetFade(true);	
 
 			m_isReadyGoNext = false;
 			m_NextSceneInfo = SCENE_END;
@@ -142,7 +142,7 @@ int Player::Update_Position(const float& TimeDelta, const DIRECTION& Direction)
 			m_GravityAcc += 9.8f * 10.f;
 	}
 
-	//printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y + (m_CollideInfo.Size_Height / 2));
+	printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y + (m_CollideInfo.Size_Height / 2));
 
 	return 0;
 }
@@ -193,8 +193,8 @@ bool Player::Initialize()
 	m_Speed = 200.f;
 	m_RenderType = RENDER_OBJ;
 
-	m_Direction = DIR_RIGHT;
-	m_SpriteInfo.key = L"player_right";
+	m_Direction = DIR_LEFT;
+	m_SpriteInfo.key = L"player_left";
 	m_SpriteInfo.CurState = Idle;
 	m_SpriteInfo.PreState = End;
 	m_SpriteInfo.SpriteIndex = 0.f;
