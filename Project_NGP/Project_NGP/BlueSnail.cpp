@@ -12,7 +12,7 @@ BlueSnail::~BlueSnail()
 
 bool BlueSnail::Initialize()
 {
-	m_Info = GAMEOBJINFO{ 800, 280, 41, 39 };
+	m_Info = GAMEOBJINFO{ 800, 280, 100, 100 };
 	m_CollideInfo = GAMEOBJINFO{ 0, 0, 41, 39 };
 	m_Speed = 0.f;
 	m_RenderType = RENDER_OBJ;
@@ -40,10 +40,14 @@ int BlueSnail::Update_Input(const float& TimeDelta)
 	bool Damaged = false;
 	//몬스터가 플레이어의 방향과 일치하는 방향에서 맞았는지
 	bool HitBack = false;
-
+	bool Died = false;
+	//if (true == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
+	//{
+	//	Damaged = true;
+	//}
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
 	{
-		Damaged = true;
+		Died = true;
 	}
 
 	if (m_SpriteInfo.CurState == Idle)
@@ -105,6 +109,12 @@ int BlueSnail::Update_Input(const float& TimeDelta)
 			}
 		}
 		m_SpriteInfo.CurState = Hit;
+	}
+
+	if (true == Died)
+	{
+		m_Speed = 0;
+		m_SpriteInfo.CurState = Die;
 	}
 	return 0;
 }
@@ -218,6 +228,10 @@ int BlueSnail::Update_Sprite(const float& TimeDelta)
 	case DIR_LEFT: m_SpriteInfo.key = L"bluesnail_left"; break;
 	case DIR_RIGHT: m_SpriteInfo.key = L"bluesnail_right"; break;
 	}
+	if (m_SpriteInfo.CurState == Die)
+	{
+		m_SpriteInfo.key = L"bluesnail_die";
+	}
 	StateChange();
 	return 0;
 }
@@ -261,8 +275,9 @@ void BlueSnail::StateChange()
 			m_SpriteInfo.Speed = 1.f;
 			break;
 		case Die:
-			m_SpriteInfo.Type = SPRITE_ONCE_END;
-			m_SpriteInfo.MaxFrame = 3;
+			m_SpriteInfo.Type = SPRITE_ONCE;
+			m_SpriteInfo.SpriteIndex = 0;
+			m_SpriteInfo.MaxFrame = 12;
 			m_SpriteInfo.Speed = 4.f;
 			break;
 		}

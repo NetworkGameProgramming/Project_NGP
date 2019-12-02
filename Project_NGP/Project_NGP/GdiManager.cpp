@@ -35,6 +35,7 @@ void GdiManager::LoadImageBySceneState(SCENESTATE SceneState)
 		// Load Image
 		GdiMgr->LoadGdiImageFromFolder(L"bluesnail_left", "../Resources/Monster/BlueSnail/BlueSnail_Left");
 		GdiMgr->LoadGdiImageFromFolder(L"bluesnail_right", "../Resources/Monster/BlueSnail/BlueSnail_Right");
+		GdiMgr->LoadGdiImageFromFolder(L"bluesnail_die", "../Resources/Monster/BlueSnail/BlueSnail_Die");
 		GdiMgr->LoadGdiImage(L"snail", L"../Resources/Monster/0.bmp");
 		// Background
 		GdiMgr->LoadGdiImage(L"background", L"../Resources/Map/Back.bmp");
