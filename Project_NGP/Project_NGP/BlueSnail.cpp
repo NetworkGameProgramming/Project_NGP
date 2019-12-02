@@ -13,7 +13,7 @@ BlueSnail::~BlueSnail()
 bool BlueSnail::Initialize()
 {
 	m_Info = GAMEOBJINFO{ 800, 280, 41, 39 };
-	m_CollideInfo = GAMEOBJINFO{ 0, 0, 40, 70 };
+	m_CollideInfo = GAMEOBJINFO{ 0, 0, 41, 39 };
 	m_Speed = 0.f;
 	m_RenderType = RENDER_OBJ;
 	m_Direction = DIR_RIGHT;
@@ -144,109 +144,60 @@ int BlueSnail::Update_Position(const float& TimeDelta, const DIRECTION& Directio
 	{
 		m_Info.Pos_X -= speed;
 	}
-
 	// R
 	//if (0x00000002 == (m_Dir & 0x00000002))
 	if (m_Direction == DIR_RIGHT)
 	{
 		m_Info.Pos_X += speed;
 	}
-
 	if (m_SpriteInfo.CurState == Hit)
 	{
 		m_KnockBackTimeDelta += TimeDelta;
 		if (m_KnockBackTime <= m_KnockBackTimeDelta)
-
 		{
-
 			m_SpriteInfo.CurState = Move;
-
 			m_Speed = 100;
-
 			m_KnockBackTimeDelta = 0;
-
 			return 0;
-
 		}
-
 		else
-
 		{
-
 			//m_Speed = 300;
-
 			if (m_Direction == DIR_LEFT)
-
 			{
-
 				m_Info.Pos_X = Lerp<int, int>(m_Info.Pos_X, m_Info.Pos_X += 5, 5 * TimeDelta);
-
 			}
-
 			else
-
 			{
-
 				m_Info.Pos_X = Lerp<int, int>(m_Info.Pos_X, m_Info.Pos_X -= 5, 5 * TimeDelta);
-
 			}
-
-
-
 		}
-
 	}
-
 	return 0;
-
 }
 
 
 
 int BlueSnail::Update_Sprite(const float& TimeDelta)
-
 {
-
 	m_SpriteInfo.SpriteIndex += m_SpriteInfo.Speed * TimeDelta;
-
-
-
 	switch (m_SpriteInfo.Type)
-
 	{
-
 	case SPRITE_ONCE:
-
 		if ((float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)
-
 		{
-
-
-
 		}
-
 		break;
-
 	case SPRITE_ONCE_END:
-
 		if ((float)m_SpriteInfo.MaxFrame > m_SpriteInfo.SpriteIndex)
-
 		{
-
 			m_SpriteInfo.CurState = m_SpriteInfo.PreState;
-
 		}
-
 		else
-
 		{
-
 			//m_SpriteInfo.CurState = 0;
-
 		}
-
 		break;
-
 	case SPRITE_REPEAT:
 		if ((float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)
 		{
@@ -274,7 +225,7 @@ int BlueSnail::Update_Sprite(const float& TimeDelta)
 void BlueSnail::Render(HDC hdc)
 {
 	if (true == GET_MANAGER<CollisionManager>()->GetRenderCheck())
-		Rectangle(hdc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
+		Rectangle(hdc, m_CollideRect.left, m_CollideRect.top, m_CollideRect.right, m_CollideRect.bottom);
 
 	HDC hMemDC = GET_MANAGER<GdiManager>()->FindImage(m_SpriteInfo.key)->GetGdiImageFromIndex((int)m_SpriteInfo.SpriteIndex);
 

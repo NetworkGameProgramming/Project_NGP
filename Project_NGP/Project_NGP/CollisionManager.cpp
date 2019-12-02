@@ -190,8 +190,8 @@ bool CollisionManager::CheckCollisionRectDist(int* moveX, int* moveY, GameObject
 	// 충돌된 거리를 구한다.
 
 	// 축의 합을 구한다.
-	int width = (Dst->GetInfo().Size_Width / 2) + (Src->GetInfo().Size_Width / 2);
-	int height = (Dst->GetInfo().Size_Height / 2) + (Src->GetInfo().Size_Height / 2);
+	int width = (Dst->GetCollideInfo().Size_Width / 2) + (Src->GetCollideInfo().Size_Width / 2);
+	int height = (Dst->GetCollideInfo().Size_Height / 2) + (Src->GetCollideInfo().Size_Height / 2);
 
 	int distX = abs(Dst->GetInfo().Pos_X - Src->GetInfo().Pos_X);
 	int distY = abs(Dst->GetInfo().Pos_Y - Src->GetInfo().Pos_Y);

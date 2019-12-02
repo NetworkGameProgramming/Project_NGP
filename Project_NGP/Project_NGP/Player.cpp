@@ -72,22 +72,19 @@ if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
 
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
 	{
-		/*{
-	GameObject* effect = AbstractFactory<NomalAttack>::CreateObj();
-	dynamic_cast<CEffect*>(effect)->SetEffectSpawn(x, y, dir, attcheck);
-	GET_MANAGER<ObjectManager>()->AddObject(L"effect", effect, OBJ_EFFECT);
-}*/
+
+		GameObject* effect = AbstractFactory<NomalAttack>::CreateObj();
+		dynamic_cast<CEffect*>(effect)->SetEffectSpawn(m_Info.Pos_X, m_Info.Pos_Y, m_Direction, true);
+		GET_MANAGER<ObjectManager>()->AddObject(L"effect", effect, OBJ_EFFECT);
 
 		int r = rand() % 2;
 		if (0 == r)
 		{
 			m_SpriteInfo.CurState = Att_1;
-			
 		}
 		else
 		{
 			m_SpriteInfo.CurState = Att_2;
-			
 		}
 	}
 
