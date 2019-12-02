@@ -9,25 +9,10 @@ NomalAttack::~NomalAttack()
 	Release();
 }
 
-void NomalAttack::SetPosition(int posX, int posY)
-{
-	m_Info.Pos_X = posX;
-	m_Info.Pos_Y = posY;
-
-	if (DIR_LEFT == m_Direction)
-	{
-		m_Info.Pos_X += 100;
-	}
-	else if (DIR_RIGHT == m_Direction)
-	{
-		m_Info.Pos_X -= 100;
-	}
-}
-
 bool NomalAttack::Initialize()
 {
-	m_Info = GAMEOBJINFO{ 0, 0, 139, 118 };
-	m_CollideInfo = GAMEOBJINFO{ 0, 0, 139, 118 };
+	m_Info = GAMEOBJINFO{ m_Info.Pos_X, m_Info.Pos_X, rectX, rectY };
+	m_CollideInfo = GAMEOBJINFO{ 0, 0, rectX, rectY };
 	m_Speed = 0.f;
 	m_RenderType = RENDER_EFFECT;
 	m_SpriteInfo.key = L"nomal_attack";
@@ -43,14 +28,12 @@ int NomalAttack::Update_Input(const float& TimeDelta)
 {
 	if (Play == m_SpriteInfo.CurState)
 	{
-		/*if (m_SpriteInfo.SpriteIndex == m_SpriteInfo.MaxFrame)
+		if (false == m_AttCheck && (float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)
 		{
 			m_SpriteInfo.CurState = Ready;
 		}
-		else*/
-		return 0;
 	}
-	else if (Ready == m_SpriteInfo.CurState)
+	else if (Ready == m_SpriteInfo.CurState && true == m_AttCheck)
 	{
 		m_SpriteInfo.SpriteIndex = 0.f;
 		m_SpriteInfo.CurState = Play;
@@ -88,16 +71,16 @@ int NomalAttack::Update(const float& TimeDelta)
 
 int NomalAttack::Update_Position(const float& TimeDelta, const DIRECTION& Direction)
 {
-	//int speed = int(m_Speed * TimeDelta);
-	/*if (DIR_LEFT == m_Direction)
+	if (DIR_LEFT == m_Direction)
 	{
-		m_Info.Pos_X += 100;
+		m_Info = GAMEOBJINFO{ m_Info.Pos_X, m_Info.Pos_X, rectX, rectY };
+		m_CollideInfo = GAMEOBJINFO{ m_Info.Pos_X, m_Info.Pos_Y, rectX, rectY };
 	}
 	else if (DIR_RIGHT == m_Direction)
 	{
-		m_Info.Pos_X -= 100;
-	}*/
-
+		m_Info = GAMEOBJINFO{ m_Info.Pos_X, m_Info.Pos_X, -rectX, rectY };
+		m_CollideInfo = GAMEOBJINFO{ m_Info.Pos_X, m_Info.Pos_Y, -rectX, rectY };
+	}
 	return 0;
 }
 
@@ -128,7 +111,7 @@ int NomalAttack::Update_Sprite(const float& TimeDelta)
 void NomalAttack::Render(HDC hdc)
 {
 	if (true == GET_MANAGER<CollisionManager>()->GetRenderCheck())
-		Rectangle(hdc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
+		Rectangle(hdc, m_CollideRect.left, m_CollideRect.top, m_CollideRect.right, m_CollideRect.bottom);
 
 	Graphics G(hdc);
 

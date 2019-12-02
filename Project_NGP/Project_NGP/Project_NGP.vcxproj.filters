@@ -228,6 +228,9 @@
     <ClInclude Include="MainScene_3.h">
       <Filter>02.SceneState\MainScene_3</Filter>
     </ClInclude>
+    <ClInclude Include="AttackEffect.h">
+      <Filter>01.GameObject\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -322,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="MainScene_3.cpp">
       <Filter>02.SceneState\MainScene_3</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackEffect.cpp">
+      <Filter>01.GameObject\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

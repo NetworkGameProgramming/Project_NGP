@@ -5,6 +5,7 @@
 #include "Background.h"
 #include "Monster.h"
 #include "BlueSnail.h"
+#include "AttackEffect.h"
 #include "NomalAttack.h"
 TestScene::TestScene()
 	:Scene()
@@ -22,6 +23,7 @@ bool TestScene::Initialize()
 	GET_MANAGER<GdiManager>()->LoadImageBySceneState(SCENE_TEST);
 	
 	m_ObjManager->AddObject(L"background", AbstractFactory<Background>::CreateObj(), OBJ_BACK);
+	//m_ObjManager->AddObject(L"attackeffect", AbstractFactory<AttackEffect>::CreateObj(), OBJ_EFFECT);
 	m_ObjManager->AddObject(L"nomalattack", AbstractFactory<NomalAttack>::CreateObj(), OBJ_EFFECT);
 	m_ObjManager->AddObject(L"player", AbstractFactory<Player>::CreateObj(), OBJ_PLAYER);
 	//m_ObjManager->AddObject(L"monster", AbstractFactory<Monster>::CreateObj(), OBJ_MONSTER);
@@ -34,9 +36,6 @@ bool TestScene::Initialize()
 
 	GameObject* pBackGround = m_ObjManager->GetObjFromTag(L"background", OBJ_BACK);
 	m_CamManager->SetResolution(pBackGround->GetInfo().Size_Width, pBackGround->GetInfo().Size_Height);
-
-	if (false == InitializeNetwork(SCENE_TEST))
-		return false;
 
 	return true;
 }
@@ -57,11 +56,6 @@ int TestScene::Update(const float & TimeDelta)
 
 	m_ObjManager->Update(TimeDelta);
 	m_CamManager->Update(TimeDelta);
-
-#ifdef SERVER_MODE
-	if (false == UpdateNetwork())
-		return -1;
-#endif
 
 	return 0;
 }

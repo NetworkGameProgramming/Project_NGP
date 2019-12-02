@@ -33,7 +33,8 @@ public:
 
 private:
 	float m_TimeDelta = 0.f;
-	GameObject *m_NomalAtt;
+	GameObject* m_Effect;
+	GameObject* m_NomalAttack;
 	//float m_GravitySpeed = 0.f;
 	//float m_GravityAcc = 9.8f;
 	bool m_isOther = false;

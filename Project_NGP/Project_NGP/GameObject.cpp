@@ -77,6 +77,13 @@ void GameObject::SetDirection(DIRECTION dir)
 	m_Direction = dir;
 }
 
+void GameObject::SetEffectSpawn(int x, int y, DIRECTION Dir, bool AttCheck)
+{
+	SetPosition(x, y);
+	m_AttCheck = AttCheck;
+	m_Direction = Dir;
+}
+
 bool GameObject::LoadPixelCollider(const char* pFilePath, unsigned char r, unsigned char g, unsigned char b)
 {
 	if (nullptr != m_PixelInfo)
