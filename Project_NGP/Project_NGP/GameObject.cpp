@@ -82,13 +82,6 @@ void GameObject::SetObjectType(OBJTYPE type)
 	m_ObjType = type;
 }
 
-void GameObject::SetEffectSpawn(int x, int y, DIRECTION Dir, bool AttCheck)
-{
-	SetPosition(x, y);
-	m_AttCheck = AttCheck;
-	m_Direction = Dir;
-}
-
 bool GameObject::LoadPixelCollider(const char* pFilePath, unsigned char r, unsigned char g, unsigned char b)
 {
 	if (nullptr != m_PixelInfo)

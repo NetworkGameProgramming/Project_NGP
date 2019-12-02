@@ -8,6 +8,7 @@
 #include "NomalAttack.h"
 #include "Portal.h"
 #include "Fade.h"
+#include "Effect.h"
 
 MainScene_1::MainScene_1()
 	:Scene()
@@ -24,6 +25,9 @@ bool MainScene_1::Initialize()
 	GET_MANAGER<GdiPlusManager>()->LoadImageBySceneState(SCENE_TEST);
 	GET_MANAGER<GdiManager>()->LoadImageBySceneState(SCENE_TEST);
 
+
+	
+	
 	m_ObjManager->AddObject(L"background", AbstractFactory<Background>::CreateObj(), OBJ_BACK);
 	m_ObjManager->AddObject(L"nomalattack", AbstractFactory<NomalAttack>::CreateObj(), OBJ_EFFECT);
 	m_ObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_UI);

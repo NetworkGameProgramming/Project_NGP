@@ -161,8 +161,8 @@
     <ClInclude Include="Background_3.h" />
     <ClInclude Include="BlueSnail.h" />
     <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="Fade.h" />
-    <ClInclude Include="AttackEffect.h" />
     <ClInclude Include="GdiImage.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Constant.h" />
@@ -210,8 +210,8 @@
     <ClCompile Include="Background_3.cpp" />
     <ClCompile Include="BlueSnail.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Fade.cpp" />
-    <ClCompile Include="AttackEffect.cpp" />
     <ClCompile Include="GdiImage.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="FileManager.cpp" />

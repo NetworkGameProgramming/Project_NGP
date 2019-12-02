@@ -179,7 +179,7 @@ int BlueSnail::Update_Position(const float& TimeDelta, const DIRECTION& Directio
 
 			{
 
-				m_Info.Pos_X = Lerp<float, float>(m_Info.Pos_X, m_Info.Pos_X += 5, 5 * TimeDelta);
+				m_Info.Pos_X = Lerp<int, int>(m_Info.Pos_X, m_Info.Pos_X += 5, 5 * TimeDelta);
 
 			}
 
@@ -187,7 +187,7 @@ int BlueSnail::Update_Position(const float& TimeDelta, const DIRECTION& Directio
 
 			{
 
-				m_Info.Pos_X = Lerp<float, float>(m_Info.Pos_X, m_Info.Pos_X -= 5, 5 * TimeDelta);
+				m_Info.Pos_X = Lerp<int, int>(m_Info.Pos_X, m_Info.Pos_X -= 5, 5 * TimeDelta);
 
 			}
 

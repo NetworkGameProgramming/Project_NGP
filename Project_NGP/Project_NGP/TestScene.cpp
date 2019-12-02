@@ -5,7 +5,6 @@
 #include "Background.h"
 #include "Monster.h"
 #include "BlueSnail.h"
-#include "AttackEffect.h"
 #include "NomalAttack.h"
 #include "Portal.h"
 #include "Fade.h"

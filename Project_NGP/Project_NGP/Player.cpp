@@ -21,9 +21,7 @@ int Player::Update_Input(const float& TimeDelta)
 	m_Dir = 0;
 	KeyManager* keyManager = GET_MANAGER<KeyManager>();
 
-	m_NomalAttack->SetEffectSpawn(m_Info.Pos_X, m_Info.Pos_Y, m_Direction, false);
-
-	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
+if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
 	{
 		m_Dir |= 0x00000001;
 		m_Direction = DIR_LEFT;
@@ -74,16 +72,22 @@ int Player::Update_Input(const float& TimeDelta)
 
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
 	{
+		/*{
+	GameObject* effect = AbstractFactory<NomalAttack>::CreateObj();
+	dynamic_cast<CEffect*>(effect)->SetEffectSpawn(x, y, dir, attcheck);
+	GET_MANAGER<ObjectManager>()->AddObject(L"effect", effect, OBJ_EFFECT);
+}*/
+
 		int r = rand() % 2;
 		if (0 == r)
 		{
 			m_SpriteInfo.CurState = Att_1;
-			m_NomalAttack->SetEffectSpawn(m_Info.Pos_X, m_Info.Pos_Y ,m_Direction, true);
+			
 		}
 		else
 		{
 			m_SpriteInfo.CurState = Att_2;
-			m_NomalAttack->SetEffectSpawn(m_Info.Pos_X, m_Info.Pos_Y, m_Direction, true);
+			
 		}
 	}
 
@@ -195,9 +199,6 @@ bool Player::Initialize()
 	m_SpriteInfo.PreState = End;
 	m_SpriteInfo.SpriteIndex = 0.f;
 	m_SpriteInfo.StateIndex = 0;
-
-	// Skill
-	m_NomalAttack = GET_MANAGER<ObjectManager>()->GetObjFromTag(L"nomalattack", OBJ_EFFECT);
 
 	return true;
 }

@@ -28,8 +28,6 @@ public:
 	void SetSpriteInfo(SPRITEINFO spriteInfo);
 	void SetDirection(DIRECTION dir);
 	void SetObjectType(OBJTYPE type);
-	void SetEffectSpawn(int x, int y, DIRECTION Dir, bool AttCheck);
-	void PlayEffect(GameObject* effect) {};
 
 public:
 	bool LoadPixelCollider(const char* pFilePath,
@@ -62,7 +60,6 @@ protected:
 	bool			m_isDead = false;
 	bool			m_isCollideOn = true;
 	bool			m_fallCheck = true;
-	bool			m_AttCheck = false;
 	float			m_Angle = 0.f;
 	float			m_Speed = 0.f;
 	float			m_GravitySpeed = 0.f;

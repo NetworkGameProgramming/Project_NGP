@@ -48,17 +48,23 @@ void ObjectManager::Update(const float& TimeDelta)
 	// Update
 	for (auto i = 0; i < OBJ_END; ++i)
 	{
-		for (auto& obj : m_mapObj[i])
+		const auto& iter_begin = m_mapObj[i].begin();
+		const auto& iter_end = m_mapObj[i].end();
+
+		for (auto iter = iter_begin; iter != iter_end;)
 		{
 			// 죽은 상태라면 컨테이너에서 삭제한다.
-			if (true == obj.second->GetState())
+			if (true == (*iter).second->GetState())
 			{
-				delete obj.second;
-				obj.second = nullptr;
-				m_mapObj[i].erase(obj.first);
+				delete (*iter).second;
+				(*iter).second = nullptr;
+				iter = m_mapObj[i].erase(iter);
 			}
 			else
-				obj.second->Update(TimeDelta);
+			{
+				(*iter).second->Update(TimeDelta);
+				++iter;
+			}
 		}
 	}
 

@@ -49,9 +49,6 @@
     <Filter Include="97.Manager\Scene">
       <UniqueIdentifier>{cddfacd7-8f94-44df-839b-85f0899c5fdf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\Mouse">
-      <UniqueIdentifier>{7945a40b-24d8-4ab3-9284-101775e4d335}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97.Manager\GdiPlus">
       <UniqueIdentifier>{7d37d55f-e231-430a-a81c-947d8a5a5f57}</UniqueIdentifier>
     </Filter>
@@ -111,6 +108,9 @@
     </Filter>
     <Filter Include="01.GameObject\UI">
       <UniqueIdentifier>{7b446693-3f2f-4473-acf1-62c5a562c616}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Player\Mouse">
+      <UniqueIdentifier>{7945a40b-24d8-4ab3-9284-101775e4d335}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -184,7 +184,7 @@
       <Filter>02.SceneState\TestScene</Filter>
     </ClInclude>
     <ClInclude Include="Mouse.h">
-      <Filter>01.GameObject\Mouse</Filter>
+      <Filter>01.GameObject\Player\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="GdiPlusImage.h">
       <Filter>97.Manager\GdiPlus</Filter>
@@ -255,7 +255,7 @@
     <ClInclude Include="Fade.h">
       <Filter>01.GameObject\UI</Filter>
     </ClInclude>
-    <ClInclude Include="AttackEffect.h">
+    <ClInclude Include="Effect.h">
       <Filter>01.GameObject\Effect</Filter>
     </ClInclude>
   </ItemGroup>
@@ -300,7 +300,7 @@
       <Filter>02.SceneState\TestScene</Filter>
     </ClCompile>
     <ClCompile Include="Mouse.cpp">
-      <Filter>01.GameObject\Mouse</Filter>
+      <Filter>01.GameObject\Player\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="GdiPlusImage.cpp">
       <Filter>97.Manager\GdiPlus</Filter>
@@ -365,7 +365,7 @@
     <ClCompile Include="Fade.cpp">
       <Filter>01.GameObject\UI</Filter>
     </ClCompile>
-    <ClCompile Include="AttackEffect.cpp">
+    <ClCompile Include="Effect.cpp">
       <Filter>01.GameObject\Effect</Filter>
     </ClCompile>
   </ItemGroup>
