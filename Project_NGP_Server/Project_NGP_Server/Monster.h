@@ -41,6 +41,7 @@ protected:
 	float m_KnockBackAcc = 0.f;
 	float m_DeadAcc = 0.f;
 
-
 	int m_hp = 0;
+
+	float m_FollowAcc = 0.f;
 };

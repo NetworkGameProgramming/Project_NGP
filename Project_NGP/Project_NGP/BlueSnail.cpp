@@ -18,8 +18,8 @@ bool BlueSnail::Initialize()
 	m_RenderType = RENDER_OBJ;
 	m_Direction = DIR_RIGHT;
 	m_SpriteInfo.key = L"bluesnail_right";
-	m_SpriteInfo.CurState = Idle;
-	m_SpriteInfo.PreState = End;
+	m_SpriteInfo.CurState = Monster_Idle;
+	m_SpriteInfo.PreState = Monster_End;
 	m_SpriteInfo.SpriteIndex = 0.f;
 	m_SpriteInfo.StateIndex = 0;
 	//몬스터가 Idle이 되기까지의 시간
@@ -31,6 +31,7 @@ bool BlueSnail::Initialize()
 
 int BlueSnail::Update_Input(const float& TimeDelta)
 {
+#ifdef CLIENT_MODE
 	if (true == m_isOther)
 		return 0;
 	KeyManager* keyManager = GET_MANAGER<KeyManager>();
@@ -50,28 +51,28 @@ int BlueSnail::Update_Input(const float& TimeDelta)
 		Died = true;
 	}
 
-	if (m_SpriteInfo.CurState == Idle)
+	if (m_SpriteInfo.CurState == Monster_Idle)
 	{
 		m_CloseIdleDelta += TimeDelta;
 		if (m_CloseIdleTime <= m_CloseIdleDelta)
 		{
 			m_Direction = DIRECTION(rand() % 2);
 			m_CloseIdleDelta = 0;
-			m_SpriteInfo.CurState = Move;
+			m_SpriteInfo.CurState = Monster_Move;
 			m_Speed = 100;
 		}
 	}
 	else
 	{
 		//Idle 상태가 되기 까지의 시간의 누적치
-		if (m_SpriteInfo.CurState == Hit) {}
+		if (m_SpriteInfo.CurState == Monster_Hit) {}
 		else
 			m_IdleTimeDelta += TimeDelta;
 	}
 	//Idle이 되는 조건
 	if (m_ChangeIdleTime <= m_IdleTimeDelta)
 	{
-		m_SpriteInfo.CurState = Idle;
+		m_SpriteInfo.CurState = Monster_Idle;
 		m_Speed = 0;
 		//Idle이 되는 시간을 다시 랜덤하게 조절
 		m_ChangeIdleTime = float((rand() % 10) + 5);
@@ -83,13 +84,13 @@ int BlueSnail::Update_Input(const float& TimeDelta)
 		if (m_Direction == DIR_RIGHT)
 		{
 			m_Direction = DIR_LEFT;
-			m_SpriteInfo.CurState = Move;
+			m_SpriteInfo.CurState = Monster_Move;
 			OnBulePixel = false;
 		}
 		else if (m_Direction == DIR_LEFT)
 		{
 			m_Direction = DIR_RIGHT;
-			m_SpriteInfo.CurState = Move;
+			m_SpriteInfo.CurState = Monster_Move;
 			OnBulePixel = false;
 		}
 	}
@@ -108,14 +109,15 @@ int BlueSnail::Update_Input(const float& TimeDelta)
 				m_Direction = DIR_LEFT;
 			}
 		}
-		m_SpriteInfo.CurState = Hit;
+		m_SpriteInfo.CurState = Monster_Hit;
 	}
 
 	if (true == Died)
 	{
 		m_Speed = 0;
-		m_SpriteInfo.CurState = Die;
+		m_SpriteInfo.CurState = Monster_Die;
 	}
+#endif
 	return 0;
 }
 
@@ -160,12 +162,14 @@ int BlueSnail::Update_Position(const float& TimeDelta, const DIRECTION& Directio
 	{
 		m_Info.Pos_X += speed;
 	}
-	if (m_SpriteInfo.CurState == Hit)
+
+#ifdef CLIENT_MODE
+	if (m_SpriteInfo.CurState == Monster_Hit)
 	{
 		m_KnockBackTimeDelta += TimeDelta;
 		if (m_KnockBackTime <= m_KnockBackTimeDelta)
 		{
-			m_SpriteInfo.CurState = Move;
+			m_SpriteInfo.CurState = Monster_Move;
 			m_Speed = 100;
 			m_KnockBackTimeDelta = 0;
 			return 0;
@@ -183,10 +187,9 @@ int BlueSnail::Update_Position(const float& TimeDelta, const DIRECTION& Directio
 			}
 		}
 	}
+#endif
 	return 0;
 }
-
-
 
 int BlueSnail::Update_Sprite(const float& TimeDelta)
 {
@@ -228,9 +231,14 @@ int BlueSnail::Update_Sprite(const float& TimeDelta)
 	case DIR_LEFT: m_SpriteInfo.key = L"bluesnail_left"; break;
 	case DIR_RIGHT: m_SpriteInfo.key = L"bluesnail_right"; break;
 	}
-	if (m_SpriteInfo.CurState == Die)
+	if (m_SpriteInfo.CurState == Monster_Die)
 	{
 		m_SpriteInfo.key = L"bluesnail_die";
+
+		if ((float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)
+		{
+			m_isDead = true;
+		}
 	}
 	StateChange();
 	return 0;
@@ -258,23 +266,23 @@ void BlueSnail::StateChange()
 		m_SpriteInfo.SpriteIndex = 0.f;
 		switch (m_SpriteInfo.CurState)
 		{
-		case Idle:
+		case Monster_Idle:
 			m_SpriteInfo.Type = SPRITE_ONCE;
 			m_SpriteInfo.MaxFrame = 1;
 			m_SpriteInfo.Speed = 0.f;
 			break;
-		case Move:
+		case Monster_Move:
 			m_SpriteInfo.Type = SPRITE_REPEAT;
 			m_SpriteInfo.MaxFrame = 4;
 			m_SpriteInfo.Speed = 6.f;
 			break;
-		case Hit:
+		case Monster_Hit:
 			m_SpriteInfo.Type = SPRITE_REPEAT_END;
 			m_SpriteInfo.SpriteIndex = 4.f;
 			m_SpriteInfo.MaxFrame = 1;
 			m_SpriteInfo.Speed = 1.f;
 			break;
-		case Die:
+		case Monster_Die:
 			m_SpriteInfo.Type = SPRITE_ONCE;
 			m_SpriteInfo.SpriteIndex = 0;
 			m_SpriteInfo.MaxFrame = 12;

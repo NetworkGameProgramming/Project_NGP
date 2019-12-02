@@ -13,185 +13,15 @@ Player::~Player()
 	Release();
 }
 
-int Player::Update_Input(const float& TimeDelta)
-{
-	if (true == m_isOther)
-		return 0;
-
-	m_Dir = 0;
-	KeyManager* keyManager = GET_MANAGER<KeyManager>();
-
-if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
-	{
-		m_Dir |= 0x00000001;
-		m_Direction = DIR_LEFT;
-
-		if (false == m_fallCheck)
-			m_SpriteInfo.CurState = Walk;
-	}
-
-	if (true == keyManager->GetKeyState(STATE_PUSH, VK_RIGHT))
-	{
-		m_Dir |= 0x00000002;
-		m_Direction = DIR_RIGHT;
-
-		if (false == m_fallCheck)
-			m_SpriteInfo.CurState = Walk;
-	}
-
-	if (true == keyManager->GetKeyState(STATE_DOWN, VK_UP))
-	{
-		m_Dir |= 0x00000004;
-		if (true == m_isReadyGoNext &&
-			SCENE_END != m_NextSceneInfo)
-		{
-			Fade* fade = dynamic_cast<Fade*>
-				(GET_MANAGER<ObjectManager>()->GetObjFromTag(L"fade", OBJ_UI));
-			fade->SetNextSceneInfo(m_NextSceneInfo);
-			fade->SetFade(true);
-
-			m_isReadyGoNext = false;
-			m_NextSceneInfo = SCENE_END;
-		}
-	}
-
-	if (true == keyManager->GetKeyState(STATE_PUSH, VK_DOWN))
-	{
-		m_Dir |= 0x00000008;
-		m_SpriteInfo.CurState = Crouch;
-	}
-
-	if (true == keyManager->GetKeyState(STATE_DOWN, VK_SPACE))
-	{
-		// 점프
-		m_SpriteInfo.CurState = Jump;
-		m_GravitySpeed = -300.f;
-		m_GravityAcc = 0.f;
-		m_fallCheck = true;
-	}
-
-	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
-	{
-
-		GameObject* effect = AbstractFactory<NomalAttack>::CreateObj();
-		dynamic_cast<CEffect*>(effect)->SetEffectSpawn(m_Info.Pos_X, m_Info.Pos_Y, m_Direction, true);
-		GET_MANAGER<ObjectManager>()->AddObject(L"effect", effect, OBJ_EFFECT);
-
-		int r = rand() % 2;
-		if (0 == r)
-		{
-			m_SpriteInfo.CurState = Att_1;
-		}
-		else
-		{
-			m_SpriteInfo.CurState = Att_2;
-		}
-	}
-
-	if (false == m_fallCheck &&
-		false == keyManager->GetKeyState(STATE_PUSH, VK_LEFT) &&
-		false == keyManager->GetKeyState(STATE_PUSH, VK_RIGHT) &&
-		false == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
-	{
-		m_SpriteInfo.CurState = Idle;
-	}
-	return 0;
-}
-
-int Player::Update_Position(const float& TimeDelta, const DIRECTION& Direction)
-{
-	if (true == m_isOther)
-		return 0;
-
-	int speed = int(m_Speed * TimeDelta);
-
-	// L
-	if (0x00000001 == (m_Dir & 0x00000001))
-	{
-		m_Info.Pos_X -= speed;
-	}
-
-	// R
-	if (0x00000002 == (m_Dir & 0x00000002))
-	{
-		m_Info.Pos_X += speed;
-	}
-
-	// U
-	if (0x00000004 == (m_Dir & 0x00000004))
-	{
-		// m_Info.Pos_Y -= speed * 2;
-	}
-
-	// D
-	if (0x00000008 == (m_Dir & 0x00000008))
-	{
-		// m_Info.Pos_Y += speed;
-	}
-
-	// 중력
-	m_Info.Pos_Y += int(m_GravitySpeed * TimeDelta);
-	m_GravitySpeed += m_GravityAcc * TimeDelta;
-
-	if (true == m_fallCheck)
-	{
-		if (1000.f > m_GravityAcc)
-			m_GravityAcc += 9.8f * 10.f;
-	}
-
-	//printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y + (m_CollideInfo.Size_Height / 2));
-
-	return 0;
-}
-
-int Player::Update_Sprite(const float& TimeDelta)
-{
-	m_SpriteInfo.SpriteIndex += m_SpriteInfo.Speed * TimeDelta;
-
-	switch (m_SpriteInfo.Type)
-	{
-	case SPRITE_ONCE:
-		if ((float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)
-		{
-			m_SpriteInfo.CurState = 0;
-		}
-		break;
-	case SPRITE_ONCE_END:
-		if ((float)m_SpriteInfo.MaxFrame > m_SpriteInfo.SpriteIndex)
-		{
-			m_SpriteInfo.CurState = m_SpriteInfo.PreState;
-		}
-		else
-		{
-			m_SpriteInfo.CurState = 0;
-		}
-		break;
-	case SPRITE_REPEAT:
-		if ((float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)
-		{
-			m_SpriteInfo.SpriteIndex = 0.f;
-		}
-		break;
-	}
-
-	switch (m_Direction)
-	{
-	case DIR_LEFT: m_SpriteInfo.key = L"player_left"; break;
-	case DIR_RIGHT: m_SpriteInfo.key = L"player_right"; break;
-	}
-
-	return 0;
-}
-
 bool Player::Initialize()
 {
 	m_Info = GAMEOBJINFO{ 800, 600, 200, 200 };
-	m_CollideInfo = GAMEOBJINFO{ 0, 0, 40, 70 };
+	m_CollideInfo = GAMEOBJINFO{ 0, 0, 40, 60 };
 	m_Speed = 200.f;
 	m_RenderType = RENDER_OBJ;
 
-	m_Direction = DIR_RIGHT;
-	m_SpriteInfo.key = L"player_right";
+	m_Direction = DIR_LEFT;
+	m_SpriteInfo.key = L"player_left";
 	m_SpriteInfo.CurState = Idle;
 	m_SpriteInfo.PreState = End;
 	m_SpriteInfo.SpriteIndex = 0.f;
@@ -220,6 +50,11 @@ int Player::Update(const float& TimeDelta)
 	}
 
 	if (-1 == Update_Sprite(TimeDelta))
+	{
+		return -1;
+	}
+
+	if (-1 == Update_Skill(TimeDelta))
 	{
 		return -1;
 	}
@@ -282,6 +117,189 @@ void Player::CollisionDeactivate(GameObject* collideTarget)
 	}
 }
 
+int Player::Update_Input(const float& TimeDelta)
+{
+	if (true == m_isOther)
+		return 0;
+
+	m_Dir = 0;
+	KeyManager* keyManager = GET_MANAGER<KeyManager>();
+
+	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
+	{
+		m_Dir |= 0x00000001;
+		m_Direction = DIR_LEFT;
+
+		if (false == m_fallCheck)
+			m_SpriteInfo.CurState = Walk;
+	}
+
+	if (true == keyManager->GetKeyState(STATE_PUSH, VK_RIGHT))
+	{
+		m_Dir |= 0x00000002;
+		m_Direction = DIR_RIGHT;
+
+		if (false == m_fallCheck)
+			m_SpriteInfo.CurState = Walk;
+	}
+
+	if (true == keyManager->GetKeyState(STATE_DOWN, VK_UP))
+	{
+		m_Dir |= 0x00000004;
+		if (true == m_isReadyGoNext &&
+			SCENE_END != m_NextSceneInfo)
+		{
+			Fade* fade = dynamic_cast<Fade*>
+				(GET_MANAGER<ObjectManager>()->GetObjFromTag(L"fade", OBJ_UI));
+			fade->SetNextSceneInfo(m_NextSceneInfo);
+			fade->SetFade(true);
+
+			m_isReadyGoNext = false;
+			m_NextSceneInfo = SCENE_END;
+		}
+	}
+
+	if (true == keyManager->GetKeyState(STATE_PUSH, VK_DOWN))
+	{
+		m_Dir |= 0x00000008;
+		m_SpriteInfo.CurState = Crouch;
+	}
+
+	if (true == keyManager->GetKeyState(STATE_DOWN, VK_SPACE))
+	{
+		// 점프
+		m_SpriteInfo.CurState = Jump;
+		m_GravitySpeed = -300.f;
+		m_GravityAcc = 0.f;
+		m_fallCheck = true;
+	}
+
+	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
+	{
+		int r = rand() % 2;
+		if (0 == r)
+		{
+			m_SpriteInfo.CurState = Att_1;
+		}
+		else
+		{
+			m_SpriteInfo.CurState = Att_2;
+		}
+	}
+
+	if (false == m_fallCheck &&
+		false == keyManager->GetKeyState(STATE_PUSH, VK_LEFT) &&
+		false == keyManager->GetKeyState(STATE_PUSH, VK_RIGHT) &&
+		false == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
+	{
+		m_SpriteInfo.CurState = Idle;
+	}
+	return 0;
+}
+
+int Player::Update_Position(const float& TimeDelta, const DIRECTION& Direction)
+{
+	if (true == m_isOther)
+		return 0;
+
+	int speed = int(m_Speed * TimeDelta);
+
+	// L
+	if (0x00000001 == (m_Dir & 0x00000001))
+	{
+		m_Info.Pos_X -= speed;
+	}
+
+	// R
+	if (0x00000002 == (m_Dir & 0x00000002))
+	{
+		m_Info.Pos_X += speed;
+	}
+
+	// U
+	if (0x00000004 == (m_Dir & 0x00000004))
+	{
+		// m_Info.Pos_Y -= speed * 2;
+	}
+
+	// D
+	if (0x00000008 == (m_Dir & 0x00000008))
+	{
+		// m_Info.Pos_Y += speed;
+	}
+
+	// 중력
+	m_Info.Pos_Y += int(m_GravitySpeed * TimeDelta);
+	m_GravitySpeed += m_GravityAcc * TimeDelta;
+
+	if (true == m_fallCheck)
+	{
+		if (1000.f > m_GravityAcc)
+			m_GravityAcc += 9.8f * 10.f;
+	}
+
+	printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y + (m_CollideInfo.Size_Height / 2));
+
+	return 0;
+}
+
+int Player::Update_Skill(const float& TimeDelta)
+{
+	if (Att_1 == m_SpriteInfo.CurState ||
+		Att_2 == m_SpriteInfo.CurState)
+	{
+		if (false == m_OnceCheck &&
+			1.f <= m_SpriteInfo.SpriteIndex)
+		{
+			GameObject* effect = AbstractFactory<NomalAttack>::CreateObj();
+			dynamic_cast<CEffect*>(effect)->SetEffectSpawn(m_Info.Pos_X, m_Info.Pos_Y, m_Direction, true);
+			GET_MANAGER<ObjectManager>()->AddObject(L"effect", effect, OBJ_EFFECT);
+			m_OnceCheck = true;
+		}
+	}
+	return 0;
+}
+
+int Player::Update_Sprite(const float& TimeDelta)
+{
+	m_SpriteInfo.SpriteIndex += m_SpriteInfo.Speed * TimeDelta;
+
+	switch (m_SpriteInfo.Type)
+	{
+	case SPRITE_ONCE:
+		if ((float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)
+		{
+			m_SpriteInfo.CurState = 0;
+		}
+		break;
+	case SPRITE_ONCE_END:
+		if ((float)m_SpriteInfo.MaxFrame > m_SpriteInfo.SpriteIndex)
+		{
+			m_SpriteInfo.CurState = m_SpriteInfo.PreState;
+		}
+		else
+		{
+			m_SpriteInfo.CurState = 0;
+			m_OnceCheck = false;
+		}
+		break;
+	case SPRITE_REPEAT:
+		if ((float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)
+		{
+			m_SpriteInfo.SpriteIndex = 0.f;
+		}
+		break;
+	}
+
+	switch (m_Direction)
+	{
+	case DIR_LEFT: m_SpriteInfo.key = L"player_left"; break;
+	case DIR_RIGHT: m_SpriteInfo.key = L"player_right"; break;
+	}
+
+	return 0;
+}
+
 void Player::StateChange()
 {
 	if (m_SpriteInfo.CurState != m_SpriteInfo.PreState)
@@ -317,13 +335,13 @@ void Player::StateChange()
 			m_SpriteInfo.Type = SPRITE_ONCE_END;
 			m_SpriteInfo.StateIndex = 14;
 			m_SpriteInfo.MaxFrame = 3;
-			m_SpriteInfo.Speed = 15.f;
+			m_SpriteInfo.Speed = 5.f;
 			break;
 		case Att_2:
 			m_SpriteInfo.Type = SPRITE_ONCE_END;
 			m_SpriteInfo.StateIndex = 15;
 			m_SpriteInfo.MaxFrame = 3;
-			m_SpriteInfo.Speed = 15.f;
+			m_SpriteInfo.Speed = 5.f;
 			break;
 		}
 	}

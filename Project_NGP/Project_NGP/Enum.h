@@ -71,6 +71,17 @@ enum RENDERTYPE
 	RENDER_END
 };
 
+enum MonsterState
+{
+	Monster_Idle,
+	Monster_Move,
+	Monster_Att,
+	Monster_Spell,
+	Monster_Hit,
+	Monster_Die,
+	Monster_End
+};
+
 enum MONSTERTYPE
 {
 	MONTYPE_SNAIL,

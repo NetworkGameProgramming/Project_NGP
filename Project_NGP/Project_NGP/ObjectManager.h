@@ -8,7 +8,7 @@ public:
 	virtual ~ObjectManager();
 
 public:
-	typedef unordered_map<const TCHAR*, GameObject*>	MAPOBJ;
+	typedef unordered_multimap<const TCHAR*, GameObject*>	MAPOBJ;
 
 public:
 	const TCHAR* GetTagFromObj(GameObject* Obj, OBJTYPE ObjType);
@@ -26,7 +26,7 @@ public:
 	void ReleaseObj(GameObject* Obj, OBJTYPE ObjType);
 
 private:
-	unordered_map<const TCHAR*, GameObject*>			m_mapObj[OBJ_END];
+	unordered_multimap<const TCHAR*, GameObject*>			m_mapObj[OBJ_END];
 	vector<GameObject*> m_vecRender[RENDER_END];
 };
 

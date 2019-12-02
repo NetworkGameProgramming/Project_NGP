@@ -16,9 +16,10 @@ public:
 public:
 	void SetOtherCheck(bool check) { m_isOther = check; }
 
-public:
+private:
 	int Update_Input(const float& TimeDelta);
 	int Update_Position(const float& TimeDelta, const DIRECTION& Direction);
+	int Update_Skill(const float& TimeDelta);
 	int Update_Sprite(const float& TimeDelta);
 
 public:
@@ -43,5 +44,7 @@ private:
 	
 	SCENESTATE m_NextSceneInfo = SCENE_END;
 	bool	  m_isReadyGoNext = false;
+
+	bool m_OnceCheck = false;
 };
 

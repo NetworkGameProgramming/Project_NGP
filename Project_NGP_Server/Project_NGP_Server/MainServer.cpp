@@ -99,7 +99,7 @@ bool MainServer::Running()
 		g_mapClient[user_id]->over_info.is_recv = true;
 
 		printf("[클라이언트 접속] ID : %d, IP : %s, PORT : %d, SOCKET : %d\n",  
-			user_id, inet_ntoa(m_clientAddr.sin_addr), ntohs(m_clientAddr.sin_port), m_clientSocket);
+			user_id, inet_ntoa(m_clientAddr.sin_addr), ntohs(m_clientAddr.sin_port), (int)m_clientSocket);
 
 		memcpy(&g_mapClient[user_id]->addr_info, &m_clientAddr, sizeof(SOCKADDR_IN));
 
@@ -116,7 +116,7 @@ bool MainServer::Running()
 			if (cl.first == user_id) continue;
 
 			info.id = user_id;
-			info.scene_state = SCENE_TEST;
+			info.scene_state = SCENE_MAIN_1;
 			cl.second->event_lock.lock();
 			cl.second->event_queue.push(info);
 			cl.second->event_lock.unlock();
@@ -189,7 +189,7 @@ void MainServer::do_worker()
 			closesocket(clientsocket);
 			printf("[클라이언트 종료] ID : %d, IP : %s, PORT : %d, SOCKET : %d\n",
 				key, inet_ntoa(g_mapClient[key]->addr_info.sin_addr),
-					 ntohs(g_mapClient[key]->addr_info.sin_port), clientsocket);
+					 ntohs(g_mapClient[key]->addr_info.sin_port), (int)clientsocket);
 
 			// 종료 작업
 			EVENTINFO info;
@@ -259,7 +259,9 @@ void MainServer::do_scene()
 		case SCENE_MENU:
 			break;
 		case SCENE_TEST:
-			s = new TestScene;
+			break;
+		case SCENE_MAIN_1:
+			s = new MainScene_1;
 			break;
 		}
 
@@ -435,7 +437,7 @@ void MainServer::SendProcess(int send_id, void* buf)
 			++count;
 		}
 		// size
-		short size = sizeof(SPOTHERPLAYERS) * count + sizeof(short) + sizeof(char);
+		short size = short(sizeof(SPOTHERPLAYERS) * count + sizeof(short) + sizeof(char));
 		memcpy(&tempBuffer[0], &size, sizeof(short));
 		// type
 		tempBuffer[2] = SP_OTHERPLAYER;
@@ -487,7 +489,7 @@ void MainServer::SendProcess(int send_id, void* buf)
 			++count;
 		}
 		// size
-		short size = sizeof(SPMONSTER) * count + sizeof(short) + sizeof(char);
+		short size = short(sizeof(SPMONSTER) * count + sizeof(short) + sizeof(char));
 		memcpy(&tempBuffer[0], &size, sizeof(short));
 		// type
 		tempBuffer[2] = SP_MONSTER;

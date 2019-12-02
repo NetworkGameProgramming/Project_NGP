@@ -1,18 +1,18 @@
 #include "pch.h"
-#include "TestScene.h"
+#include "MainScene_1.h"
 #include "Spawn.h"
 
-TestScene::TestScene()
+MainScene_1::MainScene_1()
 	:Scene()
 {
 }
 
-TestScene::~TestScene()
+MainScene_1::~MainScene_1()
 {
 	Release();
 }
 
-bool TestScene::Initialize()
+bool MainScene_1::Initialize()
 {
 	// ÇÈ¼¿ Á¤º¸
 	LoadPixelCollider("../Data/Back_Collider_Real.bmp", 255, 0, 255);
@@ -39,7 +39,7 @@ bool TestScene::Initialize()
 	return true;
 }
 
-int TestScene::Update(const float& TimeDelta)
+int MainScene_1::Update(const float& TimeDelta)
 {
 	Scene::Update(TimeDelta);
 	for (auto& s : m_mapSpawn)
@@ -49,7 +49,7 @@ int TestScene::Update(const float& TimeDelta)
 	return 0;
 }
 
-void TestScene::Release()
+void MainScene_1::Release()
 {
 	for (auto& s : m_mapSpawn)
 	{

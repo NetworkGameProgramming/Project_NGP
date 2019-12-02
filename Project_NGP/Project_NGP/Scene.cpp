@@ -73,6 +73,9 @@ bool Scene::UpdateNetwork()
 		return false;
 	if (false == UpdateNetEvent())
 		return false;
+	
+	m_NetworkManager->AttackCollisionForNetwork(
+		&m_ObjManager->GetObjFromType(OBJ_MONSTER), &m_ObjManager->GetObjFromType(OBJ_EFFECT));
 
 	return true;
 }

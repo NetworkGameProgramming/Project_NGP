@@ -1,12 +1,12 @@
 #pragma once
 #include "Scene.h"
 
-class TestScene
+class MainScene_1
 	:public Scene
 {
 public:
-	TestScene();
-	virtual ~TestScene();
+	MainScene_1();
+	virtual ~MainScene_1();
 
 public:
 	virtual bool Initialize();
