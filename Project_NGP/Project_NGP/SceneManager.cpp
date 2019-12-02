@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "MainMenu.h"
 #include "TestScene.h"
-
+#include "MainScene_1.h"
 
 SceneManager::SceneManager()
 {
@@ -29,10 +29,17 @@ bool SceneManager::ChangeSceneState(SCENESTATE SceneState)
 	case SCENE_TEST:
 		m_Scene = new TestScene;
 		break;
+	case SCENE_MAIN_1:
+		m_Scene = new MainScene_1;
+		break;
 	}
+
+	if (nullptr == m_Scene)
+		return false;
 
 	if (false == m_Scene->Initialize())
 	{
+		MessageBox(g_hWnd_New, L"씬 초기화 실패!", L"Error", MB_OK);
 		Release();
 		return false;
 	}

@@ -87,6 +87,7 @@ void Maingame::Release()
 {
 	m_SceneMgr->DestroyInstance();
 	m_GdiPlusMgr->DestroyInstance();
+	GET_MANAGER<ObjectManager>()->DestroyInstance();
 
 	ReleaseDC(g_hWnd, m_hDC);
 }

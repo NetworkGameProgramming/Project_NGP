@@ -25,14 +25,13 @@ void GdiPlusManager::LoadImageBySceneState(SCENESTATE SceneState)
 		// Load Image
 		LoadGdiPlusImage(L"background", L"../Resources/back.bmp");
 		LoadGdiPlusImage(L"cursor", L"../Resources/Cursor.png");
-		LoadGdiPlusImage(L"balrok", L"../Resources/0.bmp");
-		LoadGdiPlusImageFromFolder(L"balrok_sprite", "../Resources/Balrok");
 		LoadGdiPlusImageFromFolder(L"nomal_attack","../Resources/NomalAttack");
 		LoadGdiPlusImageFromFolder(L"nomal_attack_hit", "../Resources/NomalAttackHit");
 		LoadGdiPlusImageFromFolder(L"skill1", "../Resources/Skill1");
 		LoadGdiPlusImageFromFolder(L"skill1_hit", "../Resources/Skill1Hit");
 		LoadGdiPlusImageFromFolder(L"skill2", "../Resources/Skill2");
 		LoadGdiPlusImageFromFolder(L"skill2_hit", "../Resources/Skill2Hit");
+	case SCENESTATE::SCENE_MAIN_1:
 		break;
 	}
 }

@@ -1,32 +1,5 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(438,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  stdafx.cpp
-  Background.cpp
-  BlueSnail.cpp
-  CameraManager.cpp
-  CollisionManager.cpp
-  FileManager.cpp
-  Frame.cpp
-  FrameManager.cpp
-  GameObject.cpp
-  GdiImage.cpp
-  GdiManager.cpp
-  GdiPlusImage.cpp
-  GdiPlusManager.cpp
-  KeyManager.cpp
-  MainMenu.cpp
-  Maingame.cpp
-  Monster.cpp
-  Mouse.cpp
-  NetworkManager.cpp
-  ObjectManager.cpp
-  Player.cpp
-  코드를 생성하고 있습니다...
-  컴파일하고 있습니다...
-  Project_NGP.cpp
+  MainScene_1.cpp
   Scene.cpp
-  SceneManager.cpp
-  TestScene.cpp
-  Timer.cpp
-  TimerManager.cpp
   코드를 생성하고 있습니다...
   Project_NGP.vcxproj -> C:\Users\Bum\Desktop\GitHub\Project_NGP\Project_NGP\Project_NGP\..\Bin\Bin32_Debug\Project_NGP.exe

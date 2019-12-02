@@ -325,7 +325,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			if (true == GET_MANAGER<NetworkManager>()->ConnectToServer(szEdit))
 			{
 				// 접속이 되면 메인 씬으로 전환
-				if (false == GET_MANAGER<SceneManager>()->ChangeSceneState(SCENE_TEST))
+				if (false == GET_MANAGER<SceneManager>()->ChangeSceneState(SCENE_MAIN_1))
 				{
 					DestroyWindow(hWnd);
 					break;

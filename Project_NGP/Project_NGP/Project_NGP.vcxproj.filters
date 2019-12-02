@@ -88,6 +88,15 @@
     <Filter Include="01.GameObject\Effect">
       <UniqueIdentifier>{070e1ba3-0e4b-46c9-9012-7c58abff877b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.SceneState\MainScene_1">
+      <UniqueIdentifier>{91d53356-19d2-4db8-9c2e-bfa6cded8304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.SceneState\MainScene_2">
+      <UniqueIdentifier>{3aa6a15d-7de4-40b6-be54-b5c92ff0bfd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.SceneState\MainScene_3">
+      <UniqueIdentifier>{1fce29d5-03f9-4d95-8c66-a30c3337040f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -210,6 +219,15 @@
     <ClInclude Include="NomalAttack.h">
       <Filter>01.GameObject\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="MainScene_1.h">
+      <Filter>02.SceneState\MainScene_1</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene_2.h">
+      <Filter>02.SceneState\MainScene_2</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene_3.h">
+      <Filter>02.SceneState\MainScene_3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -295,6 +313,15 @@
     </ClCompile>
     <ClCompile Include="NomalAttack.cpp">
       <Filter>01.GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene_1.cpp">
+      <Filter>02.SceneState\MainScene_1</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene_2.cpp">
+      <Filter>02.SceneState\MainScene_2</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene_3.cpp">
+      <Filter>02.SceneState\MainScene_3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

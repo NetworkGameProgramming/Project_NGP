@@ -7,6 +7,7 @@
 #define SP_PLAYER			2		// 플레이어 위치
 #define SP_OTHERPLAYER		3
 #define SP_MONSTER			4
+#define SP_HIT				5
 #define SP_EVENT			99		// Event
 
 // 로그를 확인 할 수 있다.

@@ -26,6 +26,7 @@ bool BlueSnail::Initialize()
 
 int BlueSnail::Update_Input(const float& TimeDelta)
 {
+#ifdef CLIENT_MODE
 	if (true == m_isOther)
 		return 0;
 
@@ -107,7 +108,7 @@ int BlueSnail::Update_Input(const float& TimeDelta)
 		}
 		m_SpriteInfo.CurState = Hit;
 	}
-
+#endif
 	return 0;
 }
 
@@ -118,12 +119,10 @@ int BlueSnail::Update(const float& TimeDelta)
 		return -1;
 	}
 
-#ifdef CLIENT_MODE
 	if (-1 == Update_Input(TimeDelta))
 	{
 		return -1;
 	}
-#endif
 
 	if (-1 == Update_Sprite(TimeDelta))
 	{

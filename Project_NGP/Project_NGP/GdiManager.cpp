@@ -30,10 +30,7 @@ void GdiManager::LoadImageBySceneState(SCENESTATE SceneState)
 	{
 	case SCENESTATE::SCENE_TEST:
 		// Load Image
-
 		// Test
-		GdiMgr->LoadGdiImage(L"balrock", L"../Resources/0.bmp");
-		GdiMgr->LoadGdiImage(L"balrock_other", L"../Resources/510.bmp");
 		GdiMgr->LoadGdiImageFromFolder(L"bluesnail_left", "../Resources/Monster/BlueSnail/BlueSnail_Left");
 		GdiMgr->LoadGdiImageFromFolder(L"bluesnail_right", "../Resources/Monster/BlueSnail/BlueSnail_Right");
 		GdiMgr->LoadGdiImage(L"snail", L"../Resources/Monster/0.bmp");
@@ -43,6 +40,7 @@ void GdiManager::LoadImageBySceneState(SCENESTATE SceneState)
 		// Player
 		GdiMgr->LoadGdiImage(L"player_left", L"../Resources/Player/player_L.bmp");
 		GdiMgr->LoadGdiImage(L"player_right", L"../Resources/Player/player_R.bmp");
+	case SCENESTATE::SCENE_MAIN_1:
 		break;
 	}
 }
