@@ -255,6 +255,9 @@
     <ClInclude Include="Fade.h">
       <Filter>01.GameObject\UI</Filter>
     </ClInclude>
+    <ClInclude Include="AttackEffect.h">
+      <Filter>01.GameObject\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -361,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="Fade.cpp">
       <Filter>01.GameObject\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackEffect.cpp">
+      <Filter>01.GameObject\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

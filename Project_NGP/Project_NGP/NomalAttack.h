@@ -13,7 +13,7 @@ public:
 	virtual ~NomalAttack();
 
 public:
-	void SetPosition(int posX, int posY);
+	//void SetPosition(int posX, int posY);
 
 public:
 	int Update_Input(const float& TimeDelta);
@@ -28,6 +28,8 @@ public:
 	void StateChange();
 
 private:
+	int rectX = 139;
+	int rectY = 118;
 	float m_TimeDelta = 0.f;
 };
 

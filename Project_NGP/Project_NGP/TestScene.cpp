@@ -5,6 +5,7 @@
 #include "Background.h"
 #include "Monster.h"
 #include "BlueSnail.h"
+#include "AttackEffect.h"
 #include "NomalAttack.h"
 #include "Portal.h"
 #include "Fade.h"
@@ -25,6 +26,7 @@ bool TestScene::Initialize()
 	GET_MANAGER<GdiManager>()->LoadImageBySceneState(SCENE_TEST);
 	
 	m_ObjManager->AddObject(L"background", AbstractFactory<Background>::CreateObj(), OBJ_BACK);
+	//m_ObjManager->AddObject(L"attackeffect", AbstractFactory<AttackEffect>::CreateObj(), OBJ_EFFECT);
 	m_ObjManager->AddObject(L"nomalattack", AbstractFactory<NomalAttack>::CreateObj(), OBJ_EFFECT);
 	m_ObjManager->AddObject(L"bluesnail", AbstractFactory<BlueSnail>::CreateObj(), OBJ_MONSTER);
 	m_ObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_UI);
