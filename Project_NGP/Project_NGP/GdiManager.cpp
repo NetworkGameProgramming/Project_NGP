@@ -33,9 +33,25 @@ void GdiManager::LoadImageBySceneState(SCENESTATE SceneState)
 	case SCENESTATE::SCENE_TEST:
 	case SCENESTATE::SCENE_MAIN_1:
 		// Load Image
+		//BlueSanil
 		GdiMgr->LoadGdiImageFromFolder(L"bluesnail_left", "../Resources/Monster/BlueSnail/BlueSnail_Left");
 		GdiMgr->LoadGdiImageFromFolder(L"bluesnail_right", "../Resources/Monster/BlueSnail/BlueSnail_Right");
 		GdiMgr->LoadGdiImageFromFolder(L"bluesnail_die", "../Resources/Monster/BlueSnail/BlueSnail_Die");
+		//Slime
+		GdiMgr->LoadGdiImageFromFolder(L"slime_idle_left", "../Resources/Monster/Slime/Slime_Idle_Left");
+		GdiMgr->LoadGdiImageFromFolder(L"slime_idle_right", "../Resources/Monster/Slime/Slime_Idle_Right");
+		GdiMgr->LoadGdiImageFromFolder(L"slime_move_left", "../Resources/Monster/Slime/Slime_Move_Left");
+		GdiMgr->LoadGdiImageFromFolder(L"slime_move_right", "../Resources/Monster/Slime/Slime_Move_Right");
+		GdiMgr->LoadGdiImageFromFolder(L"slime_hit_left", "../Resources/Monster/Slime/Slime_Hit_Left");
+		GdiMgr->LoadGdiImageFromFolder(L"slime_hit_right", "../Resources/Monster/Slime/Slime_Hit_Right");
+		GdiMgr->LoadGdiImageFromFolder(L"slime_die", "../Resources/Monster/Slime/Slime_Die");
+		//Mushroom
+		GdiMgr->LoadGdiImage(L"mushroom_left", L"../Resources/Monster/Mushroom/Mushroom_Left/Mushroom_L.bmp");
+		GdiMgr->LoadGdiImage(L"mushroom_right", L"../Resources/Monster/Mushroom/Mushroom_Right/Mushroom_R.bmp");
+		//GreenMhsh
+		GdiMgr->LoadGdiImage(L"greenmush_left", L"../Resources/Monster/Mushroom/GreenMush_Left/GreenL.bmp");
+		GdiMgr->LoadGdiImage(L"greenmush_right", L"../Resources/Monster/Mushroom/GreenMush_Right/GreenR.bmp");
+		//TestMonster
 		GdiMgr->LoadGdiImage(L"snail", L"../Resources/Monster/0.bmp");
 		// Background
 		GdiMgr->LoadGdiImage(L"background", L"../Resources/Map/Back.bmp");

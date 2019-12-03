@@ -5,6 +5,9 @@
 #include "Background.h"
 #include "Monster.h"
 #include "BlueSnail.h"
+#include "Slime.h"
+#include "Mushroom.h"
+#include "GreenMush.h"
 #include "NomalAttack.h"
 #include "Portal.h"
 #include "Fade.h"
@@ -28,6 +31,9 @@ bool TestScene::Initialize()
 	//m_ObjManager->AddObject(L"attackeffect", AbstractFactory<AttackEffect>::CreateObj(), OBJ_EFFECT);
 	m_ObjManager->AddObject(L"nomalattack", AbstractFactory<NomalAttack>::CreateObj(), OBJ_EFFECT);
 	m_ObjManager->AddObject(L"bluesnail", AbstractFactory<BlueSnail>::CreateObj(), OBJ_MONSTER);
+	m_ObjManager->AddObject(L"slime", AbstractFactory<Slime>::CreateObj(), OBJ_MONSTER);
+	m_ObjManager->AddObject(L"mushroom", AbstractFactory<Mushroom>::CreateObj(), OBJ_MONSTER);
+	m_ObjManager->AddObject(L"greenmush", AbstractFactory<GreenMush>::CreateObj(), OBJ_MONSTER);
 	m_ObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_UI);
 	m_ObjManager->AddObject(L"fade", AbstractFactory<Fade>::CreateObj(), OBJ_UI);
 

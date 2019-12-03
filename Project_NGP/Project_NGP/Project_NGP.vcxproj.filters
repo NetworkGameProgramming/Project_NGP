@@ -258,6 +258,15 @@
     <ClInclude Include="Effect.h">
       <Filter>01.GameObject\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Slime.h">
+      <Filter>01.GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
+      <Filter>01.GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="GreenMush.h">
+      <Filter>01.GameObject\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -367,6 +376,15 @@
     </ClCompile>
     <ClCompile Include="Effect.cpp">
       <Filter>01.GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Slime.cpp">
+      <Filter>01.GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>01.GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="GreenMush.cpp">
+      <Filter>01.GameObject\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

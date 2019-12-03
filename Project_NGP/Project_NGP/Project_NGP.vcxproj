@@ -176,6 +176,7 @@
     <ClInclude Include="GdiManager.h" />
     <ClInclude Include="GdiPlusManager.h" />
     <ClInclude Include="GdiPlusImage.h" />
+    <ClInclude Include="GreenMush.h" />
     <ClInclude Include="Include.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Macro.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Mushroom.h" />
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="NomalAttack.h" />
     <ClInclude Include="ObjectManager.h" />
@@ -197,6 +199,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Slime.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="targetver.h" />
@@ -221,6 +224,7 @@
     <ClCompile Include="GdiManager.cpp" />
     <ClCompile Include="GdiPlusManager.cpp" />
     <ClCompile Include="GdiPlusImage.cpp" />
+    <ClCompile Include="GreenMush.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Maingame.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -229,6 +233,7 @@
     <ClCompile Include="MainScene_3.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="NomalAttack.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
@@ -237,6 +242,7 @@
     <ClCompile Include="Project_NGP.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Slime.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
