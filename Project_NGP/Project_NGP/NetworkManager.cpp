@@ -173,15 +173,37 @@ int NetworkManager::Send(void* packet_struct, char type, short size)
 
 int NetworkManager::Recv(void* OutPacket_struct)
 {
-	int byte = recv(m_serversocket, m_netBuffer, MAX_BUFFER, 0);
-
+	// 우선 정해놓은 받을 사이즈를 먼저 받는다. 
+	// (short형이기 때문에 이 사이즈마저 분할하여 받을 수 있으므로 두번으로 나누어 받는다.)
+	int byte = recv(m_serversocket, m_netBuffer, 2, 0);
 	if (0 == byte)
 		return -1;
 
-	// 풀기
-	Depacking(OutPacket_struct, m_netBuffer, byte);
+	// 받을 사이즈를 변환한다.
+	short packet_size = 0;
+	memcpy(&packet_size, m_netBuffer, sizeof(short));
 
-	return byte;
+	// 받을 사이즈가 0이면 리턴한다.
+	if (0 == packet_size)
+		return -1;
+
+	// 받을 사이즈를 제외한 받을 패킷의 시작위치를 정해준다.
+	int packet_start = 2;
+	// 받을 바이트 수를 정해준다.
+	int recv_byte = packet_size - packet_start;
+
+	// 패킷이 분할되어 받으면 문제가 생길 수 있으므로 다 받을 때까지 
+	while (packet_start != packet_size)
+	{
+		byte = recv(m_serversocket, &m_netBuffer[packet_start], recv_byte, 0);
+		recv_byte -= byte;
+		packet_start += byte;
+	}
+
+	// 풀기
+	Depacking(OutPacket_struct, m_netBuffer, packet_size);
+
+	return packet_size;
 }
 
 void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)

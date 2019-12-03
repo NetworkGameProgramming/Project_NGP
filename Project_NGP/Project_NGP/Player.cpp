@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Portal.h"
 #include "Fade.h"
+#include "Text.h"
 
 Player::Player()
 	: GameObject()
@@ -26,6 +27,12 @@ bool Player::Initialize()
 	m_SpriteInfo.PreState = End;
 	m_SpriteInfo.SpriteIndex = 0.f;
 	m_SpriteInfo.StateIndex = 0;
+
+	m_IdText = new Text;
+	m_IdText->Initialize(20);
+	m_IdText->SetBackColor(255, 255, 0);
+	m_IdText->SetBackMode(OPAQUE);
+	m_IdText->SetAlign(TA_CENTER);
 
 	return true;
 }
@@ -76,11 +83,23 @@ void Player::Render(HDC hdc)
 		m_SpriteInfo.StateIndex * m_Info.Size_Height,
 		m_Info.Size_Width, m_Info.Size_Height, RGB(255, 0, 255));
 
+	if (nullptr != m_IdText)
+	{
+		m_IdText->SetPosition(m_Rect.left + (m_Info.Size_Width / 2)
+							, m_Rect.top + 135);
+		m_IdText->Render(hdc);
+	}
+
 	//std::cout << m_Info.Pos_X << ", " << m_Info.Pos_Y << std::endl;
 }
 
 void Player::Release()
 {
+	if (nullptr != m_IdText)
+	{
+		delete m_IdText;
+		m_IdText = nullptr;
+	}
 }
 
 void Player::CollisionPixelPart(DIRECTION dir)
@@ -114,6 +133,16 @@ void Player::CollisionDeactivate(GameObject* collideTarget)
 	case OBJ_PORTAL:
 		m_isReadyGoNext = false;
 		break;
+	}
+}
+
+void Player::SetIdToText(int id)
+{
+	if (nullptr != m_IdText)
+	{
+		wstring tmpWString = to_wstring(id);
+		m_IdText->SetNewlineCount(tmpWString.size());
+		m_IdText->SetText(tmpWString.c_str());
 	}
 }
 

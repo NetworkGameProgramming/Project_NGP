@@ -94,7 +94,8 @@ void ObjectManager::Render(HDC hDC)
 	{
 		for (auto& obj : m_vecRender[i])
 		{
-			obj->Render(hDC);
+			if(true == obj->GetRenderCheck())
+				obj->Render(hDC);
 		}
 		m_vecRender[i].clear();
 	}

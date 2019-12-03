@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "Fade.h"
 #include "Effect.h"
+#include "MainUI.h"
 
 MainScene_1::MainScene_1()
 	:Scene()
@@ -27,8 +28,10 @@ bool MainScene_1::Initialize()
 
 	m_ObjManager->AddObject(L"background", AbstractFactory<Background>::CreateObj(), OBJ_BACK);
 	m_ObjManager->AddObject(L"nomalattack", AbstractFactory<NomalAttack>::CreateObj(), OBJ_EFFECT);
+
 	m_ObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_UI);
 	m_ObjManager->AddObject(L"fade", AbstractFactory<Fade>::CreateObj(), OBJ_UI);
+	m_ObjManager->AddObject(L"main_ui", AbstractFactory<MainUI>::CreateObj(), OBJ_UI);
 
 	GameObject* pPortal = AbstractFactory<Portal>::CreateObj(1172, 298 - (257 / 2));
 	dynamic_cast<Portal*>(pPortal)->SetSceneInfo(SCENE_MAIN_2);
@@ -41,6 +44,9 @@ bool MainScene_1::Initialize()
 		m_ObjManager->AddObject(L"player", pPlayer, OBJ_PLAYER);
 	}
 	pPlayer->SetPosition(1703, 1272);
+	
+	// id¸¦ Set
+	dynamic_cast<Player*>(pPlayer)->SetIdToText(m_NetworkManager->GetMyId());
 	m_CamManager->SetTarget(pPlayer);
 
 	GameObject* pBackGround = m_ObjManager->GetObjFromTag(L"background", OBJ_BACK);

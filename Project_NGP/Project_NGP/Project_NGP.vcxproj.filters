@@ -112,6 +112,21 @@
     <Filter Include="01.GameObject\Player\Mouse">
       <UniqueIdentifier>{7945a40b-24d8-4ab3-9284-101775e4d335}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\Main">
+      <UniqueIdentifier>{5700fae8-78a0-48f6-a34c-f36bc14051f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\UI\Chat">
+      <UniqueIdentifier>{95f35893-4ed7-4c5b-b9a5-3b9ffb7b3709}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\UI\Chat_Box">
+      <UniqueIdentifier>{f5d7ca4b-d415-4a33-9c07-175a4c22dc95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Component">
+      <UniqueIdentifier>{afea75fa-49ae-4509-941a-afa2dcc90bde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\UI\Text">
+      <UniqueIdentifier>{ee59632d-8460-4af9-8d37-ce7e0279eb34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -258,6 +273,18 @@
     <ClInclude Include="Effect.h">
       <Filter>01.GameObject\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="MainUI.h">
+      <Filter>01.GameObject\UI\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Chat.h">
+      <Filter>01.GameObject\UI\Chat</Filter>
+    </ClInclude>
+    <ClInclude Include="Chat_Box.h">
+      <Filter>01.GameObject\UI\Chat_Box</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>01.GameObject\UI\Text</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -367,6 +394,18 @@
     </ClCompile>
     <ClCompile Include="Effect.cpp">
       <Filter>01.GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MainUI.cpp">
+      <Filter>01.GameObject\UI\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Chat.cpp">
+      <Filter>01.GameObject\UI\Chat</Filter>
+    </ClCompile>
+    <ClCompile Include="Chat_Box.cpp">
+      <Filter>01.GameObject\UI\Chat_Box</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>01.GameObject\UI\Text</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

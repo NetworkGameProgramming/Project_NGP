@@ -67,6 +67,11 @@ void GameObject::SetFall(bool fall)
 	}
 }
 
+void GameObject::SetRenderCheck(bool render)
+{
+	m_renderCheck = render;
+}
+
 void GameObject::SetSpriteInfo(SPRITEINFO spriteInfo)
 {
 	m_SpriteInfo = spriteInfo;
@@ -80,6 +85,11 @@ void GameObject::SetDirection(DIRECTION dir)
 void GameObject::SetObjectType(OBJTYPE type)
 {
 	m_ObjType = type;
+}
+
+void GameObject::SetFollowedObj(GameObject* obj)
+{
+	m_FollowedObj = obj;
 }
 
 bool GameObject::LoadPixelCollider(const char* pFilePath, unsigned char r, unsigned char g, unsigned char b)

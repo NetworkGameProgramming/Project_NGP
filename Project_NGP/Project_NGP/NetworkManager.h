@@ -11,6 +11,9 @@ public:
 	void Release();
 
 public:
+	const int& GetMyId() { return m_myID; }
+
+public:
 	bool ConnectToServer(const char* ip);
 	bool SendPlayerInfo(SCENESTATE SceneState, const PLAYERINFO& PInfo);
 	bool SendAndRecvOtherInfo(char* OutInfo);

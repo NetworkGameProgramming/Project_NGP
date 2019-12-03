@@ -47,7 +47,10 @@ void GdiManager::LoadImageBySceneState(SCENESTATE SceneState)
 		GdiMgr->LoadGdiImage(L"portal", L"../Resources/Map/portal.bmp");
 		// Fade
 		GdiMgr->LoadGdiImage(L"fade", L"../Resources/FadeBuffer.bmp");
-	
+		// UI
+		GdiMgr->LoadGdiImage(L"main_ui", L"../Resources/UI/Main_UI.bmp");
+		GdiMgr->LoadGdiImage(L"chat", L"../Resources/UI/chat.bmp");
+		GdiMgr->LoadGdiImage(L"chat_box", L"../Resources/UI/chat_box.bmp");
 		break;
 	case SCENESTATE::SCENE_MAIN_2:
 		// Background

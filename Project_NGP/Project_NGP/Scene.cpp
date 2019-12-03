@@ -48,6 +48,7 @@ bool Scene::InitializeNetwork(SCENESTATE curScene)
 				wsprintf(tchar, L"%d", other_PInfo.id);
 
 				other_player = AbstractFactory<Player>::CreateObj();
+				dynamic_cast<Player*>(other_player)->SetIdToText(other_PInfo.id);
 				dynamic_cast<Player*>(other_player)->SetOtherCheck(true);
 				m_ObjManager->AddObject(tchar, other_player,
 					OBJ_OTHERPLAYER);
@@ -245,6 +246,7 @@ bool Scene::UpdateNetEvent()
 				wsprintf(tchar, L"%d", evInfo.id);
 
 				other_player = AbstractFactory<Player>::CreateObj();
+				dynamic_cast<Player*>(other_player)->SetIdToText(evInfo.id);
 				dynamic_cast<Player*>(other_player)->SetOtherCheck(true);
 				m_ObjManager->AddObject(tchar, other_player,
 					OBJ_OTHERPLAYER);

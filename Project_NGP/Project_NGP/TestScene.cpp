@@ -8,6 +8,10 @@
 #include "NomalAttack.h"
 #include "Portal.h"
 #include "Fade.h"
+#include "MainUI.h"
+#include "Chat.h"
+#include "Chat_Box.h"
+
 
 TestScene::TestScene()
 	:Scene()
@@ -30,6 +34,8 @@ bool TestScene::Initialize()
 	m_ObjManager->AddObject(L"bluesnail", AbstractFactory<BlueSnail>::CreateObj(), OBJ_MONSTER);
 	m_ObjManager->AddObject(L"mouse", AbstractFactory<Mouse>::CreateObj(), OBJ_UI);
 	m_ObjManager->AddObject(L"fade", AbstractFactory<Fade>::CreateObj(), OBJ_UI);
+	m_ObjManager->AddObject(L"main_ui", AbstractFactory<MainUI>::CreateObj(), OBJ_UI);
+	m_ObjManager->AddObject(L"chat", AbstractFactory<Chat>::CreateObj(), OBJ_UI);
 
 	GameObject* pPortal = AbstractFactory<Portal>::CreateObj(1172, 298 - (257 / 2));
 	dynamic_cast<Portal*>(pPortal)->SetSceneInfo(SCENE_MAIN_2);
@@ -42,7 +48,14 @@ bool TestScene::Initialize()
 		m_ObjManager->AddObject(L"player", pPlayer, OBJ_PLAYER);
 	}
 	pPlayer->SetPosition(1703, 1222);
+	
+	// id¸¦ Set
+	dynamic_cast<Player*>(pPlayer)->SetIdToText(m_NetworkManager->GetMyId());
 	m_CamManager->SetTarget(pPlayer);
+
+	GameObject* chatBox = AbstractFactory<Chat_Box>::CreateObj();
+	chatBox->SetFollowedObj(pPlayer);
+	m_ObjManager->AddObject(L"chat_box", chatBox, OBJ_UI);
 
 	GameObject* pBackGround = m_ObjManager->GetObjFromTag(L"background", OBJ_BACK);
 	m_CamManager->SetResolution(pBackGround->GetInfo().Size_Width, pBackGround->GetInfo().Size_Height);

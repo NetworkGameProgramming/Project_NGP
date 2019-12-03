@@ -11,4 +11,4 @@
 #define SP_EVENT			99		// Event
 
 // 로그를 확인 할 수 있다.
-#define LOG_CHECK
+//#define LOG_CHECK

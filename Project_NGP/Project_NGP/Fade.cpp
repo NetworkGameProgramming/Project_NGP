@@ -2,11 +2,13 @@
 #include "Fade.h"
 
 Fade::Fade()
+	:GameObject()
 {
 }
 
 Fade::~Fade()
 {
+	Release();
 }
 
 bool Fade::Initialize()
@@ -64,6 +66,9 @@ int Fade::Update(const float& TimeDelta)
 
 void Fade::Render(HDC hdc)
 {
+	if (0.f == m_Alpha)
+		return;
+
 	HDC hMemDC = GET_MANAGER<GdiManager>()->FindImage(L"fade")->GetGdiImageDefault();
 
 	BLENDFUNCTION	_bf;

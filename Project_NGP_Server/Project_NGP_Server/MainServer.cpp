@@ -215,6 +215,8 @@ void MainServer::do_worker()
 
 		if (true == over_info->is_recv)
 		{
+			// 패킷을 다 받을때
+
 			// 클라이언트에서 받은 패킷을 처리
 			ProcessPacket(key, over_info->buffer, byte);
 
@@ -437,7 +439,7 @@ void MainServer::SendProcess(int send_id, void* buf)
 			++count;
 		}
 		// size
-		short size = short(sizeof(SPOTHERPLAYERS) * count + sizeof(short) + sizeof(char));
+		short size = sizeof(SPOTHERPLAYERS) * count + sizeof(short) + sizeof(char);
 		memcpy(&tempBuffer[0], &size, sizeof(short));
 		// type
 		tempBuffer[2] = SP_OTHERPLAYER;

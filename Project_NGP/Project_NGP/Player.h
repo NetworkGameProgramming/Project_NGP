@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 #include "NomalAttack.h"
+
+class Text;
 class Player
 	: public GameObject
 {
@@ -15,6 +17,7 @@ public:
 
 public:
 	void SetOtherCheck(bool check) { m_isOther = check; }
+	void SetIdToText(int id);
 
 private:
 	int Update_Input(const float& TimeDelta);
@@ -46,5 +49,7 @@ private:
 	bool	  m_isReadyGoNext = false;
 
 	bool m_OnceCheck = false;
+
+	Text* m_IdText = nullptr;
 };
 
