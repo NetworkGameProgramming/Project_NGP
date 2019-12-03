@@ -321,7 +321,7 @@ void MainServer::ProcessPacket(int id, void* buf, int recv_byte)
 		printf(" 로그인 요청");
 		break;
 	case SP_PLAYER:
-		printf(" 클라이언트 플레이어 정보");
+		printf(" 클라이언트 플레이어 정보\n");
 		break;
 	case SP_OTHERPLAYER:
 		printf(" 다른 클라이언트 플레이어 정보 요청");
@@ -336,8 +336,8 @@ void MainServer::ProcessPacket(int id, void* buf, int recv_byte)
 		printf(" 이벤트 정보 요청");
 		break;
 	}
-	printf(" 수신 받은 바이트 크기 : %d[byte]\n", recv_byte);
-	printf("-----------------------------------------------------\n");
+	printf(" | 수신 받은 바이트 크기 : %d[byte]\n", recv_byte);
+	printf("-----------------------------------------------------\n\n");
 #endif
 
 	switch (packet[2])
@@ -386,7 +386,7 @@ void MainServer::SendProcess(int send_id, void* buf)
 		printf(" 로그인 정보");
 		break;
 	case SP_PLAYER:
-		printf(" 클라이언트 플레이어 정보");
+		printf(" 클라이언트 플레이어 정보\n");
 		break;
 	case SP_OTHERPLAYER:
 		printf(" 다른 클라이언트 플레이어 정보");
@@ -525,8 +525,8 @@ void MainServer::SendPacket(int send_id, void* buf, int size)
 	int packet_size = size;
 
 #ifdef LOG_CHECK
-	printf(" 송신한 바이트 크기 : %d[byte]\n", packet_size);
-	printf("-----------------------------------------------------\n");
+	printf(" | 송신한 바이트 크기 : %d[byte]\n", packet_size);
+	printf("-----------------------------------------------------\n\n");
 #endif
 
 	OVERLAPPED_INFO* send_over = new OVERLAPPED_INFO;

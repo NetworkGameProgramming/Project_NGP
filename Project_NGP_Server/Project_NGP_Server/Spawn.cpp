@@ -52,13 +52,6 @@ int Spawn::Update(const float& TimeDelta)
 	}
 	else
 	{
-		if (true == m_Monster->GetState())
-		{
-			delete m_Monster;
-			m_Monster = nullptr;
-			m_Start = system_clock::now();
-		}
-
 		m_Monster->Update(TimeDelta);
 
 		// isDead가 true이면 죽은것이므로 사라지도록 한다.
@@ -66,6 +59,7 @@ int Spawn::Update(const float& TimeDelta)
 		{
 			delete m_Monster;
 			m_Monster = nullptr;
+			m_Start = system_clock::now();
 		}
 	}
 	return 0;
