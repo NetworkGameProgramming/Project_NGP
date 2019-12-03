@@ -36,6 +36,7 @@ int KeyManager::UpdateKey()
 	ComputeKeyState(VK_DOWN);
 	ComputeKeyState(VK_SPACE);
 	ComputeKeyState(VK_LCONTROL);
+	ComputeKeyState(VK_LSHIFT);
 	ComputeKeyState(VK_F1);
 	ComputeKeyState(VK_F2);
 

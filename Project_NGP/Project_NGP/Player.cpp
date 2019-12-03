@@ -216,10 +216,16 @@ int Player::Update_Input(const float& TimeDelta)
 		}
 	}
 
+	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LSHIFT))
+	{
+		m_SpriteInfo.CurState = Att_3;
+	}
+
 	if (false == m_fallCheck &&
 		false == keyManager->GetKeyState(STATE_PUSH, VK_LEFT) &&
 		false == keyManager->GetKeyState(STATE_PUSH, VK_RIGHT) &&
-		false == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
+		false == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL)&&
+		false == keyManager->GetKeyState(STATE_PUSH, VK_LSHIFT))
 	{
 		m_SpriteInfo.CurState = Idle;
 	}
@@ -283,6 +289,21 @@ int Player::Update_Skill(const float& TimeDelta)
 			GameObject* effect = AbstractFactory<NomalAttack>::CreateObj();
 			dynamic_cast<CEffect*>(effect)->SetEffectSpawn(m_Info.Pos_X, m_Info.Pos_Y, m_Direction, true);
 			GET_MANAGER<ObjectManager>()->AddObject(L"effect", effect, OBJ_EFFECT);
+			m_OnceCheck = true;
+		}
+	}
+
+	else if (Att_3 == m_SpriteInfo.CurState)
+	{
+		if (false == m_OnceCheck &&
+			1.f <= m_SpriteInfo.SpriteIndex)
+		{
+			GameObject* skill1 = AbstractFactory<SmashAttack>::CreateObj();
+			if(DIR_LEFT == m_Direction)
+				dynamic_cast<CEffect*>(skill1)->SetEffectSpawn(m_Info.Pos_X - 100, m_Info.Pos_Y - 50, m_Direction, true);
+			else
+				dynamic_cast<CEffect*>(skill1)->SetEffectSpawn(m_Info.Pos_X + 100, m_Info.Pos_Y - 50, m_Direction, true);
+			GET_MANAGER<ObjectManager>()->AddObject(L"skill1", skill1, OBJ_EFFECT);
 			m_OnceCheck = true;
 		}
 	}
@@ -367,6 +388,12 @@ void Player::StateChange()
 			m_SpriteInfo.Speed = 5.f;
 			break;
 		case Att_2:
+			m_SpriteInfo.Type = SPRITE_ONCE_END;
+			m_SpriteInfo.StateIndex = 15;
+			m_SpriteInfo.MaxFrame = 3;
+			m_SpriteInfo.Speed = 5.f;
+			break;
+		case Att_3:
 			m_SpriteInfo.Type = SPRITE_ONCE_END;
 			m_SpriteInfo.StateIndex = 15;
 			m_SpriteInfo.MaxFrame = 3;

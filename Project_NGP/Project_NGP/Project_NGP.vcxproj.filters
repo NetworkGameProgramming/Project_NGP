@@ -294,6 +294,9 @@
     <ClInclude Include="GreenMush.h">
       <Filter>01.GameObject\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="SmashAttack.h">
+      <Filter>01.GameObject\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -424,6 +427,9 @@
     </ClCompile>
     <ClCompile Include="GreenMush.cpp">
       <Filter>01.GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="SmashAttack.cpp">
+      <Filter>01.GameObject\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
