@@ -17,6 +17,5 @@ public:
 public:
 	int Update_Position(const float& TimeDelta, const DIRECTION& Direction);
 	int Update_Sprite(const float& TimeDelta);
-
 };
 

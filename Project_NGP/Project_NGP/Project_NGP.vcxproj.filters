@@ -285,6 +285,15 @@
     <ClInclude Include="Text.h">
       <Filter>01.GameObject\UI\Text</Filter>
     </ClInclude>
+    <ClInclude Include="Slime.h">
+      <Filter>01.GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
+      <Filter>01.GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="GreenMush.h">
+      <Filter>01.GameObject\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -406,6 +415,15 @@
     </ClCompile>
     <ClCompile Include="Text.cpp">
       <Filter>01.GameObject\UI\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Slime.cpp">
+      <Filter>01.GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>01.GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="GreenMush.cpp">
+      <Filter>01.GameObject\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

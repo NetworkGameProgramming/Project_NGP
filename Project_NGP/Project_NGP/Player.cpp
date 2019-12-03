@@ -267,7 +267,7 @@ int Player::Update_Position(const float& TimeDelta, const DIRECTION& Direction)
 			m_GravityAcc += 9.8f * 10.f;
 	}
 
-	printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y + (m_CollideInfo.Size_Height / 2));
+	//printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y + (m_CollideInfo.Size_Height / 2));
 
 	return 0;
 }

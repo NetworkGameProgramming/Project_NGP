@@ -43,6 +43,10 @@ int BlueSnail::Update_Input(const float& TimeDelta)
 	//몬스터가 플레이어의 방향과 일치하는 방향에서 맞았는지
 	bool HitBack = false;
 	bool Died = false;
+	if(m_SpriteInfo.CurState == Monster_Die)
+	{
+		return 0;
+	}
 	//if (true == keyManager->GetKeyState(STATE_PUSH, VK_LCONTROL))
 	//{
 	//	Damaged = true;
@@ -242,10 +246,11 @@ int BlueSnail::Update_Sprite(const float& TimeDelta)
 
 		if ((float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)
 		{
-			m_isDead = true;
+ 			m_isDead = true;
 		}
 	}
 	StateChange();
+	cout << m_SpriteInfo.CurState << endl;
 	return 0;
 }
 
