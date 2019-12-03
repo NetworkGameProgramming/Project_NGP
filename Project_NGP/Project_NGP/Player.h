@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "NomalAttack.h"
+#include "SmashAttack.h"
 class Player
 	: public GameObject
 {
