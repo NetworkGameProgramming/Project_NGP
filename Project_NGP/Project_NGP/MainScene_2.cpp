@@ -46,6 +46,9 @@ bool MainScene_2::Initialize()
 	GameObject* pBackGround = m_ObjManager->GetObjFromTag(L"background", OBJ_BACK);
 	m_CamManager->SetResolution(pBackGround->GetInfo().Size_Width, pBackGround->GetInfo().Size_Height);
 
+	if (false == InitializeNetwork(SCENE_MAIN_2))
+		return false;
+
 	return true;
 }
 

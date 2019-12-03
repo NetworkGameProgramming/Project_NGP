@@ -15,12 +15,12 @@ Chat_Box::~Chat_Box()
 bool Chat_Box::Initialize()
 {
 	m_Info = GAMEOBJINFO{ 0, 0, 97, 77 };
-	m_RenderType = RENDER_UI;
+	m_RenderType = RENDER_UI_2;
 
 	/*m_Text = new Text;
 	m_Text->Initialize(11);
 	m_Text->SetNewlineCount(8);
-	m_Text->SetText(L"가나다라마바사아자차카타파하노무현운지");
+	m_Text->SetText(L"123");
 	m_Text->SetBackColor(255, 255, 255);
 	m_Text->SetBackMode(OPAQUE);*/
 

@@ -167,6 +167,7 @@
     </ClCompile>
     <ClCompile Include="Project_NGP_Server.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Slime.cpp" />
     <ClCompile Include="Spawn.cpp" />
     <ClCompile Include="MainScene_1.cpp" />
   </ItemGroup>
@@ -182,6 +183,7 @@
     <ClInclude Include="Monster.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Slime.h" />
     <ClInclude Include="Spawn.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="Enum.h" />

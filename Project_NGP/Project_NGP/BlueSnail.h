@@ -31,7 +31,4 @@ private:
 	float m_CloseIdleTime = 0.f;
 	float m_KnockBackTime = 0.2f;
 	float m_KnockBackTimeDelta = 0.f;
-
-
-	bool m_isOther = false;
 };

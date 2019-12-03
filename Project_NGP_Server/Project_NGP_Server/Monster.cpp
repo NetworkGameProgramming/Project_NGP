@@ -96,7 +96,7 @@ void Monster::UpdateAI(const float& TimeDelta)
 			m_Direction = DIRECTION(rand() % 2);
 			m_CloseIdleAcc = 0.f;
 			m_State = Monster_Move;
-			m_Speed = 100;
+			//m_Speed = 100;
 		}
 	}
 	else

@@ -250,7 +250,7 @@ int BlueSnail::Update_Sprite(const float& TimeDelta)
 		}
 	}
 	StateChange();
-	cout << m_SpriteInfo.CurState << endl;
+	// cout << m_SpriteInfo.CurState << endl;
 	return 0;
 }
 

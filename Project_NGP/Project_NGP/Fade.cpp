@@ -15,7 +15,7 @@ bool Fade::Initialize()
 {
 	m_Info = GAMEOBJINFO{ WINSIZE_X / 2, WINSIZE_Y / 2, 1024, 1024 };
 	m_isNoScroll = true;
-	m_RenderType = RENDER_UI;
+	m_RenderType = RENDER_UI_3;
 	m_Speed = 700;
 	return true;
 }

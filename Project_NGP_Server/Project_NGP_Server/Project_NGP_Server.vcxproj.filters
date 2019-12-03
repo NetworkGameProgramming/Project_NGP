@@ -40,10 +40,10 @@
     <Filter Include="02.Object\Monster\Slime">
       <UniqueIdentifier>{c96bebdd-adf4-46bd-a95b-1ad53883ecd3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Object\Monster\Mushroom">
+    <Filter Include="02.Object\Monster\BlueMushroom">
       <UniqueIdentifier>{b2452a46-f4dd-4855-b6b5-ec3859589216}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Object\Monster\Boss">
+    <Filter Include="02.Object\Monster\GreenMushroom">
       <UniqueIdentifier>{17b44cb8-e885-4677-8b5f-3cc2d5a9afe1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -74,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="MainScene_1.cpp">
       <Filter>01.Scene\TestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Slime.cpp">
+      <Filter>02.Object\Monster\Slime</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="MainScene_1.h">
       <Filter>01.Scene\TestScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Slime.h">
+      <Filter>02.Object\Monster\Slime</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

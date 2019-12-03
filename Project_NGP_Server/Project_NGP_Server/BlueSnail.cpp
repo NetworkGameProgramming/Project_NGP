@@ -24,6 +24,11 @@ int BlueSnail::Update(const float& TimeDelta)
 {
 	Monster::Update(TimeDelta);
 	
+	if (Monster_Move == m_State)
+	{
+		m_Speed = 100;
+	}
+
 	return 0;
 }
 

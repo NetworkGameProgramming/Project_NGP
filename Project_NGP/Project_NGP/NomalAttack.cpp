@@ -66,7 +66,7 @@ int NomalAttack::Update_Position(const float& TimeDelta, const DIRECTION& Direct
 
 int NomalAttack::Update_Sprite(const float& TimeDelta)
 {
-	cout << m_SpriteInfo.SpriteIndex << endl;
+	// cout << m_SpriteInfo.SpriteIndex << endl;
 	m_SpriteInfo.SpriteIndex += m_SpriteInfo.Speed * TimeDelta;
 	SetPosition(m_Info.Pos_X, m_Info.Pos_Y);
 	if ((float)m_SpriteInfo.MaxFrame <= m_SpriteInfo.SpriteIndex)

@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "BlueSnail.h"
 #include "Player.h"
+#include "BlueSnail.h"
+#include "Slime.h"
 
 Scene::Scene()
 {
@@ -190,6 +191,9 @@ bool Scene::UpdateNetMonster()
 				{
 				case MONTYPE_SNAIL:
 					monster = AbstractFactory<BlueSnail>::CreateObj();
+					break;
+				case MONTYPE_SLIME:
+					monster = AbstractFactory<Slime>::CreateObj();
 					break;
 				}
 

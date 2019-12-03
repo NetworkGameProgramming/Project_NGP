@@ -2,6 +2,7 @@
 #include "Spawn.h"
 #include "Monster.h"
 #include "BlueSnail.h"
+#include "Slime.h"
 
 Spawn::Spawn()
 {
@@ -40,10 +41,11 @@ int Spawn::Update(const float& TimeDelta)
 				m_Monster = new BlueSnail;
 				break;
 			case MONTYPE_SLIME:
+				m_Monster = new Slime;
 				break;
-			case MONTYPE_MUSHROOM:
+			case MONTYPE_BLUEMUSHROOM:
 				break;
-			case MONTYPE_BOSS:
+			case MONTYPE_GREENMUSHROOM:
 				break;
 			}
 			m_Monster->Initialize(m_Info.Pos_X, m_Info.Pos_Y, 

@@ -30,7 +30,18 @@ bool MainScene_1::Initialize()
 			int y = m_SpawnPosInfo[i][0];
 			
 			Spawn* temp = new Spawn;
-			temp->Initialize(MONTYPE_SNAIL, 5s, x, y, 44, 34);
+
+			switch (MONSTERTYPE(rand() % 2))
+			{
+			case MONTYPE_SNAIL:
+				temp->Initialize(MONTYPE_SNAIL, 5s, x, y, 44, 34);
+				break;
+			case MONTYPE_SLIME:
+				temp->Initialize(MONTYPE_SLIME, 5s, x, y, 50, 70);
+				break;
+			}
+
+			
 			m_mapSpawn.insert(make_pair(count, temp));
 			++count;
 		}
