@@ -71,7 +71,7 @@ typedef struct ServerPacketTypeLogin
 	int id;
 }SPLOGIN;
 
-typedef struct ClientPacketTypePlayer
+typedef struct ServerPacketTypePlayer
 {
 	short size;
 	char type;
@@ -80,20 +80,20 @@ typedef struct ClientPacketTypePlayer
 	PLAYERINFO info;
 }SPPLAYER;
 
-typedef struct ClientPacketOtherPlayers
+typedef struct ServerPacketOtherPlayers
 {
 	int id;
 	char scene_state;
 	PLAYERINFO info;
 }SPOTHERPLAYERS;
 
-typedef struct ClientPacketMonster
+typedef struct ServerPacketMonster
 {
 	int monster_id;
 	MONSTERINFO info;
 }SPMONSTER;
 
-typedef struct ClientPacketHit
+typedef struct ServerPacketHit
 {
 	short size;
 	char type;
@@ -101,6 +101,15 @@ typedef struct ClientPacketHit
 	int monster_id;
 	int damage;
 }SPHIT;
+
+typedef struct ServerPacketGoNext
+{
+	short size;
+	char type;
+	int id;
+	char cur_scene_state;
+	char next_scene_state;
+}SPGONEXT;
 
 typedef struct ServerPacketEnd
 {

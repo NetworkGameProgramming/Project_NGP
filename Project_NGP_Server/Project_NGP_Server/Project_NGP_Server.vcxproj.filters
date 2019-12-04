@@ -25,9 +25,6 @@
     <Filter Include="01.Scene">
       <UniqueIdentifier>{7d0ff0be-ed43-400b-9c2e-6f6cdfd29407}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Scene\TestScene">
-      <UniqueIdentifier>{285ece82-f3e9-4b32-8f3a-97b45a3e6d81}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.Object">
       <UniqueIdentifier>{9cf2d84b-ef88-4556-acbc-a3588864ff16}</UniqueIdentifier>
     </Filter>
@@ -45,6 +42,9 @@
     </Filter>
     <Filter Include="02.Object\Monster\GreenMushroom">
       <UniqueIdentifier>{17b44cb8-e885-4677-8b5f-3cc2d5a9afe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\MainScene">
+      <UniqueIdentifier>{285ece82-f3e9-4b32-8f3a-97b45a3e6d81}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,10 +73,19 @@
       <Filter>02.Object\Monster</Filter>
     </ClCompile>
     <ClCompile Include="MainScene_1.cpp">
-      <Filter>01.Scene\TestScene</Filter>
+      <Filter>01.Scene\MainScene</Filter>
     </ClCompile>
     <ClCompile Include="Slime.cpp">
       <Filter>02.Object\Monster\Slime</Filter>
+    </ClCompile>
+    <ClCompile Include="BlueMushroom.cpp">
+      <Filter>02.Object\Monster\BlueMushroom</Filter>
+    </ClCompile>
+    <ClCompile Include="GreenMushroom.cpp">
+      <Filter>02.Object\Monster\GreenMushroom</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene_2.cpp">
+      <Filter>01.Scene\MainScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -123,10 +132,19 @@
       <Filter>98.Header</Filter>
     </ClInclude>
     <ClInclude Include="MainScene_1.h">
-      <Filter>01.Scene\TestScene</Filter>
+      <Filter>01.Scene\MainScene</Filter>
     </ClInclude>
     <ClInclude Include="Slime.h">
       <Filter>02.Object\Monster\Slime</Filter>
+    </ClInclude>
+    <ClInclude Include="BlueMushroom.h">
+      <Filter>02.Object\Monster\BlueMushroom</Filter>
+    </ClInclude>
+    <ClInclude Include="GreenMushroom.h">
+      <Filter>02.Object\Monster\GreenMushroom</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene_2.h">
+      <Filter>01.Scene\MainScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

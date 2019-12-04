@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "MainServer.h"
 #include "Scene.h"
-#include "TestScene.h"
 #include "Spawn.h"
 #include "Monster.h"
 #include "GameObject.h"
+#include "MainScene_1.h"
+#include "MainScene_2.h"
 
 vector<Scene*> MainServer::m_vecScene;
 
@@ -265,6 +266,9 @@ void MainServer::do_scene()
 		case SCENE_MAIN_1:
 			s = new MainScene_1;
 			break;
+		case SCENE_MAIN_2:
+			s = new MainScene_2;
+			break;
 		}
 
 		if (nullptr != s &&
@@ -334,6 +338,9 @@ void MainServer::ProcessPacket(int id, void* buf, int recv_byte)
 	case SP_HIT:
 		printf(" 공격 정보");
 		break;
+	case SP_GONEXT:
+		printf(" 씬 전환 정보");
+		break;
 	case SP_EVENT:
 		printf(" 이벤트 정보 요청");
 		break;
@@ -366,6 +373,40 @@ void MainServer::ProcessPacket(int id, void* buf, int recv_byte)
 		DstMon->Hit(HitInfo->id, HitInfo->damage);
 	}
 	break;
+	case SP_GONEXT:
+	{
+		SPGONEXT* GoNextInfo = reinterpret_cast<SPGONEXT*> (buf);
+
+		EVENTINFO info;
+		info.size = sizeof(info);
+		info.type = SP_EVENT;
+		for (auto& cl : g_mapClient)
+		{
+			if (cl.first == GoNextInfo->id) continue;
+
+			// 다음으로 넘어갈 씬에 존재하는 유저들에게 이벤트 큐에 내가 추가되었음을 알린다.
+			if (GoNextInfo->next_scene_state == cl.second->scene_state)
+			{
+				info.event_state = EV_PUTOTHERPLAYER;
+				info.id = GoNextInfo->id;
+				info.scene_state = GoNextInfo->next_scene_state;
+				cl.second->event_lock.lock();
+				cl.second->event_queue.push(info);
+				cl.second->event_lock.unlock();
+			}
+			// 현재 씬에 존재하는 유저들에게 이벤트 큐에 내가 사라졌음을 알린다.
+			else if (GoNextInfo->cur_scene_state == cl.second->scene_state)
+			{
+				info.event_state = EV_END;
+				info.id = GoNextInfo->id;
+				info.scene_state = GoNextInfo->cur_scene_state;
+				cl.second->event_lock.lock();
+				cl.second->event_queue.push(info);
+				cl.second->event_lock.unlock();
+			}
+		}
+	}
+	break;
 	}
 
 	SendProcess(id, buf);
@@ -395,6 +436,12 @@ void MainServer::SendProcess(int send_id, void* buf)
 		break;
 	case SP_MONSTER:
 		printf(" 몬스터 정보");
+		break;
+	case SP_HIT:
+		printf(" 공격 정보");
+		break;
+	case SP_GONEXT:
+		printf(" 씬 전환 정보");
 		break;
 	case SP_EVENT:
 		printf(" 이벤트 정보");

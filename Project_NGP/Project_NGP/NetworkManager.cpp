@@ -132,6 +132,21 @@ bool NetworkManager::SendHitInfo(int monster_id, int damage)
 	return true;
 }
 
+bool NetworkManager::SendGoNextSceneInfo(SCENESTATE nextState, SCENESTATE curState)
+{
+	SPGONEXT GNInfo;
+	GNInfo.id = m_myID;
+	GNInfo.type = SP_GONEXT;
+	GNInfo.size = sizeof(SPGONEXT);
+	GNInfo.next_scene_state = nextState;
+	GNInfo.cur_scene_state = curState;
+
+	if (-1 == Send(&GNInfo, SP_GONEXT, sizeof(SPGONEXT)))
+		return false;
+
+	return true;
+}
+
 void NetworkManager::AttackCollisionForNetwork(ObjectManager::MAPOBJ* TargetList, ObjectManager::MAPOBJ* SkillList)
 {
 	// 렉트 충돌 검사

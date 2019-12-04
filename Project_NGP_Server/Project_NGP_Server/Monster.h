@@ -19,7 +19,7 @@ public:
 	void Hit(int src_id, int damage);
 
 public:
-	virtual bool Initialize(int pos_x, int pos_y, int width, int height);
+	virtual bool Initialize(int pos_x, int pos_y);
 	virtual int  Update(const float& TimeDelta);
 	virtual void Release();
 	virtual void CollisionPixelPart(DIRECTION dir);

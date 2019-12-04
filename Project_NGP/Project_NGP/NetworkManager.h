@@ -20,7 +20,7 @@ public:
 	bool SendAndRecvEvent(EVENTINFO* OutEvInfo);
 	bool SendAndRecvMonster(char* OutInfo);
 	bool SendHitInfo(int monster_id, int damage);
-
+	bool SendGoNextSceneInfo(SCENESTATE nextState, SCENESTATE curState);
 public:
 	void AttackCollisionForNetwork(ObjectManager::MAPOBJ* TargetList, ObjectManager::MAPOBJ* SkillList);
 

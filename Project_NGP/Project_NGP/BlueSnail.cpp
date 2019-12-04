@@ -32,9 +32,6 @@ bool BlueSnail::Initialize()
 int BlueSnail::Update_Input(const float& TimeDelta)
 {
 #ifdef CLIENT_MODE
-	if (true == m_isOther)
-		return 0;
-
 	KeyManager* keyManager = GET_MANAGER<KeyManager>();
 	//몬스터가 지형의 끝에 도달했는지
 	bool OnBulePixel = false;

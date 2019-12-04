@@ -4,6 +4,8 @@
 #include "Player.h"
 #include "BlueSnail.h"
 #include "Slime.h"
+#include "Mushroom.h"
+#include "GreenMush.h"
 
 Scene::Scene()
 {
@@ -194,6 +196,12 @@ bool Scene::UpdateNetMonster()
 					break;
 				case MONTYPE_SLIME:
 					monster = AbstractFactory<Slime>::CreateObj();
+					break;
+				case MONTYPE_BLUEMUSHROOM:
+					monster = AbstractFactory<Mushroom>::CreateObj();
+					break;
+				case MONTYPE_GREENMUSHROOM:
+					monster = AbstractFactory<GreenMush>::CreateObj();
 					break;
 				}
 

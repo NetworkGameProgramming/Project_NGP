@@ -9,7 +9,6 @@ public:
 
 public:
 	SCENESTATE GetCurrentSceneState() { return m_CurrentScene; }
-
 public:
 	bool ChangeSceneState(SCENESTATE SceneState);
 

@@ -40,9 +40,9 @@ void Monster::Hit(int target, int damage)
 	target_id = target;
 }
 
-bool Monster::Initialize(int pos_x, int pos_y, int width, int height)
+bool Monster::Initialize(int pos_x, int pos_y)
 {
-	GameObject::Initialize(pos_x, pos_y, width, height);
+	GameObject::Initialize(pos_x, pos_y);
 
 	m_ChangeIdleTime = float((rand() % 10) + 5);
 	m_State = Monster_Idle;

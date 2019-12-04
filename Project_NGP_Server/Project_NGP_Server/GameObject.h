@@ -16,7 +16,7 @@ public:
 	void SetFall(bool fall);
 
 public:
-	virtual bool Initialize(int pos_x, int pos_y, int width, int height);
+	virtual bool Initialize(int pos_x, int pos_y);
 	virtual int  Update(const float& TimeDelta);
 	virtual void Release() PURE;
 	virtual void CollisionPixelPart(DIRECTION dir);

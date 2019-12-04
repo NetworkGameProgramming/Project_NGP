@@ -34,10 +34,10 @@ bool MainScene_1::Initialize()
 			switch (MONSTERTYPE(rand() % 2))
 			{
 			case MONTYPE_SNAIL:
-				temp->Initialize(MONTYPE_SNAIL, 5s, x, y, 44, 34);
+				temp->Initialize(MONTYPE_SNAIL, 5s, x, y);
 				break;
 			case MONTYPE_SLIME:
-				temp->Initialize(MONTYPE_SLIME, 5s, x, y, 50, 70);
+				temp->Initialize(MONTYPE_SLIME, 5s, x, y);
 				break;
 			}
 

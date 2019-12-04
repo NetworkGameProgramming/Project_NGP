@@ -19,10 +19,10 @@ void GameObject::SetFall(bool fall)
 {
 }
 
-bool GameObject::Initialize(int pos_x, int pos_y, int width, int height)
+bool GameObject::Initialize(int pos_x, int pos_y)
 {
-	m_Info = GAMEOBJINFO{ pos_x, pos_y, width, height };
-
+	m_Info.Pos_X = pos_x;
+	m_Info.Pos_Y = pos_y;
 	return true;
 }
 

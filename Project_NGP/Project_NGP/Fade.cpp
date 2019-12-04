@@ -36,6 +36,9 @@ int Fade::Update(const float& TimeDelta)
 
 			if (1.f <= m_WaitAcc)
 			{
+				// 씬이 바뀜을 서버에 알린다.
+				GET_MANAGER<NetworkManager>()->SendGoNextSceneInfo(
+					m_NextSceneInfo, GET_MANAGER<SceneManager>()->GetCurrentSceneState());
 				GET_MANAGER<SceneManager>()->ChangeSceneState(m_NextSceneInfo);
 				m_FadeInCheck = false;
 				m_WaitAcc = 0.f;

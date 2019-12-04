@@ -46,8 +46,10 @@ bool MainScene_2::Initialize()
 	GameObject* pBackGround = m_ObjManager->GetObjFromTag(L"background", OBJ_BACK);
 	m_CamManager->SetResolution(pBackGround->GetInfo().Size_Width, pBackGround->GetInfo().Size_Height);
 
+#ifdef SERVER_MODE
 	if (false == InitializeNetwork(SCENE_MAIN_2))
 		return false;
+#endif
 
 	return true;
 }
@@ -66,6 +68,10 @@ int MainScene_2::Update(const float& TimeDelta)
 			GET_MANAGER<CollisionManager>()->SetRenderCheck(true);
 	}
 
+#ifdef SERVER_MODE
+	if (false == UpdateNetwork())
+		return -1;
+#endif
 
 	m_CamManager->Update(TimeDelta);
 	m_ObjManager->Update(TimeDelta);

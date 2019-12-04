@@ -109,9 +109,6 @@
     <Filter Include="01.GameObject\UI">
       <UniqueIdentifier>{7b446693-3f2f-4473-acf1-62c5a562c616}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\Player\Mouse">
-      <UniqueIdentifier>{7945a40b-24d8-4ab3-9284-101775e4d335}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\UI\Main">
       <UniqueIdentifier>{5700fae8-78a0-48f6-a34c-f36bc14051f2}</UniqueIdentifier>
     </Filter>
@@ -126,6 +123,9 @@
     </Filter>
     <Filter Include="01.GameObject\UI\Text">
       <UniqueIdentifier>{ee59632d-8460-4af9-8d37-ce7e0279eb34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Mouse">
+      <UniqueIdentifier>{7945a40b-24d8-4ab3-9284-101775e4d335}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -199,7 +199,7 @@
       <Filter>02.SceneState\TestScene</Filter>
     </ClInclude>
     <ClInclude Include="Mouse.h">
-      <Filter>01.GameObject\Player\Mouse</Filter>
+      <Filter>01.GameObject\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="GdiPlusImage.h">
       <Filter>97.Manager\GdiPlus</Filter>
@@ -339,7 +339,7 @@
       <Filter>02.SceneState\TestScene</Filter>
     </ClCompile>
     <ClCompile Include="Mouse.cpp">
-      <Filter>01.GameObject\Player\Mouse</Filter>
+      <Filter>01.GameObject\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="GdiPlusImage.cpp">
       <Filter>97.Manager\GdiPlus</Filter>

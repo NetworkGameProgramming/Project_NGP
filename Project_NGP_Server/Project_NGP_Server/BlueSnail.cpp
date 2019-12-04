@@ -4,8 +4,6 @@
 BlueSnail::BlueSnail()
 	: Monster()
 {
-	m_Type = MONTYPE_SNAIL;
-	m_State = Monster_Idle;
 }
 
 BlueSnail::~BlueSnail()
@@ -13,10 +11,13 @@ BlueSnail::~BlueSnail()
 	Release();
 }
 
-bool BlueSnail::Initialize(int pos_x, int pos_y, int width, int height)
+bool BlueSnail::Initialize(int pos_x, int pos_y)
 {
-	Monster::Initialize(pos_x, pos_y, width, height);
+	Monster::Initialize(pos_x, pos_y);
+	m_Type = MONTYPE_SNAIL;
 	m_hp = 10;
+	m_Info.Size_Width = 44;
+	m_Info.Size_Height = 34;
 	return true;
 }
 

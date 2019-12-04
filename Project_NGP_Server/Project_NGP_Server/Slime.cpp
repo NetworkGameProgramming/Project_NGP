@@ -4,8 +4,7 @@
 Slime::Slime()
 	: Monster()
 {
-	m_Type = MONTYPE_SLIME;
-	m_State = Monster_Idle;
+
 }
 
 Slime::~Slime()
@@ -13,10 +12,13 @@ Slime::~Slime()
 	Release();
 }
 
-bool Slime::Initialize(int pos_x, int pos_y, int width, int height)
+bool Slime::Initialize(int pos_x, int pos_y)
 {
-	Monster::Initialize(pos_x, pos_y, width, height);
+	Monster::Initialize(pos_x, pos_y);
+	m_Type = MONTYPE_SLIME;
 	m_hp = 10;
+	m_Info.Size_Width = 50;
+	m_Info.Size_Height = 70;
 	return true;
 }
 

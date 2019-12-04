@@ -3,6 +3,8 @@
 #include "Monster.h"
 #include "BlueSnail.h"
 #include "Slime.h"
+#include "BlueMushroom.h"
+#include "GreenMushroom.h"
 
 Spawn::Spawn()
 {
@@ -15,11 +17,11 @@ Spawn::~Spawn()
 }
 
 bool Spawn::Initialize(MONSTERTYPE type, seconds spawn_time,
-	int pos_x, int pos_y, int width, int height)
+	int pos_x, int pos_y)
 {
 	m_Type = type;
-	m_Info = GAMEOBJINFO{ pos_x, pos_y, width, height };
-	
+	m_Info.Pos_X = pos_x;
+	m_Info.Pos_Y = pos_y;
 	m_Start = system_clock::now();
 	m_SpawnSec = spawn_time;
 
@@ -44,12 +46,13 @@ int Spawn::Update(const float& TimeDelta)
 				m_Monster = new Slime;
 				break;
 			case MONTYPE_BLUEMUSHROOM:
+				m_Monster = new BlueMushroom;
 				break;
 			case MONTYPE_GREENMUSHROOM:
+				m_Monster = new GreenMushroom;
 				break;
 			}
-			m_Monster->Initialize(m_Info.Pos_X, m_Info.Pos_Y, 
-				m_Info.Size_Width, m_Info.Size_Height);
+			m_Monster->Initialize(m_Info.Pos_X, m_Info.Pos_Y);
 		}
 	}
 	else
