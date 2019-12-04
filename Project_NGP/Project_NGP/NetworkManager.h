@@ -21,6 +21,7 @@ public:
 	bool SendAndRecvMonster(char* OutInfo);
 	bool SendHitInfo(int monster_id, int damage);
 	bool SendGoNextSceneInfo(SCENESTATE nextState, SCENESTATE curState);
+	bool SendChatting(const TCHAR* chat);
 public:
 	void AttackCollisionForNetwork(ObjectManager::MAPOBJ* TargetList, ObjectManager::MAPOBJ* SkillList);
 

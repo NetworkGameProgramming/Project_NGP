@@ -9,10 +9,15 @@ public:
 public:
 	void SetPosition(int x, int y);
 	void SetText(const TCHAR* buffer);
+	void SetText(const TCHAR* buffer, int size);
 	void SetNewlineCount(int count);
 	void SetBackColor(unsigned char r, unsigned char g, unsigned char b);
 	void SetBackMode(int mode);
 	void SetAlign(int align);
+
+public:
+	void ClearAll();
+
 public:
 	bool Initialize(int size);
 	void Render(HDC hdc);
@@ -21,7 +26,7 @@ public:
 private:
 	HFONT m_OldFont;
 	HFONT m_hFont;
-	TCHAR m_TextBuffer[64] = { 0, };
+	WCHAR m_TextBuffer[25] = { 0, };
 	POSITION m_StartPos;
 	
 	int m_NewlineCount = 10;

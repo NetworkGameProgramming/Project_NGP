@@ -16,6 +16,7 @@ enum EventState
 {
 	EV_PUTOTHERPLAYER,
 	EV_END,
+	EV_CHAT,
 	EV_NONE
 };
 
@@ -25,8 +26,12 @@ typedef struct EventInfo
 	short size;
 	char type;
 	int id;
+	//
 	char scene_state;
 	char event_state;
+	//
+	char chat_buffer[128];
+	char chat_size;
 }EVENTINFO;
 
 typedef struct PlayerInfo

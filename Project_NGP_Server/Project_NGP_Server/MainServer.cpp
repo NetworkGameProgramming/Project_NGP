@@ -394,8 +394,9 @@ void MainServer::ProcessPacket(int id, void* buf, int recv_byte)
 				cl.second->event_queue.push(info);
 				cl.second->event_lock.unlock();
 			}
+			
 			// 현재 씬에 존재하는 유저들에게 이벤트 큐에 내가 사라졌음을 알린다.
-			else if (GoNextInfo->cur_scene_state == cl.second->scene_state)
+			if (GoNextInfo->cur_scene_state == cl.second->scene_state)
 			{
 				info.event_state = EV_END;
 				info.id = GoNextInfo->id;
@@ -404,6 +405,33 @@ void MainServer::ProcessPacket(int id, void* buf, int recv_byte)
 				cl.second->event_queue.push(info);
 				cl.second->event_lock.unlock();
 			}
+		}
+	}
+	break;
+	case SP_CHAT:
+	{
+		char* ChatInfo = reinterpret_cast<char*> (buf);
+		short total_size = 0;
+		memcpy(&total_size, ChatInfo, sizeof(short));
+		short chat_start = sizeof(short) + sizeof(char) + sizeof(int);
+		int chat_size = total_size - chat_start;
+
+		EVENTINFO info;
+		info.size = sizeof(info);
+		info.type = SP_EVENT;
+		info.event_state = EV_CHAT;
+		memcpy(&info.id, &ChatInfo[3], sizeof(int));
+		info.scene_state = g_mapClient[info.id]->scene_state;
+		info.chat_size = chat_size;
+		memcpy(&info.chat_buffer, &ChatInfo[7], info.chat_size);
+
+		for (auto& cl : g_mapClient)
+		{
+			if (cl.first == info.id) continue;
+
+			cl.second->event_lock.lock();
+			cl.second->event_queue.push(info);
+			cl.second->event_lock.unlock();
 		}
 	}
 	break;

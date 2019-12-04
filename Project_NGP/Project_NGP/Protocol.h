@@ -9,6 +9,7 @@
 #define SP_MONSTER			4
 #define SP_HIT  			5
 #define SP_GONEXT			6
+#define SP_CHAT				7
 #define SP_EVENT			99		// Event
 
 
@@ -20,6 +21,7 @@ enum EventState
 {
 	EV_PUTOTHERPLAYER,
 	EV_END,
+	EV_CHAT,
 	EV_NONE
 };
 
@@ -30,8 +32,12 @@ typedef struct EventInfo
 	short size;
 	char type;
 	int id;
+	//
 	char scene_state;
 	char event_state;
+	//
+	char chat_buffer[128];
+	char chat_size;
 }EVENTINFO;
 
 typedef struct PlayerInfo

@@ -39,6 +39,7 @@ int KeyManager::UpdateKey()
 	ComputeKeyState(VK_LSHIFT);
 	ComputeKeyState(VK_F1);
 	ComputeKeyState(VK_F2);
+	ComputeKeyState(VK_RETURN);
 
 	// Mouse
 	ComputeKeyState(VK_LBUTTON);

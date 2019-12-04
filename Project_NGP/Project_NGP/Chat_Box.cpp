@@ -12,17 +12,23 @@ Chat_Box::~Chat_Box()
 	Release();
 }
 
+void Chat_Box::SetChatBox(const WCHAR* chat_buffer)
+{
+	if (nullptr != m_Text)
+	{
+		m_Text->SetText(chat_buffer);
+	}
+	m_renderCheck = true;
+}
+
 bool Chat_Box::Initialize()
 {
 	m_Info = GAMEOBJINFO{ 0, 0, 97, 77 };
 	m_RenderType = RENDER_UI_2;
-
-	/*m_Text = new Text;
+	m_renderCheck = false;
+	m_Text = new Text;
 	m_Text->Initialize(11);
 	m_Text->SetNewlineCount(8);
-	m_Text->SetText(L"123");
-	m_Text->SetBackColor(255, 255, 255);
-	m_Text->SetBackMode(OPAQUE);*/
 
 	return true;
 }
@@ -39,11 +45,23 @@ int Chat_Box::Update(const float& TimeDelta)
 		m_Info.Pos_Y = objInfo.Pos_Y - (m_Info.Size_Height + 0);
 	}
 
+	if(true == m_renderCheck)
+		m_RenderAcc += TimeDelta;
+
+	if (5.f <= m_RenderAcc)
+	{
+		m_renderCheck = false;
+		m_RenderAcc = 0.f;
+	}
+
 	return 0;
 }
 
 void Chat_Box::Render(HDC hdc)
 {
+	if (false == m_renderCheck)
+		return;
+
 	HDC hMemDC = GET_MANAGER<GdiManager>()->FindImage(L"chat_box")->GetGdiImageDefault();
 
 	TransparentBlt(hdc, m_Rect.left, m_Rect.top, m_Info.Size_Width, m_Info.Size_Height,

@@ -18,7 +18,14 @@ void Text::SetPosition(int x, int y)
 
 void Text::SetText(const TCHAR* buffer)
 {
+	ClearAll();
 	wmemcpy(m_TextBuffer, buffer, wcslen(buffer));
+}
+
+void Text::SetText(const TCHAR* buffer, int size)
+{
+	ClearAll();
+	wmemcpy(m_TextBuffer, buffer, size);
 }
 
 void Text::SetNewlineCount(int count)
@@ -41,6 +48,11 @@ void Text::SetBackMode(int mode)
 void Text::SetAlign(int align)
 {
 	m_Align = align;
+}
+
+void Text::ClearAll()
+{
+	memset(m_TextBuffer, 0x00, sizeof(WCHAR) * 25);
 }
 
 bool Text::Initialize(int size)

@@ -16,6 +16,7 @@ HWND g_hWnd;
 // 새창 핸들 전역변수와
 HWND g_hWnd_New;
 HWND hEdit;
+HWND hChatEdit;
 
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
@@ -282,6 +283,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	CreateWindowW(L"button", L"Connect", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		NEWWINSIZE_X / 2 - buttonsizeX / 2, 50 - buttonsizeY / 2 + 50,
 		buttonsizeX, buttonsizeY, g_hWnd_New, (HMENU)2, hInst, NULL);
+
+	//채팅 Edit 컨트롤 생성
+	hChatEdit = CreateWindow(L"edit", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
+		60, 1000, 320, 20, g_hWnd, (HMENU)3, hInst, NULL);
+	PostMessage(hChatEdit, EM_LIMITTEXT, (WPARAM)30, 0);
 
 	return TRUE;
 }

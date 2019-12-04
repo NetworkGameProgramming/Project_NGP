@@ -4,6 +4,7 @@
 #include "SmashAttack.h"
 
 class Text;
+class Chat_Box;
 class Player
 	: public GameObject
 {
@@ -19,7 +20,7 @@ public:
 public:
 	void SetOtherCheck(bool check) { m_isOther = check; }
 	void SetIdToText(int id);
-
+	void SetChatBox(const WCHAR* chat_buffer);
 private:
 	int Update_Input(const float& TimeDelta);
 	int Update_Position(const float& TimeDelta, const DIRECTION& Direction);
@@ -51,6 +52,11 @@ private:
 
 	bool m_OnceCheck = false;
 
+	// Chatting
+	float m_ChatAcc = 0.f;
+	bool  m_ChatOn = false;
+	WCHAR m_ChatData[25] = { 0, };
 	Text* m_IdText = nullptr;
+	Chat_Box* m_ChatBox = nullptr;
 };
 

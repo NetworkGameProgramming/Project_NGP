@@ -239,6 +239,9 @@ bool Scene::UpdateNetEvent()
 		{
 		case EV_PUTOTHERPLAYER:
 		{
+			if (evInfo.scene_state != m_curScene)
+				break;
+
 			GameObject* other_player = nullptr;
 
 			other_player = m_ObjManager->GetObjFromTag(to_wstring(evInfo.id).c_str(),
@@ -248,8 +251,7 @@ bool Scene::UpdateNetEvent()
 			// 서로 다른 Scene에 있다는 뜻이므로 추가하지 않는다.
 			// 하지만 이 정보가 서버의 큐에서 사라지기 때문에 
 			// 씬 초기화 할때마다 추가를 해줘야한다.
-			if (evInfo.scene_state != m_curScene)
-				break;
+
 
 			// 만약 등록된 id의 플레이어가 없다면 만든다.
 			if (nullptr == other_player)
@@ -269,6 +271,25 @@ bool Scene::UpdateNetEvent()
 		{
 			m_ObjManager->ReleaseObjFromTag(to_wstring(evInfo.id).c_str(),
 				OBJ_OTHERPLAYER);
+		}
+		break;
+		case EV_CHAT:
+		{
+			if (evInfo.scene_state != m_curScene)
+				break;
+
+			GameObject* other_player = nullptr;
+
+			other_player = m_ObjManager->GetObjFromTag(to_wstring(evInfo.id).c_str(),
+				OBJ_OTHERPLAYER);
+
+			// 채팅을 친 유저의 말이 포함된 풍선을 띄운다.
+			if (nullptr != other_player)
+			{
+				TCHAR tchar[25] = { 0, };
+				memcpy(tchar, evInfo.chat_buffer, evInfo.chat_size);
+				dynamic_cast<Player*>(other_player)->SetChatBox(tchar);
+			}
 		}
 		break;
 		case EV_NONE:

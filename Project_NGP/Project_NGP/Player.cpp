@@ -3,6 +3,8 @@
 #include "Portal.h"
 #include "Fade.h"
 #include "Text.h"
+#include "Chat_Box.h"
+#include "Chat.h"
 
 Player::Player()
 	: GameObject()
@@ -33,6 +35,11 @@ bool Player::Initialize()
 	m_IdText->SetBackColor(255, 255, 0);
 	m_IdText->SetBackMode(OPAQUE);
 	m_IdText->SetAlign(TA_CENTER);
+
+	GameObject* chatBox = AbstractFactory<Chat_Box>::CreateObj();
+	chatBox->SetFollowedObj(this);
+	GET_MANAGER<ObjectManager>()->AddObject(L"chat_box", chatBox, OBJ_UI);
+	m_ChatBox = dynamic_cast<Chat_Box*>(chatBox);
 
 	return true;
 }
@@ -146,6 +153,14 @@ void Player::SetIdToText(int id)
 	}
 }
 
+void Player::SetChatBox(const WCHAR* chat_buffer)
+{
+	if (nullptr != m_ChatBox)
+	{
+		m_ChatBox->SetChatBox(chat_buffer);
+	}
+}
+
 int Player::Update_Input(const float& TimeDelta)
 {
 	if (true == m_isOther)
@@ -153,6 +168,26 @@ int Player::Update_Input(const float& TimeDelta)
 
 	m_Dir = 0;
 	KeyManager* keyManager = GET_MANAGER<KeyManager>();
+
+	// 채팅창을 킨다.
+	if (true == m_ChatOn)
+	{
+		keyManager->SetRunning(true);
+		m_ChatAcc += TimeDelta;
+
+		if (m_ChatAcc > 0.1f &&
+			true == keyManager->GetKeyState(STATE_DOWN, VK_RETURN))
+		{
+			GameObject* pObj = GET_MANAGER<ObjectManager>()->GetObjFromTag(L"chat", OBJ_UI);
+			m_ChatBox->SetChatBox(dynamic_cast<Chat*>(pObj)->GetChatBuffer());
+			dynamic_cast<Chat*>(pObj)->SetActivate(false);
+
+			m_ChatOn = false;
+			m_ChatAcc = 0.f;
+		}
+
+		return 0;
+	}
 
 	if (true == keyManager->GetKeyState(STATE_PUSH, VK_LEFT))
 	{
@@ -221,6 +256,17 @@ int Player::Update_Input(const float& TimeDelta)
 		m_SpriteInfo.CurState = Att_3;
 	}
 
+	if (m_ChatOn == false &&
+		true == keyManager->GetKeyState(STATE_DOWN, VK_RETURN))
+	{
+		GameObject* pObj = GET_MANAGER<ObjectManager>()->GetObjFromTag(L"chat", OBJ_UI);
+		dynamic_cast<Chat*>(pObj)->SetActivate(true);
+
+		keyManager->SetRunning(true);
+		m_ChatOn = true;
+		m_ChatAcc = 0.f;
+	}
+
 	if (false == m_fallCheck &&
 		false == keyManager->GetKeyState(STATE_PUSH, VK_LEFT) &&
 		false == keyManager->GetKeyState(STATE_PUSH, VK_RIGHT) &&
@@ -273,7 +319,7 @@ int Player::Update_Position(const float& TimeDelta, const DIRECTION& Direction)
 			m_GravityAcc += 9.8f * 10.f;
 	}
 
-	printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y + (m_CollideInfo.Size_Height / 2));
+	//printf("X : %d  Y : %d\n", m_Info.Pos_X, m_Info.Pos_Y + (m_CollideInfo.Size_Height / 2));
 
 	return 0;
 }

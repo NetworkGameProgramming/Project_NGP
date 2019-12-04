@@ -9,6 +9,7 @@
 #define SP_MONSTER			4
 #define SP_HIT				5
 #define SP_GONEXT			6
+#define SP_CHAT				7
 #define SP_EVENT			99		// Event
 
 // 로그를 확인 할 수 있다.

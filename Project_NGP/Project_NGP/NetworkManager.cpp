@@ -147,6 +147,22 @@ bool NetworkManager::SendGoNextSceneInfo(SCENESTATE nextState, SCENESTATE curSta
 	return true;
 }
 
+bool NetworkManager::SendChatting(const TCHAR* chat)
+{
+	int chat_size = sizeof(WCHAR) * wcslen(chat);
+	short total_size = chat_size + sizeof(short) + sizeof(char) + sizeof(int);
+	memcpy(m_netBuffer, &total_size, sizeof(short));
+	m_netBuffer[2] = SP_CHAT;
+	memcpy(&m_netBuffer[3], &m_myID, sizeof(int));
+	
+	memcpy(&m_netBuffer[7], chat, chat_size);
+
+	if (-1 == Send(m_netBuffer, SP_CHAT, total_size))
+		return false;
+
+	return true;
+}
+
 void NetworkManager::AttackCollisionForNetwork(ObjectManager::MAPOBJ* TargetList, ObjectManager::MAPOBJ* SkillList)
 {
 	// 렉트 충돌 검사
@@ -274,6 +290,27 @@ void NetworkManager::Packing(char* OutPacket, void* packet_struct, char type)
 		memcpy(OutPacket, &s, s.size);
 	}
 	break;
+	case SP_GONEXT:
+	{
+		SPGONEXT s;
+		SPGONEXT *ps = reinterpret_cast<SPGONEXT*>(packet_struct);
+		s.size = sizeof(SPGONEXT);
+		s.id = ps->id;
+		s.type = SP_GONEXT;
+		s.cur_scene_state = ps->cur_scene_state;
+		s.next_scene_state = ps->next_scene_state;
+		memcpy(OutPacket, &s, s.size);
+	}
+	break;
+	case SP_CHAT:
+	{
+		const char* chat = reinterpret_cast<char*>(packet_struct);
+		short total_size;
+		memcpy(&total_size, chat, sizeof(short));
+
+		memcpy(OutPacket, m_netBuffer, total_size);
+	}
+	break;
 	case SP_EVENT:
 	{
 		short size = 3;
@@ -302,6 +339,9 @@ void NetworkManager::Depacking(void* OutPacket_struct, char* buf, short size)
 		break;
 	case SP_HIT:
 		memcpy(OutPacket_struct, buf, sizeof(SPHIT));
+		break;
+	case SP_GONEXT:
+		memcpy(OutPacket_struct, buf, sizeof(SPGONEXT));
 		break;
 	case SP_EVENT:
 		memcpy(OutPacket_struct, buf, sizeof(EVENTINFO));

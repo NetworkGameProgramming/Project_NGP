@@ -9,7 +9,7 @@ HANDLE						 g_iocp = NULL;
 int							 g_id = 1;
 int main()
 {
-	MainServer server;
+	MainServer server; 
 	if (false == server.Initialize())
 		return -1;
 	if (false == server.Running())

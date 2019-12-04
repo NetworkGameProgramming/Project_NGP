@@ -13,7 +13,6 @@
 #include "Fade.h"
 #include "MainUI.h"
 #include "Chat.h"
-#include "Chat_Box.h"
 
 
 TestScene::TestScene()
@@ -58,10 +57,6 @@ bool TestScene::Initialize()
 	// id¸¦ Set
 	dynamic_cast<Player*>(pPlayer)->SetIdToText(m_NetworkManager->GetMyId());
 	m_CamManager->SetTarget(pPlayer);
-
-	GameObject* chatBox = AbstractFactory<Chat_Box>::CreateObj();
-	chatBox->SetFollowedObj(pPlayer);
-	m_ObjManager->AddObject(L"chat_box", chatBox, OBJ_UI);
 
 	GameObject* pBackGround = m_ObjManager->GetObjFromTag(L"background", OBJ_BACK);
 	m_CamManager->SetResolution(pBackGround->GetInfo().Size_Width, pBackGround->GetInfo().Size_Height);
